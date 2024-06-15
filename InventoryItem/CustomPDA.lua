@@ -5,6 +5,7 @@ DefineClass.CustomPDA = {
 
 
 	object_class = "InventoryStack",
+	ScrapParts = 1,
 	Repairable = false,
 	Icon = "UI/Icons/Items/custom_pda",
 	DisplayName = T(759765204122, --[[ModItemInventoryItemCompositeDef CustomPDA DisplayName]] "Livewire's PDA"),
