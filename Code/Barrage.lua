@@ -1,0 +1,129 @@
+-- function Unit:Barrage(action_id, cost_ap, args)
+-- 	args.attack_anim_delay = 50
+-- 	self:SetActionCommand("FirearmAttack", action_id, cost_ap, args)
+-- end
+-- PlaceObj('CombatAction', {
+-- 	ActionPoints = 8000,
+-- 	ActionType = "Ranged Attack",
+-- 	AimType = "cone",
+-- 	AlwaysHits = true,
+-- 	ConfigurableKeybind = false,
+-- 	DisplayName = T(962244361104, --[[CombatAction BulletHell DisplayName]] "Barrage"),
+-- 	Execute = function (self, units, args)
+-- 		local unit = units[1]
+-- 		local ap = self:GetAPCost(unit, args)
+-- 		NetStartCombatAction(self.id, unit, ap, args) -- don't change here
+-- 	end,
+-- 	GetAPCost = function (self, unit, args)
+-- 		if self.CostBasedOnWeapon then
+-- 			local weapon = self:GetAttackWeapons(unit, args)	
+-- 			return weapon and unit:GetAttackAPCost(self, weapon, nil, args and args.aim or 0, self.ActionPointDelta) or -1
+-- 		end
+-- 		return self.ActionPoints
+-- 	end,
+-- 	GetActionDamage = function (self, unit, target, args)
+-- 		local weapon = self:GetAttackWeapons(unit, args)
+-- 		if not weapon then return 0 end
+-- 		local base = unit:GetBaseDamage(weapon)
+-- 		local damage = base
+-- 		return damage, base, damage - base
+-- 	end,
+-- 	GetActionDescription = function (self, units)
+-- 		return "A rapid simultaneous discharge of firearms"
+-- 	end,
+-- 	GetActionDisplayName = function (self, units)
+-- 		return "Barrage"
+-- 	end,
+-- 	GetActionResults = function (self, unit, args)
+-- 		local args = table.copy(args)
+-- 		args.weapon = args.weapon or self:GetAttackWeapons(unit, args)
+-- 		args.num_shots = Clamp(args.weapon.ammo.Amount, self:ResolveValue("min_ammo"), self:ResolveValue("max_ammo"))
+-- 		--args.applied_status = { "Suppressed", "SuppressionChangeStance" }
+-- 		args.aoe_fx_action = "WeaponAutoFire"
+-- 		args.aoe_action_id = self.id -- don't change here
+-- 		args.aoe_damage_bonus = MulDivRound(self:ResolveValue("max_ammo_aoe_damage_bonus"), args.num_shots, self:ResolveValue("max_ammo"))
+-- 		local attack_args = unit:PrepareAttackArgs("BulletHell", args)
+-- 		local results = attack_args.weapon:GetAttackResults(self, attack_args)
+-- 		return results, attack_args
+-- 	end,
+-- 	GetAttackWeapons = function (self, unit, args)
+-- 		if args and args.weapon then return args.weapon end
+-- 		return unit:GetActiveWeapons("Firearm")
+-- 	end,
+-- 	GetMaxAimRange = function (self, unit, weapon)
+-- 		return weapon.WeaponRange
+-- 	end,
+-- 	GetMinAimRange = function (self, unit, weapon)
+-- 		return weapon.WeaponRange
+-- 	end,
+-- 	GetUIState = function (self, units, args)
+-- 		local unit = units[1]
+-- 		if not HasPerk(unit, "AutoWeapons") or not IsMerc(unit) then
+-- 			return "hidden"
+-- 		end 
+-- 		local recharge = unit:GetSignatureRecharge("BulletHell")
+-- 		if recharge then
+-- 			if recharge.on_kill then
+-- 				return "disabled", AttackDisableReasons.SignatureRechargeOnKill
+-- 			end
+-- 			return "disabled", AttackDisableReasons.SignatureRecharge
+-- 		end
+-- 		local weapon1 = self:GetAttackWeapons(unit, args)
+-- 		if not weapon1 then return "disabled", AttackDisableReasons.RangedWeapon end
+-- 		local canUse, err = unit:CanUseWeapon(weapon1)
+-- 		if not canUse then return "disabled", err end
+-- 		if not IsKindOfClasses(weapon1, "SubmachineGun") then
+-- 			return "disabled", AttackDisableReasons.WrongWeapon
+-- 		end
+-- 		--if not weapon1.ammo or weapon1.ammo.Amount < self:ResolveValue("min_ammo") then
+-- 		--	return "disabled", AttackDisableReasons.OutOfAmmo
+-- 		--end
+-- 		local cost = self:GetAPCost(unit, args)
+-- 		if cost < 0 then return "disabled" end
+-- 		if not unit:UIHasAP(cost) then return "disabled" end
+-- 		return "enabled"
+-- 	end,
+-- 	--Icon = "UI/Icons/Hud/bullet_hell",
+-- 	Icon = "UI/Icons/Hud/suppressive_barrage",
+-- 	IsTargetableAttack = true,
+-- 	IdDefault = "Barragedefault",
+-- 	IsAimableAttack = false,
+-- 	--KeybindingFromAction = "actionRedirectSignatureAbility",
+-- 	MultiSelectBehavior = "first",
+-- 	Parameters = {
+-- 		PlaceObj('PresetParamNumber', {
+-- 			'Name', "min_ammo",
+-- 			'Value', 10,
+-- 			'Tag', "<min_ammo>",
+-- 		}),
+-- 		PlaceObj('PresetParamNumber', {
+-- 			'Name', "max_ammo",
+-- 			'Value', 15,
+-- 			'Tag', "<max_ammo>",
+-- 		}),
+-- 		PlaceObj('PresetParamNumber', {
+-- 			'Name', "max_ammo_aoe_damage_bonus",
+-- 			'Value', 50,
+-- 			'Tag', "<max_ammo_aoe_damage_bonus>",
+-- 		}),
+-- 	},
+-- 	RequireState = "any",
+-- 	Run = function (self, unit, ap, ...)
+-- 		unit:SetActionCommand("Barrage", self.id, ap, ...)
+-- 		--unit:SetActionCommand(CombatActions.BulletHell, self.id, ap, ...)
+-- 	end,
+-- 	--ShowIn = "SignatureAbilities",
+-- 	SortKey = 101,
+-- --	UIBegin = function (self, units, args)
+-- --		CombatActionAttackStart(self, units, args, "IModeCombatAreaAim")
+-- --	end,
+-- UIBegin = function (self, units, args)
+-- 	CombatActionAttackStart(CombatActions.BulletHell, units, args, "IModeCombatAreaAim")
+-- end,
+-- --UIBegin = function (self, units, args)
+-- --	CombatActionAttackStart("BulletHell", units, args, "IModeCombatAreaAim")
+-- --end,
+-- 	group = "Default",
+-- 	id = "Barrage",
+-- })
+-- -- need to fix the args on bullethell itself 

@@ -1,0 +1,107 @@
+----function GetMercIcon(prefix, level)
+----	local iconLevel = Min(level, 11)
+----	iconLevel = iconLevel < 11 and "0" .. tostring(iconLevel) or tostring(iconLevel)
+----	return "Mod/Ss3am/Images/" .. prefix .. "_level_" .. iconLevel
+----end
+--
+---- Mod/Ss3am/Images/Sniper_emblem_BLU_(beta).png
+---- merc_level_10
+--
+--if HasPerk(attacker, "DangerClose") then
+--	local targetRange = attacker:GetDist(attack_pos)
+--	local dangerClose = CharacterEffectDefs.DangerClose
+--	local rangeThreshold = dangerClose:ResolveValue("rangeThreshold") * const.SlabSizeX
+--	if targetRange <= rangeThreshold then
+--		local mod = dangerClose:ResolveValue("damageMod")
+--		damage = damage + MulDivRound(damage, mod, 100)
+--	end
+--end
+--
+--
+--if IsKindOfClasses(weapon, "HeavyWeapon", "Grenade") and HasPerk(attacker, "DangerClose") then
+--	local targetRange = attacker:GetDist(pt)
+--	local dangerClose = CharacterEffectDefs.DangerClose
+--	local rangeThreshold = dangerClose:ResolveValue("rangeThreshold") * const.SlabSizeX -- 5
+--	if targetRange <= rangeThreshold then
+--		SetAPIndicator(1, "danger-close", T{190936138167, "<perkName> - in range", perkName = dangerClose.DisplayName}, "append")
+--	else
+--		SetAPIndicator(false, "danger-close")
+--	end
+--end
+--
+--
+--
+--'code', function (self, target, unit, context)
+--	if target == "any merc" then
+--		return unit:IsMerc()
+--	elseif UnitDataDefs[target] then
+--		return target == unit.unitdatadef_id or target == unit.class
+--	elseif Groups[target] and unit:IsInGroup(target) then
+--		return true
+--	elseif target == "any" then
+--		return true
+--	elseif target == "player mercs on map" then
+--		return unit.team and unit.team.side == "player1"
+--	elseif target == "current unit" then
+--		return  table.find(context and context.target_units or empty_table, unit)
+--	end
+--	return false
+--end,
+--
+--
+--
+--function UnitIsAroundLeader( unit, distance )
+--
+--	local units1 = unit
+--	if not units1 then
+--		return false
+--	end
+--	local units2 = table.find(g_Teams, "side", "player1")
+--	if not units2 then
+--		return false
+--	end
+--	local units2_around_units1
+--	local dist = distance * guim
+--	for _, u2 in ipairs(units2) do
+--		for _, u1 in ipairs(units1) do
+--			if IsCloser2D(u1, u2, dist) then
+--				if not units2_around_units1 then units2_around_units1 = {} end
+--				units2_around_units1[u2] = true
+--				break
+--			end
+--		end
+--	end
+--	if not units2_around_units1 then
+--		return false
+--	end
+--	return true
+--end
+--
+--
+--
+--local target_side = target and target.team and target.team.side or ''
+--local target_pos = target:GetPos() or false
+--local allycount = 0
+--local squad = gv_Squads[target.Squad]
+--
+--
+--for _, id in ipairs(squad.units) do
+--	local unit = g_Units[id]
+--	if unit ~= target then
+--		local side = unit and unit.team and unit.team.side or ''
+--		if target_side ~= '' and side == target_side then
+--			local unit_pos = unit:GetPos() or false
+--			if target_pos and unit_pos then
+--				local dist = target_pos:Dist(unit_pos)
+--				if dist <= 8 * const.SlabSizeX then
+--					allycount = allycount +1
+--					print(unit)
+--				end
+--			end
+--		end
+--	end
+--end
+--	
+--	if allycount > 0 then
+--		target:AddStatusEffect("MMOPerkPack_JWJEffect", allycount)
+--	end

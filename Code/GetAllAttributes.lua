@@ -1,0 +1,294 @@
+function UnitPropertiesStats:GetAllAttributes()
+	local result = self:GetProperties()
+	result = table.ifilter(result, function(k, v)
+		return v.id == "Health" or
+					v.id == "Agility" or
+					v.id == "Dexterity" or
+					v.id == "Strength" or
+					v.id == "Leadership" or
+					v.id == "Marksmanship" or
+					v.id == "Mechanical" or
+					v.id == "Explosives" or
+					v.id == "Medical"  or
+					v.id == "Wisdom"
+	end)
+	return result
+end
+
+
+--
+--
+--
+--PlaceObj('CombatAction', {
+--	ActionPoints = 4000,
+--	ActivePauseBehavior = "queue",
+--	ConfigurableKeybind = false,
+--	Description = T(192251955775, --[[CombatAction Interact_CustomInteractable Description]] "<target.Description>"),
+--	DisplayName = T(783948937482, --[[CombatAction Interact_CustomInteractable DisplayName]] "<target.DisplayName>"),
+--	Execute = function (self, units, args)
+--		CombatActionExecuteWithMove(self, units, args)
+--	end,
+--	GetAPCost = function (self, unit, args)
+--		return CombatActionInteractionGetCost(self, unit, args)
+--	end,
+--	GetTargets = function (self, units)
+--		return units[1]:GetReachableObjects("CustomInteractable")
+--	end,
+--	GetUIState = function (self, units, args)
+--		local base_state = CombatAction.GetUIState(self, units, args)
+--		if base_state ~= "enabled" then return base_state end
+--		
+--		return args and args.target:GetUIState(units, args) or "disabled"
+--	end,
+--	Icon = "UI/Hud/iw_examine",
+--	IdDefault = "Interact_CustomInteractabledefault",
+--	InterruptInExploration = true,
+--	IsAimableAttack = false,
+--	QueuedBadgeText = T(695484031538, --[[CombatAction Interact_CustomInteractable QueuedBadgeText]] "INTERACT"),
+--	RequireState = "any",
+--	Run = function (self, unit, ap, ...)
+--		local args = ...
+--		unit:SetActionCommand("InteractWith", self.id, ap, args.goto_pos, args.goto_ap, args.target)
+--	end,
+--	ShowIn = false,
+--	UseFreeMove = true,
+--	group = "Interactions",
+--	id = "Interact_CustomInteractable",
+--})
+--
+--
+--PlaceObj('CombatAction', {
+--	ActivePauseBehavior = "queue",
+--	ConfigurableKeybind = false,
+--	DisplayName = T(581591931905, --[[CombatAction Interact_Banter DisplayName]] "Talk with <target.DisplayName>"),
+--	Execute = function (self, units, args)
+--		CombatActionExecuteWithMove(self, units, args)
+--	end,
+--	GetAPCost = function (self, unit, args)
+--		return CombatActionInteractionGetCost(self, unit, args)
+--	end,
+--	GetTargets = function (self, units)
+--		return GetReachableObjects(units, "Unit")
+--	end,
+--	GetUIState = function (self, units, args)
+--		local base_state = CombatAction.GetUIState(self, units, args)
+--		if base_state ~= "enabled" then return base_state end
+--		local target = args.target
+--		if target:IsNPC() and target:GetAllBanters("findFirst", { target_units = units }) then
+--			return "enabled"
+--		end
+--		
+--		return "hidden"
+--	end,
+--	Icon = "UI/Hud/iw_speak",
+--	IdDefault = "Interact_Banterdefault",
+--	InterruptInExploration = true,
+--	IsAimableAttack = false,
+--	QueuedBadgeText = T(755005650995, --[[CombatAction Interact_Banter QueuedBadgeText]] "INTERACT"),
+--	RequireState = "exploration",
+--	Run = function (self, unit, ap, ...)
+--		local args = ...
+--		unit:SetActionCommand("InteractWith", self.id, ap, args.goto_pos, args.goto_ap, args.target)
+--	end,
+--	ShowIn = false,
+--	UseFreeMove = true,
+--	group = "Interactions",
+--	id = "Interact_Banter",
+--})
+--
+--
+--PlaceObj('CombatAction', {
+--	ActivePauseBehavior = "queue",
+--	ConfigurableKeybind = false,
+--	DisplayName = T(362512741067, --[[CombatAction Interact_Talk DisplayName]] "Talk with <target.DisplayName>"),
+--	Execute = function (self, units, args)
+--		CombatActionExecuteWithMove(self, units, args)
+--	end,
+--	GetAPCost = function (self, unit, args)
+--		return CombatActionInteractionGetCost(self, unit, args)
+--	end,
+--	GetTargets = function (self, units)
+--		return units[1]:GetReachableObjects("Unit")
+--	end,
+--	GetUIState = function (self, units, args)
+--		local base_state = CombatAction.GetUIState(self, units, args)
+--		if base_state ~= "enabled" then return base_state end
+--		
+--		local target = args.target
+--		if target:IsNPC() and FindEnabledConversation(target) then
+--			return "enabled"
+--		end
+--		
+--		return "hidden"
+--	end,
+--	Icon = "UI/Hud/iw_speak",
+--	IdDefault = "Interact_Talkdefault",
+--	InterruptInExploration = true,
+--	IsAimableAttack = false,
+--	QueuedBadgeText = T(865614171711, --[[CombatAction Interact_Talk QueuedBadgeText]] "INTERACT"),
+--	RequireState = "exploration",
+--	Run = function (self, unit, ap, ...)
+--		local args = ...
+--		unit:SetActionCommand("InteractWith", self.id, ap, args.goto_pos, args.goto_ap, args.target)
+--	end,
+--	ShowIn = false,
+--	UseFreeMove = true,
+--	group = "Interactions",
+--	id = "Interact_Talk",
+--})
+--
+--
+--PlaceObj('CombatAction', {
+--	ActivePauseBehavior = "queue",
+--	Comment = "used by AI",
+--	Description = T(682794130547, --[[CombatAction Interact Description]] "Interact with nearby objects."),
+--	DisplayName = T(381772065068, --[[CombatAction Interact DisplayName]] "Interact"),
+--	EvalTarget = function (self, units, target)
+--		local closest_unit = ChooseClosestObject(units, target)
+--		local combat_action = target:GetInteractionCombatAction()
+--		if not combat_action then return end
+--		return combat_action:EvalTarget(closest_unit, target)
+--	end,
+--	Execute = function (self, units, args)
+--		local target = args and args.target
+--		if not target then return end
+--		local closest_unit = ChooseClosestObject(units, target)
+--		local combat_action = target:GetInteractionCombatAction(closest_unit)
+--		if not combat_action then return end
+--		if HasCombatActionInProgress(closest_unit) and not closest_unit:IsInterruptable() then return end
+--		return combat_action:Execute(closest_unit, args)
+--	end,
+--	GetAPCost = function (self, unit, args)
+--		if args and args.override_ap_cost then
+--			return args.override_ap_cost
+--		end
+--		local target = args and args.target
+--		if not target then
+--			local targets = self:GetTargets{ unit }
+--			if #targets ~= 1 then
+--				return self.ActionPoints
+--			end
+--			target = targets[1]
+--		end
+--		local combat_action = target:GetInteractionCombatAction(unit)
+--		if not combat_action then return -1 end
+--		local args = args or {}
+--		args.target = target
+--		return combat_action:GetAPCost(unit, args)
+--	end,
+--	GetActionDescription = function (self, units)
+--		local target = self:GetAnyTarget(units)
+--		if not target then return self.Description end
+--		
+--		local closest_unit = ChooseClosestObject(units, target)
+--		local combat_action = target:GetInteractionCombatAction(closest_unit)
+--		if not combat_action then return self.Description end
+--		
+--		return T{combat_action:GetActionDescription(closest_unit), target = target, unit = closest_unit}
+--	end,
+--	GetActionDisplayName = function (self, units)
+--		local target = self:GetAnyTarget(units)
+--		if not target then return self.DisplayName end
+--		
+--		local closest_unit = ChooseClosestObject(units, target)
+--		local combat_action = target:GetInteractionCombatAction(closest_unit)
+--		if not combat_action then return self.Description end
+--		
+--		return T{combat_action:GetActionDisplayName(closest_unit), target = target, unit = closest_unit} .. T{697667667158, " (<Nick>)", closest_unit}
+--	end,
+--	GetActionIcon = function (self, units)
+--		local target = self:GetAnyTarget(units)
+--		if not target then return self.Icon end
+--		
+--		local combat_action = target:GetInteractionCombatAction()
+--		if not combat_action then return self.Icon end
+--		
+--		local closest_unit = ChooseClosestObject(units, target)
+--		return combat_action:GetActionIcon(closest_unit)
+--	end,
+--	GetAnyTarget = function (self, units)
+--		return self:GetTargets(units)[1]
+--	end,
+--	GetDefaultTarget = function (self, unit)
+--		local best_eval, best_target
+--		local targets = self:GetTargets({unit})
+--		if #targets == 0 then return false, false end
+--		return targets[1], 100
+--	end,
+--	GetTargets = function (self, units)
+--		if #units == 0 then return {} end
+--		local interactables = false
+--		for i = 1, #units do
+--			interactables = units[i]:GetReachableObjects("Interactable")
+--			if #interactables > 0 then
+--				break
+--			end
+--		end
+--		
+--		local result = { } 
+--		for i=1,#interactables do
+--			local interactable = interactables[i]
+--			local closest_unit = ChooseClosestObject(units, interactable, function(o)
+--				local combat_action = interactable:GetInteractionCombatAction(o)
+--				assert(not combat_action or combat_action.group == "Interactions", "Interaction CombatActions must be in the 'Interactions' group")
+--				if not combat_action or combat_action.ShowIn ~= false then
+--					return false
+--				end
+--				return o:CanInteractWith(interactable, combat_action.id)
+--			end)
+--			if closest_unit then
+--				table.insert(result, interactable)
+--			end
+--		end
+--		return result
+--	end,
+--	GetUIState = function (self, units, args)
+--		local unit = units[1]
+--		local target = args and args.target
+--		if target then
+--			local combat_action = target:GetInteractionCombatAction(unit)
+--			if combat_action then
+--				return combat_action:GetUIState(units, args)
+--			end
+--			
+--			return "hidden"
+--		end
+--			
+--		if not self:GetAnyTarget(units) then
+--			return "hidden"
+--		end
+--		return "enabled"
+--	end,
+--	Icon = "UI/Icons/Hud/interact",
+--	IdDefault = "Interactdefault",
+--	InterruptInExploration = true,
+--	IsAimableAttack = false,
+--	QueuedBadgeText = T(560853521122, --[[CombatAction Interact QueuedBadgeText]] "INTERACT"),
+--	RequireState = "any",
+--	Run = function (self, unit, ap, ...)
+--		local args = ...
+--		local target = args and args.target
+--		if not target or HasCombatActionInProgress(unit) then return end
+--		local combat_action = target:GetInteractionCombatAction(unit)
+--		if not combat_action then return end
+--		return combat_action:Run(unit, ap, args)
+--	end,
+--	ShowIn = false,
+--	SortKey = 12,
+--	UIBegin = function (self, units, args)
+--		CombatActionInteractablesChoice(self, units, args)
+--	end,
+--	group = "ToDelete",
+--	id = "Interact",
+--})
+--
+----
+--
+--function (self, unit, ap, ...)
+--	local args = ...
+--	if g_Combat then
+--		unit:SetActionCommand("CombatGoto", self.id, ap, args.goto_pos, args.path, args.forced_run, args.stanceAtStart, args.stanceAtEnd, args.willBeTracked, args.visibleMovement)
+--	else
+--		unit:InterruptCommand("GotoSlab", args.goto_pos, nil, nil, args.move_type, args.follow_target)
+--	end
+--	end
