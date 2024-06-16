@@ -4492,12 +4492,29 @@ return {
 			CustomRepeat = true,
 			GetOperationCost = function (self, merc, profession, idx)
 				if profession == "Patient" then
-					return  {
-						[1] = {value = self:ResolveValue("MedCost") * PatientGetWoundsBeingTreated(merc), resource = "Meds"
-						 + self:ResolveValue("PartsCost") * PatientGetWoundsBeingTreated(merc), resource = "Parts"
-						+ self:ResolveValue("MoneyCost") * PatientGetWoundsBeingTreated(merc), resource = "Money"
-						+ self:ResolveValue("ChipCost") * PatientGetWoundsBeingTreated(merc), resource = "Microchip"}
+					local totalCost = {
+						{value = self:ResolveValue("MedCost") * PatientGetWoundsBeingTreated(merc), resource = "Meds"},
+						{value = self:ResolveValue("PartsCost") * PatientGetWoundsBeingTreated(merc), resource = "Parts"},
+						{value = self:ResolveValue("MoneyCost") * PatientGetWoundsBeingTreated(merc), resource = "Money"},
+						{value = self:ResolveValue("ChipCost") * PatientGetWoundsBeingTreated(merc), resource = "Microchip"}
 					}
+					
+					local discount = {
+						Meds = 10, -- Discount for Meds
+						Parts = 5, -- Discount for Parts
+						Money = 20, -- Discount for Money
+						Microchip = 15 -- Discount for Microchip
+					}
+					
+					-- Apply discounts from different sources
+					for i, costItem in ipairs(totalCost) do
+						local resource = costItem.resource
+						if discount[resource] then
+							costItem.value = costItem.value - (costItem.value * (discount[resource] / 100))
+						end
+					end
+					
+					return totalCost
 				else
 					return {}
 				end
