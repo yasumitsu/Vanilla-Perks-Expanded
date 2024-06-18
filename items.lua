@@ -2136,7 +2136,7 @@ return {
 							end
 						end
 						
-						if target == attacker and  lightArmor then
+						if target == attacker and  lightArmor and (target.team ~= attack_target.team) then
 							local bonus = Min(target:GetLevel()/2, 5)
 							data.base_damage = data.base_damage + bonus
 							data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = bonus }
@@ -2358,7 +2358,7 @@ return {
 							end
 						end
 						
-						if target == attacker and  heavyArmor then
+						if target == attacker and  heavyArmor (target.team ~= attack_target.team) then
 							local bonus = Min(target:GetLevel(), 10)
 							data.base_damage = data.base_damage + bonus
 							data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = bonus }

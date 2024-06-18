@@ -5,13 +5,13 @@ return PlaceObj('ModDef', {
 	'external_links', {
 		"https://github.com/yasumitsu/Vanilla-Perks-Expanded",
 	},
-	'last_changes', "- fixed Livewire perk giving bonus to enemies as well lol\n- custom PDA now can scrapped",
+	'last_changes', "- fixed doctor and mechanic doing damage with gas grenades lol\n- thanks Milktea =D",
 	'dependencies', {},
 	'id', "PerksExpanded",
 	'author', "Sir Ni",
 	'version_major', 2,
 	'version_minor', 1,
-	'version', 1777,
+	'version', 1782,
 	'lua_revision', 233360,
 	'saved_with_revision', 350233,
 	'code', {
@@ -78,8 +78,8 @@ return PlaceObj('ModDef', {
 		LevelIcons = true,
 	},
 	'has_data', true,
-	'saved', 1718549958,
-	'code_hash', -5486205704566903444,
+	'saved', 1718659201,
+	'code_hash', -2150739325401173445,
 	'affected_resources', {
 		PlaceObj('ModResourcePreset', {
 			'Class', "GameRuleDef",
