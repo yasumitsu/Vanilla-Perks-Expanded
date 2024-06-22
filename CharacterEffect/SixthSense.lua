@@ -23,7 +23,7 @@ DefineClass.SixthSense = {
 	Description = T(409442475139, --[[ModItemCharacterEffectCompositeDef SixthSense Description]] "+<tempHitPoints> Grit each time you end turn out of cover."),
 	Icon = "Mod/PerksExpanded/Images/magic-ball3",
 	Tier = "Bronze",
-	Stat = "Medical",
+	Stat = "Wisdom",
 	StatValue = 70,
 }
 

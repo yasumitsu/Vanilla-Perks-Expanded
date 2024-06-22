@@ -78,582 +78,1386 @@ return {
 	PlaceObj('ModItemFolder', {
 		'name', "Perks",
 	}, {
-		PlaceObj('ModItemCharacterEffectCompositeDef', {
-			'Group', "Medical",
-			'Id', "NaturalCamouflage",
-			'SortKey', 8,
-			'Parameters', {
-				PlaceObj('PresetParamPercent', {
-					'Name', "sight_mod",
-					'Value', -20,
-					'Tag', "<sight_mod>%",
-				}),
-			},
-			'object_class', "Perk",
-			'unit_reactions', {
-				PlaceObj('UnitReaction', {
-					Event = "OnCalcSightModifier",
-					Handler = function (self, target, value, observer, other, step_pos, darkness)
-						if target == other then
-							return value + self:ResolveValue("sight_mod")
-						end
-					end,
-					param_bindings = false,
-				}),
-			},
-			'DisplayName', T(255554280355, --[[ModItemCharacterEffectCompositeDef NaturalCamouflage DisplayName]] "Natural Camouflage"),
-			'Description', T(160860597113, --[[ModItemCharacterEffectCompositeDef NaturalCamouflage Description]] "This character is <number>% harder to see."),
-			'Icon', "Mod/PerksExpanded/Images/Chameleon1",
-			'Tier', "Silver",
-			'Stat', "Medical",
-			'StatValue', 80,
-		}),
-		PlaceObj('ModItemCharacterEffectCompositeDef', {
-			'Group', "Marksmanship",
-			'Id', "OverwatchExpert",
-			'SortKey', 3,
-			'Parameters', {
-				PlaceObj('PresetParamNumber', {
-					'Name', "bonusAttacks",
-					'Value', 1,
-					'Tag', "<bonusAttacks>",
-				}),
-			},
-			'object_class', "Perk",
-			'unit_reactions', {
-				PlaceObj('UnitReaction', {
-					Event = "OnCalcOverwatchAttacks",
-					Handler = function (self, target, value, action, args)
-						return value + self:ResolveValue("bonusAttacks")
-					end,
-					param_bindings = false,
-				}),
-			},
-			'DisplayName', T(532324679530, --[[ModItemCharacterEffectCompositeDef OverwatchExpert DisplayName]] "Sentinel"),
-			'Description', T(953678683787, --[[ModItemCharacterEffectCompositeDef OverwatchExpert Description]] "Gain an <color EmStyle>extra attack</color> when using <color EmStyle>Overwatch</color>."),
-			'Icon', "Mod/PerksExpanded/Images/vigilance2",
-			'Tier', "Bronze",
-			'Stat', "Marksmanship",
-			'StatValue', 70,
-		}),
-		PlaceObj('ModItemCharacterEffectCompositeDef', {
-			'Group', "Medical",
-			'Id', "SharpInstincts",
-			'SortKey', 7,
-			'Parameters', {
-				PlaceObj('PresetParamNumber', {
-					'Name', "tempHP",
-					'Value', 15,
-					'Tag', "<tempHP>",
-				}),
-			},
-			'object_class', "Perk",
-			'msg_reactions', {},
-			'DisplayName', T(795130214410, --[[ModItemCharacterEffectCompositeDef SharpInstincts DisplayName]] "Trained Reaction"),
-			'Description', T(161220283053, --[[ModItemCharacterEffectCompositeDef SharpInstincts Description]] "When you enter combat, drop to Crouched if you're Standing and gain +<tempHP> Grit."),
-			'Icon', "Mod/PerksExpanded/Images/idea3",
-			'Tier', "Bronze",
-			'Stat', "Medical",
-			'StatValue', 70,
-		}),
-		PlaceObj('ModItemCharacterEffectCompositeDef', {
-			'Group', "Medical",
-			'Id', "SixthSense",
-			'SortKey', 8,
-			'Parameters', {
-				PlaceObj('PresetParamNumber', {
-					'Name', "tempHitPoints",
-					'Value', 15,
-					'Tag', "<tempHitPoints>",
-				}),
-			},
-			'object_class', "Perk",
-			'unit_reactions', {
-				PlaceObj('UnitReaction', {
-					Event = "OnEndTurn",
-					Handler = function (self, target)
-						local cover_id
-						if g_Combat and target:IsAware() then
-							cover_id = GetHighestCover(target)
-						end
-						if not cover_id and g_Combat:AreEnemiesAware(g_CurrentTeam) then
-							target:ApplyTempHitPoints(self:ResolveValue("tempHitPoints"))
-						end
-					end,
-					param_bindings = false,
-				}),
-			},
-			'DisplayName', T(293683380382, --[[ModItemCharacterEffectCompositeDef SixthSense DisplayName]] "Open Ground Tactics"),
-			'Description', T(409442475139, --[[ModItemCharacterEffectCompositeDef SixthSense Description]] "+<tempHitPoints> Grit each time you end turn out of cover."),
-			'Icon', "Mod/PerksExpanded/Images/magic-ball3",
-			'Tier', "Bronze",
-			'Stat', "Medical",
-			'StatValue', 70,
-		}),
-		PlaceObj('ModItemCharacterEffectCompositeDef', {
-			'Group', "Explosives",
-			'Id', "Throwing",
-			'SortKey', 3,
-			'Parameters', {
-				PlaceObj('PresetParamNumber', {
-					'Name', "RangeIncrease",
-					'Value', 3,
-					'Tag', "<RangeIncrease>",
-				}),
-				PlaceObj('PresetParamNumber', {
-					'Name', "FirstThrowCostReduction",
-					'Value', 3,
-					'Tag', "<FirstThrowCostReduction>",
-				}),
-			},
-			'param_bindings', {},
-			'object_class', "Perk",
-			'unit_reactions', {
-				PlaceObj('UnitReaction', {
-					Event = "OnBeginTurn",
-					Handler = function (self, target)
-						target:AddStatusEffect("FirstThrow")
-					end,
-					param_bindings = false,
-				}),
-			},
-			'DisplayName', T(113649016654, --[[ModItemCharacterEffectCompositeDef Throwing DisplayName]] "Throwing"),
-			'Description', T(227695453891, --[[ModItemCharacterEffectCompositeDef Throwing Description]] "Extended <color EmStyle>Range</color> of all thrown weapons.\n\nDramatically reduced <color EmStyle>AP</color> cost for first <color EmStyle>Knife</color> or <color EmStyle>Grenade</color> throw each turn."),
-			'OnAdded', function (self, obj)
-				obj:AddStatusEffect("FirstThrow")
-			end,
-			'Icon', "UI/Icons/Perks/Throwing",
-			'Tier', "Silver",
-			'Stat', "Explosives",
-			'StatValue', 80,
-		}),
-		PlaceObj('ModItemCharacterEffectCompositeDef', {
-			'Group', "Leadership",
-			'Id', "Teacher",
-			'SortKey', 1,
-			'Parameters', {
-				PlaceObj('PresetParamPercent', {
-					'Name', "MilitiaTrainingBonusPercent",
-					'Value', 100,
-					'Tag', "<MilitiaTrainingBonusPercent>%",
-				}),
-				PlaceObj('PresetParamPercent', {
-					'Name', "MercTrainingBonus",
-					'Value', 100,
-					'Tag', "<MercTrainingBonus>%",
-				}),
-				PlaceObj('PresetParamPercent', {
-					'Name', "squad_exp_bonus",
-					'Value', 10,
-					'Tag', "<squad_exp_bonus>%",
-				}),
-			},
-			'object_class', "Perk",
-			'DisplayName', T(748042767167, --[[ModItemCharacterEffectCompositeDef Teacher DisplayName]] "Teaching"),
-			'Description', T(910888738080, --[[ModItemCharacterEffectCompositeDef Teacher Description]] "Faster completion of the <color EmStyle>Train Militia</color> and <color EmStyle>Training</color> Operations.\n\nGrant <color EmStyle><number>%</color> extra<color EmStyle> XP</color> to the squad (does not stack)."),
-			'Icon', "UI/Icons/Perks/Teacher",
-			'Tier', "Silver",
-			'Stat', "Leadership",
-			'StatValue', 80,
-		}),
-		PlaceObj('ModItemCharacterEffectCompositeDef', {
-			'Group', "Mechanical",
-			'Id', "MrFixit",
-			'SortKey', 2,
-			'Parameters', {
-				PlaceObj('PresetParamNumber', {
-					'Name', "mrfixit_bonus",
-					'Value', 15,
-					'Tag', "<mrfixit_bonus>",
-				}),
-				PlaceObj('PresetParamNumber', {
-					'Name', "mrfixit_ap",
-					'Value', 1,
-					'Tag', "<mrfixit_ap>",
-				}),
-			},
-			'object_class', "Perk",
-			'DisplayName', T(953805503643, --[[ModItemCharacterEffectCompositeDef MrFixit DisplayName]] "Mr. Fixit"),
-			'Description', T(388336137725, --[[ModItemCharacterEffectCompositeDef MrFixit Description]] "Major bonus to <color EmStyle>Disarm</color> traps, <color EmStyle>Hack</color> devices, and <color EmStyle>Pick</color> locks checks.\n\nUnjamming weapons costs <color EmStyle><mrfixit_ap> AP</color>."),
-			'Icon', "UI/Icons/Perks/MrFixit",
-			'Tier', "Bronze",
-			'Stat', "Mechanical",
-			'StatValue', 70,
-		}),
-		PlaceObj('ModItemCharacterEffectCompositeDef', {
-			'Group', "Marksmanship",
-			'Id', "CQCTraining",
-			'SortKey', 4,
-			'Parameters', {
-				PlaceObj('PresetParamPercent', {
-					'Name', "cqc_bonus_max",
-					'Value', 20,
-					'Tag', "<cqc_bonus_max>%",
-				}),
-				PlaceObj('PresetParamPercent', {
-					'Name', "cqc_bonus_loss_per_tile",
-					'Value', 2,
-					'Tag', "<cqc_bonus_loss_per_tile>%",
-				}),
-			},
-			'object_class', "Perk",
-			'unit_reactions', {
-				PlaceObj('UnitReaction', {
-					Event = "OnCalcChanceToHit",
-					Handler = function (self, target, attacker, action, attack_target, weapon1, weapon2, data)
-						if target == attacker then
-							local value = self:ResolveValue("cqc_bonus_max")
-							local tileSpace = DivRound(attacker:GetDist2D(attack_target), const.SlabSizeX) - 1
-							if tileSpace > 0 then
-								local lossPerTile = self:ResolveValue("cqc_bonus_loss_per_tile")
-								value = value - lossPerTile * tileSpace
+		PlaceObj('ModItemFolder', {
+			'name', "Agility",
+		}, {
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Agility",
+				'Id', "LightningReaction",
+				'SortKey', 6,
+				'Parameters', {
+					PlaceObj('PresetParamPercent', {
+						'Name', "maxChanceToProc",
+						'Value', 25,
+						'Tag', "<maxChanceToProc>%",
+					}),
+				},
+				'object_class', "Perk",
+				'msg_reactions', {
+					PlaceObj('MsgActorReactionEffects', {
+						Effects = {
+							PlaceObj('ConditionalEffect', {
+								'Effects', {
+									PlaceObj('ExecuteCode', {
+										FuncCode = 'CreateFloatingText(obj, { "Dodge"}, 428634992000, nil, 500)',
+										param_bindings = false,
+									}),
+								},
+							}),
+						},
+						Handler = function () printf("bad function %s(%s): %s", name, params, err) end,
+						param_bindings = false,
+					}),
+				},
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnFirearmAttackStart",
+						Handler = function (self, target, attacker, attack_target, action, attack_args)
+							local conditions = target:HasStatusEffect("Blinded") or
+															target:HasStatusEffect("Exhausted") or
+															target:HasStatusEffect("Slowed") or								
+															target:HasStatusEffect("Distracted") or								
+															target:HasStatusEffect("Surprised") or								
+															target:HasStatusEffect("Unaware") or
+															attacker:HasStatusEffect("Hidden") or
+															attacker:HasStatusEffect("HiddenNPC") or
+															target:HasStatusEffect("Tired")
+							
+							
+							if target == attack_target and not (self:ResolveValue("used") or conditions) then
+								if target:DodgeCheck(self) then
+									self:SetParameter("used", true)
+									
+									--local level = DivRound(target:GetLevel(), 2)
+									local level = target:GetLevel()
+									local agi = target.Agility
+									--agi = DivRound(agi, 40)
+									
+									--local dodgeChance = agi * level
+									local dodgeChance = Min(MulDivRound(agi * level , self:ResolveValue("maxChanceToProc"), 1000 ), self:ResolveValue("maxChanceToProc"))
+							
+									print(level, agi, dodgeChance)
+									--print(level, agi, dodgechanceb)
+									self:SetParameter("chance", dodgeChance)
+									local oi = self:ResolveValue("chance")
+									print(oi)
+							
+									attack_args.chance_to_hit = 0
+								end
 							end
-							if value > 0 then
+						end,
+						param_bindings = false,
+					}),
+					PlaceObj('UnitReaction', {
+						Event = "OnBeginTurn",
+						Handler = function (self, target)
+							self:SetParameter("used", false)
+						end,
+						param_bindings = false,
+					}),
+					PlaceObj('UnitReaction', {
+						Handler = function ()
+							if target == attack_target and not self:ResolveValue("used") and action.ActionType == "Ranged Attack" then
+								
+							
+								
+								data.mod_mul = 0
+							end
+						end,
+						param_bindings = false,
+					}),
+				},
+				'Conditions', {},
+				'DisplayName', T(871305911291, --[[ModItemCharacterEffectCompositeDef LightningReaction DisplayName]] "Lightning Reactions"),
+				'Description', T(871010473514, --[[ModItemCharacterEffectCompositeDef LightningReaction Description]] "Chance (max <maxChanceToProc>%) to <color EmStyle>Dodge</color> the first successful enemy attack by <color EmStyle>Crouching</color>.\n\nOnce per round."),
+				'Icon', "UI/Icons/Perks/LightningReaction",
+				'Tier', "Silver",
+				'Stat', "Agility",
+				'StatValue', 80,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Dexterity",
+				'Id', "Untraceable",
+				'SortKey', 1,
+				'Parameters', {
+					PlaceObj('PresetParamPercent', {
+						'Name', "enemy_detection_reduction",
+						'Value', 30,
+						'Tag', "<enemy_detection_reduction>%",
+					}),
+					PlaceObj('PresetParamPercent', {
+						'Name', "stealth_damage",
+						'Value', 20,
+						'Tag', "<stealth_damage>%",
+					}),
+				},
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnCalcDamageAndEffects",
+						Handler = function (self, target, attacker, attack_target, action, weapon, attack_args, hit, data)
+							if target == attacker and attack_args.stealth_attack then
+								local bonus = self:ResolveValue("stealth_damage") 
+								data.base_damage = MulDivRound(data.base_damage, 100 + bonus, 100)
+								data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = bonus }
+							end
+						end,
+					}),
+				},
+				'DisplayName', T(644754158224, --[[ModItemCharacterEffectCompositeDef Untraceable DisplayName]] "Untraceable"),
+				'Description', T(550468915018, --[[ModItemCharacterEffectCompositeDef Untraceable Description]] "<color EmStyle>Slower</color> enemy <color EmStyle>detection</color> while <color EmStyle>Sneaking</color>.\n\nFailed <color EmStyle>Stealth Kills</color> deal <color EmStyle><number>%</color> more <color EmStyle>Damage</color>.\n"),
+				'Icon', "UI/Icons/Perks/Untraceable",
+				'Tier', "Bronze",
+				'Stat', "Agility",
+				'StatValue', 70,
+			}),
+			}),
+		PlaceObj('ModItemFolder', {
+			'name', "Health",
+		}, {
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Health",
+				'Id', "Berserker",
+				'SortKey', 4,
+				'Parameters', {
+					PlaceObj('PresetParamPercent', {
+						'Name', "damageReductionBonus",
+						'Value', 10,
+						'Tag', "<damageReductionBonus>%",
+					}),
+					PlaceObj('PresetParamNumber', {
+						'Name', "stackCap",
+						'Value', 5,
+						'Tag', "<stackCap>",
+					}),
+				},
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnCalcDamageAndEffects",
+						Handler = function (self, target, attacker, attack_target, action, weapon, attack_args, hit, data)
+							if target == attack_target then
+								local wounded = target:GetStatusEffect("Wounded")
+								if wounded and wounded.stacks > 0 then
+									local stackCap = self:ResolveValue("stackCap")
+									local reductionPerStack = self:ResolveValue("damageReductionBonus")
+									local stacks = Min(wounded.stacks, stackCap)
+									local enduranceMod = reductionPerStack*stacks
+									
+									data.base_damage = MulDivRound(data.base_damage, 100 - enduranceMod, 100)
+									data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = enduranceMod }
+								end
+							
+								if target.team.player_enemy and g_Combat and not table.find(g_Combat.berserkVRsPerRole, target.role) then
+									PlayVoiceResponse(target, "AIBerserkerPerk")
+									table.insert(g_Combat.berserkVRsPerRole, target.role)
+								end
+							end
+						end,
+						param_bindings = false,
+					}),
+				},
+				'DisplayName', T(205199205251, --[[ModItemCharacterEffectCompositeDef Berserker DisplayName]] "Endurance"),
+				'Description', T(472688632606, --[[ModItemCharacterEffectCompositeDef Berserker Description]] "Reduce <color EmStyle><damageReductionBonus>% Damage</color> per <color EmStyle>Wound</color>.\n\nCapped at <stackCap> stacks.<color EmStyle>"),
+				'Icon', "UI/Icons/Perks/PainManagement",
+				'Tier', "Silver",
+				'Stat', "Health",
+				'StatValue', 80,
+			}),
+			}),
+		PlaceObj('ModItemFolder', {
+			'name', "Strength",
+		}, {
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Agility",
+				'Id', "SteadyBreathing",
+				'SortKey', 3,
+				'Parameters', {
+					PlaceObj('PresetParamNumber', {
+						'Name', "freeMoveBonusAp",
+						'Value', 3,
+						'Tag', "<freeMoveBonusAp>",
+					}),
+					PlaceObj('PresetParamNumber', {
+						'Name', "freeMoveBonusApMedium",
+						'Value', 2,
+						'Tag', "<freeMoveBonusApMedium>",
+					}),
+					PlaceObj('PresetParamNumber', {
+						'Name', "freeMoveBonusApHeavy",
+						'Value', 1,
+						'Tag', "<freeMoveBonusApHeavy>",
+					}),
+				},
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnCalcFreeMove",
+						Handler = function (self, target, data)
+							local armourItems = target:GetEquipedArmour()
+							local medium = false
+							local heavy = false
+							
+							for _, item in ipairs(armourItems) do
+									if item.PenetrationClass == 3 then
+									medium = true
+								end
+								if item.PenetrationClass > 4 then
+									heavy = true
+								end
+							end
+							if medium then
+								data.add = data.add + self:ResolveValue("freeMoveBonusApMedium")
+							elseif heavy then
+								data.add = data.add + self:ResolveValue("freeMoveBonusApHeavy")
+							else
+								data.add = data.add + self:ResolveValue("freeMoveBonusAp")
+							end
+						end,
+						param_bindings = false,
+					}),
+				},
+				'Conditions', {},
+				'DisplayName', T(641253187551, --[[ModItemCharacterEffectCompositeDef SteadyBreathing DisplayName]] "Fast Runner"),
+				'Description', T(824962629346, --[[ModItemCharacterEffectCompositeDef SteadyBreathing Description]] "Increased <color EmStyle>Free Move</color> <color EmStyle>Range</color> when not wearing <color EmStyle>Heavy Armor</color>."),
+				'Icon', "UI/Icons/Perks/SteadyBreathing",
+				'Tier', "Bronze",
+				'Stat', "Strength",
+				'StatValue', 70,
+			}),
+			}),
+		PlaceObj('ModItemFolder', {
+			'name', "Wisdom",
+		}, {
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Perk-Specialization",
+				'Id', "NightOps",
+				'SortKey', 100,
+				'Parameters', {
+					PlaceObj('PresetParamPercent', {
+						'Name', "night_acc_penalty_reduction",
+						'Value', 66,
+						'Tag', "<night_acc_penalty_reduction>%",
+					}),
+					PlaceObj('PresetParamPercent', {
+						'Name', "night_vision_penalty_reduction",
+						'Value', 50,
+						'Tag', "<night_vision_penalty_reduction>%",
+					}),
+				},
+				'object_class', "Perk",
+				'DisplayName', T(830763611479, --[[ModItemCharacterEffectCompositeDef NightOps DisplayName]] "Night Ops"),
+				'Description', T(734037035268, --[[ModItemCharacterEffectCompositeDef NightOps Description]] "Reduced penalties to <color EmStyle>Accuracy</color> when at <color EmStyle>Night</color> and in <color EmStyle>underground</color> Sectors."),
+				'Icon', "UI/Icons/Perks/NightOps",
+				'Tier', "Silver",
+				'Stat', "Wisdom",
+				'StatValue', 80,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Perk-NPC",
+				'Id', "NaturalCamouflage",
+				'SortKey', 8,
+				'Parameters', {
+					PlaceObj('PresetParamPercent', {
+						'Name', "sight_mod",
+						'Value', -20,
+						'Tag', "<sight_mod>%",
+					}),
+				},
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnCalcSightModifier",
+						Handler = function (self, target, value, observer, other, step_pos, darkness)
+							if target == other then
+								return value + self:ResolveValue("sight_mod")
+							end
+						end,
+						param_bindings = false,
+					}),
+				},
+				'DisplayName', T(255554280355, --[[ModItemCharacterEffectCompositeDef NaturalCamouflage DisplayName]] "Natural Camouflage"),
+				'Description', T(160860597113, --[[ModItemCharacterEffectCompositeDef NaturalCamouflage Description]] "This character is <number>% harder to see."),
+				'Icon', "Mod/PerksExpanded/Images/Chameleon1",
+				'Tier', "Silver",
+				'Stat', "Wisdom",
+				'StatValue', 80,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "_Reserve",
+				'Id', "SharpInstincts",
+				'SortKey', 7,
+				'Parameters', {
+					PlaceObj('PresetParamNumber', {
+						'Name', "tempHP",
+						'Value', 15,
+						'Tag', "<tempHP>",
+					}),
+				},
+				'object_class', "Perk",
+				'msg_reactions', {},
+				'DisplayName', T(795130214410, --[[ModItemCharacterEffectCompositeDef SharpInstincts DisplayName]] "Trained Reaction"),
+				'Description', T(161220283053, --[[ModItemCharacterEffectCompositeDef SharpInstincts Description]] "When you enter combat, drop to Crouched if you're Standing and gain +<tempHP> Grit."),
+				'Icon', "Mod/PerksExpanded/Images/idea3",
+				'Tier', "Bronze",
+				'Stat', "Wisdom",
+				'StatValue', 70,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "_Trash",
+				'Id', "SixthSense",
+				'SortKey', 8,
+				'Parameters', {
+					PlaceObj('PresetParamNumber', {
+						'Name', "tempHitPoints",
+						'Value', 15,
+						'Tag', "<tempHitPoints>",
+					}),
+				},
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnEndTurn",
+						Handler = function (self, target)
+							local cover_id
+							if g_Combat and target:IsAware() then
+								cover_id = GetHighestCover(target)
+							end
+							if not cover_id and g_Combat:AreEnemiesAware(g_CurrentTeam) then
+								target:ApplyTempHitPoints(self:ResolveValue("tempHitPoints"))
+							end
+						end,
+						param_bindings = false,
+					}),
+				},
+				'DisplayName', T(293683380382, --[[ModItemCharacterEffectCompositeDef SixthSense DisplayName]] "Open Ground Tactics"),
+				'Description', T(409442475139, --[[ModItemCharacterEffectCompositeDef SixthSense Description]] "+<tempHitPoints> Grit each time you end turn out of cover."),
+				'Icon', "Mod/PerksExpanded/Images/magic-ball3",
+				'Tier', "Bronze",
+				'Stat', "Wisdom",
+				'StatValue', 70,
+			}),
+			}),
+		PlaceObj('ModItemFolder', {
+			'name', "Explosives",
+		}, {
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Health",
+				'Id', "HitTheDeck",
+				'SortKey', 2,
+				'Parameters', {
+					PlaceObj('PresetParamPercent', {
+						'Name', "explosiveLessDamage",
+						'Value', 20,
+						'Tag', "<explosiveLessDamage>%",
+					}),
+				},
+				'object_class', "Perk",
+				'msg_reactions', {},
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnCalcMoveModifier",
+						Handler = function (self, target, value, action)
+							if action.id == "Move" then
+								target:AddStatusEffect("HitTheDeckMoveMod")
+							end
+						end,
+						param_bindings = false,
+					}),
+				},
+				'DisplayName', T(528467689923, --[[ModItemCharacterEffectCompositeDef HitTheDeck DisplayName]] "Hit The Deck"),
+				'Description', T(345357935343, --[[ModItemCharacterEffectCompositeDef HitTheDeck Description]] "Switching to <color EmStyle>Prone</color> is <color EmStyle>Free</color>.\n\nMoving in crouch or prone positions is less costly.\n\nAdditional <color EmStyle><explosiveLessDamage>% Damage</color> reduction from <color EmStyle>Explosives</color> when <color EmStyle>Prone</color>."),
+				'Icon', "UI/Icons/Perks/HitTheDeck",
+				'Tier', "Bronze",
+				'Stat', "Explosives",
+				'StatValue', 70,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Strength",
+				'Id', "BreachAndClear",
+				'SortKey', 2,
+				'Parameters', {},
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnUnitAttackResolved",
+						Handler = function (self, target, attacker, attack_target, action, attack_args, results, can_retaliate, combat_starting)
+							if target == attacker and IsKindOfClasses(results.weapon, "Grenade", "Shotgun") then
+								if g_Combat then
+									attacker:AddStatusEffect("FreeMove")
+								elseif g_StartingCombat or combat_starting then
+									attacker:AddStatusEffect("FreeMoveOnCombatStart")
+								end
+							end
+						end,
+					}),
+				},
+				'DisplayName', T(291330097752, --[[ModItemCharacterEffectCompositeDef BreachAndClear DisplayName]] "Breach and Clear"),
+				'Description', T(303013437858, --[[ModItemCharacterEffectCompositeDef BreachAndClear Description]] "Gain <color EmStyle>Free Move</color> after throwing <color EmStyle>Grenades</color> or making <color EmStyle>Shotgun</color> attacks."),
+				'Icon', "UI/Icons/Perks/BreachAndClear",
+				'Tier', "Bronze",
+				'Stat', "Explosives",
+				'StatValue', 70,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Perk-Specialization",
+				'Id', "HeavyWeaponsTraining",
+				'SortKey', 7,
+				'Parameters', {
+					PlaceObj('PresetParamNumber', {
+						'Name', "ap_cost_reduction",
+						'Value', 1,
+						'Tag', "<ap_cost_reduction>",
+					}),
+					PlaceObj('PresetParamNumber', {
+						'Name', "min_ap_cost",
+						'Value', 1,
+						'Tag', "<min_ap_cost>",
+					}),
+					PlaceObj('PresetParamPercent', {
+						'Name', "heavyWeapons_penalty_reduction",
+						'Value', 50,
+						'Tag', "<heavyWeapons_penalty_reduction>%",
+					}),
+				},
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnCalcAPCost",
+						Handler = function (self, target, current_ap, action, weapon, aim)
+							if IsKindOfClasses(weapon, "HeavyWeapon", "MachineGun") then
+								local reduction = self:ResolveValue("ap_cost_reduction") * const.Scale.AP
+								local minCost = self:ResolveValue("min_ap_cost") * const.Scale.AP
+								return Max(minCost, current_ap - reduction)
+							end
+						end,
+						param_bindings = false,
+					}),
+					PlaceObj('UnitReaction', {
+						Event = "OnBeginTurn",
+						Handler = function (self, target)
+							target:AddStatusEffect("FreeMove")
+							--if not HasPerk(target, "Ironclad") then
+							--	target:ConsumeAP(DivRound(target.free_move_ap, 2), "Move")
+							--end
+						end,
+						param_bindings = false,
+					}),
+					PlaceObj('UnitReaction', {
+						Event = "OnModifyCTHModifier",
+						Handler = function (self, target, id, attacker, attack_target, action, weapon1, weapon2, data)
+							if id == "Autofire" and target == attacker and (IsKindOfClasses(weapon1, "MachineGun") or IsKindOfClasses(weapon2, "MachineGun")) then
+								data.mod_mul = HeavyWeaponsTraining:ResolveValue("heavyWeapons_penalty_reduction")
+								data.meta_text[#data.meta_text+1] = T{776394275735, "Perk: <name>", name = self.DisplayName}
+							end
+						end,
+						param_bindings = false,
+					}),
+				},
+				'Conditions', {},
+				'DisplayName', T(385640383798, --[[ModItemCharacterEffectCompositeDef HeavyWeaponsTraining DisplayName]] "Heavy Weapons"),
+				'Description', T(134513669893, --[[ModItemCharacterEffectCompositeDef HeavyWeaponsTraining Description]] "Attacks and <color EmStyle>Setup</color> with <color EmStyle>Heavy Weapons</color> and <color EmStyle>Machine Guns</color> have reduced <color EmStyle>AP</color> cost.\n\nImproves the effect of the <em>Ironclad</em> perk to full <GameTerm('FreeMove')> with cumbersome gear."),
+				'Icon', "UI/Icons/Perks/HeavyWeaponsTraining",
+				'Tier', "Silver",
+				'Stat', "Explosives",
+				'StatValue', 80,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Perk-Specialization",
+				'Id', "Throwing",
+				'SortKey', 3,
+				'Parameters', {
+					PlaceObj('PresetParamNumber', {
+						'Name', "RangeIncrease",
+						'Value', 3,
+						'Tag', "<RangeIncrease>",
+					}),
+					PlaceObj('PresetParamNumber', {
+						'Name', "FirstThrowCostReduction",
+						'Value', 3,
+						'Tag', "<FirstThrowCostReduction>",
+					}),
+				},
+				'param_bindings', {},
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnBeginTurn",
+						Handler = function (self, target)
+							target:AddStatusEffect("FirstThrow")
+						end,
+						param_bindings = false,
+					}),
+				},
+				'DisplayName', T(113649016654, --[[ModItemCharacterEffectCompositeDef Throwing DisplayName]] "Throwing"),
+				'Description', T(227695453891, --[[ModItemCharacterEffectCompositeDef Throwing Description]] "Extended <color EmStyle>Range</color> of all thrown weapons.\n\nDramatically reduced <color EmStyle>AP</color> cost for first <color EmStyle>Knife</color> or <color EmStyle>Grenade</color> throw each turn."),
+				'OnAdded', function (self, obj)
+					obj:AddStatusEffect("FirstThrow")
+				end,
+				'Icon', "UI/Icons/Perks/Throwing",
+				'Tier', "Silver",
+				'Stat', "Explosives",
+				'StatValue', 80,
+			}),
+			}),
+		PlaceObj('ModItemFolder', {
+			'name', "Leadership",
+		}, {
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Wisdom",
+				'Id', "ShockAndAwe",
+				'SortKey', 8,
+				'Parameters', {
+					PlaceObj('PresetParamPercent', {
+						'Name', "highMoraledmgBuff",
+						'Value', 10,
+						'Tag', "<highMoraledmgBuff>%",
+					}),
+				},
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnUnitEnterSector",
+						Handler = function (self, target, game_start, load_game)
+							if not load_game then
+								target.team.morale = Max(1, target.team.morale)
+							end
+						end,
+					}),
+					PlaceObj('UnitReaction', {
+						Event = "OnCalcDamageAndEffects",
+						Handler = function (self, target, attacker, attack_target, action, weapon, attack_args, hit, data)
+							if attacker == target and attacker.team.morale > 0 then
+								local damageBonus = self:ResolveValue("highMoraledmgBuff") 
+								data.base_damage = MulDivRound(data.base_damage, 100 + damageBonus, 100)
+								data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = damageBonus }
+							end
+						end,
+					}),
+				},
+				'DisplayName', T(917406413669, --[[ModItemCharacterEffectCompositeDef ShockAndAwe DisplayName]] "Shock and Awe"),
+				'Description', T(689010001606, --[[ModItemCharacterEffectCompositeDef ShockAndAwe Description]] "<color EmStyle>High</color> <color EmStyle>Morale</color> when starting combat.\n\nDeal <color EmStyle><number>%</color> extra <color EmStyle>Damage</color> when <color EmStyle>Morale</color> is <color EmStyle>High</color> or <color EmStyle>Very High</color>."),
+				'Icon', "UI/Icons/Perks/ShockAndAwe",
+				'Tier', "Gold",
+				'Stat', "Leadership",
+				'StatValue', 90,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Wisdom",
+				'Id', "LeadFromTheFront",
+				'SortKey', 6,
+				'Parameters', {
+					PlaceObj('PresetParamNumber', {
+						'Name', "moraleBonus",
+						'Value', 1,
+						'Tag', "<moraleBonus>",
+					}),
+					PlaceObj('PresetParamNumber', {
+						'Name', "damageTreshold",
+						'Value', 50,
+						'Tag', "<damageTreshold>",
+					}),
+				},
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnUnitAttack",
+						Handler = function (self, target, attacker, action, attack_target, results, attack_args)
+							if attacker == target and IsKindOf(attack_target, "Unit") and results.total_damage and results.total_damage >= self:ResolveValue("damageTreshold") then
+								if attacker.team:IsPlayerControlled() and not self:ResolveValue("applied") then
+									attacker.team:ChangeMorale(self:ResolveValue("moraleBonus"), self.DisplayName)
+									self:SetParameter("applied", true)
+								end
+							end
+						end,
+					}),
+					PlaceObj('UnitReaction', {
+						Event = "OnBeginTurn",
+						Handler = function (self, target)
+							self:SetParameter("applied", false)
+						end,
+					}),
+				},
+				'DisplayName', T(197770144315, --[[ModItemCharacterEffectCompositeDef LeadFromTheFront DisplayName]] "Inspiring Strike"),
+				'Description', T(374581675021, --[[ModItemCharacterEffectCompositeDef LeadFromTheFront Description]] "Increase <color EmStyle>Morale</color> when you deal more than <color EmStyle><damageTreshold> Damage</color> with a <color EmStyle>single attack</color>.\n\nOnce per turn."),
+				'Icon', "UI/Icons/Perks/SquadLeadership",
+				'Tier', "Silver",
+				'Stat', "Leadership",
+				'StatValue', 80,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Wisdom",
+				'Id', "LastWarning",
+				'SortKey', 5,
+				'Parameters', {
+					PlaceObj('PresetParamPercent', {
+						'Name', "panic_chance",
+						'Value', 15,
+						'Tag', "<panic_chance>%",
+					}),
+				},
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnUnitAttack",
+						Handler = function (self, target, attacker, action, attack_target, results, attack_args)
+							local chance = self:ResolveValue("panic_chance")
+							if target == attacker and attacker.team.morale > 0 and attacker:Random(100) < chance then
+								for _, hit in ipairs(results) do
+									local unit = IsKindOf(hit.obj, "Unit") and not hit.obj:IsIncapacitated() and hit.obj
+									local damage = hit.damage or 0
+									if unit and unit:IsOnEnemySide(attacker) and (hit.aoe or not hit.stray) and (damage > 0) then
+										unit:AddStatusEffect("Panicked")
+										unit.ActionPoints = unit:GetMaxActionPoints()
+									end
+								end
+							end
+						end,
+					}),
+				},
+				'DisplayName', T(971319502741, --[[ModItemCharacterEffectCompositeDef LastWarning DisplayName]] "Dire Warning"),
+				'Description', T(462224672304, --[[ModItemCharacterEffectCompositeDef LastWarning Description]] "When <color EmStyle>Morale</color> is <color EmStyle>High</color> or <color EmStyle>Very High</color>, gain <color EmStyle><number>% chance</color> to cause <color EmStyle>Panic</color> with each <color EmStyle>attack</color> that deals damage. "),
+				'Icon', "UI/Icons/Perks/LastWarning",
+				'Tier', "Silver",
+				'Stat', "Leadership",
+				'StatValue', 80,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Wisdom",
+				'Id', "StressManagement",
+				'SortKey', 4,
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnStatusEffectAdded",
+						Handler = function (self, target, id, stacks)
+							if CharacterEffectDefs[id].type == "Debuff" and not self:ResolveValue("activated") then
+								target:AddStatusEffect("Inspired")
+								self:SetParameter("activated", true)
+							end
+						end,
+					}),
+					PlaceObj('UnitReaction', {
+						Event = "OnCombatEnd",
+						Handler = function (self, target)
+							self:SetParameter("activated", false)
+						end,
+					}),
+				},
+				'DisplayName', T(395949760272, --[[ModItemCharacterEffectCompositeDef StressManagement DisplayName]] "Stress Management"),
+				'Description', T(657106779830, --[[ModItemCharacterEffectCompositeDef StressManagement Description]] "Become <color EmStyle>Inspired</color> after suffering a <color EmStyle>negative effect</color> for the <color EmStyle>first time</color> in combat."),
+				'Icon', "UI/Icons/Perks/StressManagement",
+				'Tier', "Silver",
+				'Stat', "Leadership",
+				'StatValue', 80,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Perk-Personality",
+				'Id', "Negotiator",
+				'SortKey', 10,
+				'Parameters', {
+					PlaceObj('PresetParamPercent', {
+						'Name', "discountPercent",
+						'Value', 20,
+						'Tag', "<discountPercent>%",
+					}),
+				},
+				'param_bindings', {},
+				'object_class', "Perk",
+				'DisplayName', T(523277431375, --[[ModItemCharacterEffectCompositeDef Negotiator DisplayName]] "Negotiator"),
+				'Description', T(135855553893, --[[ModItemCharacterEffectCompositeDef Negotiator Description]] "Reduces prices for <color EmStyle>Sector Operations</color> and <color EmStyle>Boat Travel</color>.\n\nAdditional <color EmStyle>conversation options</color>."),
+				'Icon', "UI/Icons/Perks/Negotiator",
+				'Tier', "Bronze",
+				'Stat', "Leadership",
+				'StatValue', 70,
+			}),
+			}),
+		PlaceObj('ModItemFolder', {
+			'name', "Marksmanship",
+		}, {
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "_Reserve",
+				'Id', "Enfilade",
+				'SortKey', 2,
+				'Parameters', {
+					PlaceObj('PresetParamPercent', {
+						'Name', "damage_bonus",
+						'Value', 30,
+						'Tag', "<damage_bonus>%",
+					}),
+				},
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnCalcDamageAndEffects",
+						Handler = function (self, target, attacker, attack_target, action, weapon, attack_args, hit, data)
+							if target == attacker and not hit_descr.aoe and attack_args.opportunity_attack_type and IsKindOf(attack_target, "Unit") and attack_target:HasStatusEffect("Flanked") then
+								local bonus = self:ResolveValue("damage_bonus")
+								data.base_damage = MulDivRound(data.base_damage, 100 + bonus, 100)
+								data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = bonus }
+							end
+						end,
+					}),
+				},
+				'DisplayName', T(327523599007, --[[ModItemCharacterEffectCompositeDef Enfilade DisplayName]] "Enfilade Fire"),
+				'Description', T(290887360265, --[[ModItemCharacterEffectCompositeDef Enfilade Description]] "Deal +<number>% bonus damage to Flanked enemies with Interrupt attacks."),
+				'Icon', "UI/Icons/Perks/Inescapable",
+				'Tier', "Bronze",
+				'Stat', "Marksmanship",
+				'StatValue', 70,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Marksmanship",
+				'Id', "Sharpshooter",
+				'SortKey', 10,
+				'Parameters', {
+					PlaceObj('PresetParamPercent', {
+						'Name', "bonusAimScoped",
+						'Value', 2,
+						'Tag', "<bonusAimScoped>%",
+					}),
+					PlaceObj('PresetParamPercent', {
+						'Name', "heavyRifleIncrease",
+						'Value', 20,
+						'Tag', "<heavyRifleIncrease>%",
+					}),
+					PlaceObj('PresetParamPercent', {
+						'Name', "lightRifleIncrease",
+						'Value', 10,
+						'Tag', "<lightRifleIncrease>%",
+					}),
+					PlaceObj('PresetParamNumber', {
+						'Name', "crouchApreduction",
+						'Value', 1,
+						'Tag', "<crouchApreduction>",
+					}),
+					PlaceObj('PresetParamNumber', {
+						'Name', "proneApReduction",
+						'Value', 2,
+						'Tag', "<proneApReduction>",
+					}),
+					PlaceObj('PresetParamNumber', {
+						'Name', "minApCost",
+						'Value', 4,
+						'Tag', "<minApCost>",
+					}),
+					PlaceObj('PresetParamNumber', {
+						'Name', "additionalAimScoped",
+						'Value', 1,
+						'Tag', "<additionalAimScoped>",
+					}),
+				},
+				'object_class', "Perk",
+				'msg_reactions', {},
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnModifyCTHModifier",
+						Handler = function (self, target, id, attacker, attack_target, action, weapon1, weapon2, data)
+							if id == "Aim" 
+								and target == attacker
+								and (IsKindOfClasses(weapon1, "SniperRifle")
+								or IsKindOfClasses(weapon2, "SniperRifle")) then
+							
+								local bonus = self:ResolveValue("bonusAimScoped")
+								data.mod_mul = data.mod_mul + bonus
+								data.meta_text[#data.meta_text+1] = T{776394275735, "Perk: <name>", name = self.DisplayName}
+								
+							end
+						end,
+						param_bindings = false,
+					}),
+					PlaceObj('UnitReaction', {
+						Event = "OnCalcAPCost",
+						Handler = function (self, target, current_ap, action, weapon, aim)
+							if target.stance == "Standing" or not IsKindOfClasses(weapon, "SniperRifle") then
+								return
+								elseif target.stance == "Prone" and weapon:IsCumbersome()  then
+									local reduction = self:ResolveValue("proneApReduction") * const.Scale.AP
+									local minCost = self:ResolveValue("minApCost") * const.Scale.AP
+									return Max(minCost, current_ap - reduction)
+								else
+									local reduction = self:ResolveValue("crouchApreduction") * const.Scale.AP
+									local minCost = self:ResolveValue("minApCost") * const.Scale.AP
+									return Max(minCost, current_ap - reduction)
+							end
+						end,
+						param_bindings = false,
+					}),
+					PlaceObj('UnitReaction', {
+						Event = "OnUnitGetWeaponRange",
+						Handler = function (self, target, value, weapon, action)
+							if IsKindOfClasses(weapon, "SniperRifle") then
+								local maxRange = weapon.WeaponRange
+								local bonus = self:ResolveValue("lightRifleIncrease")
+								if IsKindOfClasses(weapon, "SniperRifle") and weapon:IsCumbersome() then
+									bonus = self:ResolveValue("heavyRifleIncrease")
+								end
+								maxRange = MulDivRound(maxRange, 100 + bonus, 100)
+							--	print(maxRange)
+								return maxRange
+							end
+						end,
+						param_bindings = false,
+					}),
+					PlaceObj('UnitReaction', {
+						Event = "OnCalcMaxAimActions",
+						Handler = function (self, target, value, attacker, attack_target, action, weapon)
+							if target == attacker then
+								return weapon.MaxAimActions + self:ResolveValue("additionalAimScoped")
+							end
+						end,
+						param_bindings = false,
+					}),
+				},
+				'Conditions', {
+					PlaceObj('CheckGameRule', {
+						Rule = "AdditionalPerks",
+						param_bindings = false,
+					}),
+				},
+				'Modifiers', {},
+				'DisplayName', T(723903517349, --[[ModItemCharacterEffectCompositeDef Sharpshooter DisplayName]] "Sharpshooter"),
+				'Description', T(272582799925, --[[ModItemCharacterEffectCompositeDef Sharpshooter Description]] "Increased <color EmStyle>Range and Accuracy</color> for <color EmStyle>Sniper Rifles</color> and <color EmStyle>Rifles</color>."),
+				'OnAdded', function (self, obj)  end,
+				'Icon', "Mod/PerksExpanded/Images/Mini3",
+				'Tier', "Silver",
+				'Stat', "Marksmanship",
+				'StatValue', 80,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Marksmanship",
+				'Id', "BurstControl",
+				'SortKey', 12,
+				'Parameters', {
+					PlaceObj('PresetParamPercent', {
+						'Name', "dmg_bonus",
+						'Value', 25,
+						'Tag', "<dmg_bonus>%",
+					}),
+					PlaceObj('PresetParamPercent', {
+						'Name', "cth_loss",
+						'Value', 15,
+						'Tag', "<cth_loss>%",
+					}),
+				},
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Handler = function ()
+							--	for i = 1, num_shots do
+							--		local shot_miss, shot_crit, shot_cth
+							--		shot_cth = self:GetShotChanceToHit(attack_results.chance_to_hit - shot_attack_args.cth_loss_per_shot * (i - 1))
+							--		shot_cth = attacker:CallReactions_Modify("OnCalcShotChanceToHit", shot_cth, attacker, target, i, num_shots)
+							--		if target_unit then
+							--			shot_cth = target_unit:CallReactions_Modify("OnCalcShotChanceToHit", shot_cth, attacker, target, i, num_shots)
+							--		end
+							--		if shot_attack_args.multishot then
+							--			roll = attack_results.attack_roll[i]
+							--			shot_miss = roll > shot_cth
+							--			shot_crit = (not shot_miss) and (attack_results.crit_roll[i] <= attack_results.crit_chance)
+							--			-- update global miss/crit for the attack
+							--			miss = miss and shot_miss
+							--			crit = crit or shot_crit
+							--		else
+							--			shot_miss = (not stealth_kill or i > 1) and roll > shot_cth
+							--			shot_crit = crit and (i == 1)
+							--		end
+							--		local data = band(shot_cth, sfCthMask)
+							--		data = bor(data, band(shift(roll, sfRollOffset), sfRollMask))
+							--		data = bor(data, shot_miss and 0 or sfHit)
+							--		data = bor(data, shot_crit and sfCrit or 0)
+							--		data = bor(data, (shot_attack_args.multishot or (i == 1)) and sfLeading or 0)
+							--		if shot_miss and shot_cth > 0 then
+							--			local shot_graze_threshold = self:GetShotGrazeTheshold(graze_threshold)
+							--			shot_graze_threshold = attacker:CallReactions_Modify("OnCalcShotGrazeThreshold", shot_graze_threshold, attacker, target, i, num_shots)
+							--			if target_unit then
+							--				shot_graze_threshold = target_unit:CallReactions_Modify("OnCalcShotGrazeThreshold", shot_graze_threshold, attacker, target, i, num_shots)
+							--			end
+							--			if roll < shot_cth + shot_graze_threshold then
+							--				data = bor(data, sfAllowGrazing)
+							--				num_grazing = num_grazing + 1
+							--			end
+							--		end
+							--		shots_data[i] = data
+							--		num_hits = num_hits + (shot_miss and 0 or 1)
+							--		num_misses = num_misses + (shot_miss and 1 or 0)
+							--		if not prediction then
+							--			NetUpdateHash("FirearmShot", attacker, target, shot_attack_args.action_id, shot_attack_args.stance, self.class, self.id, self == shot_attack_args.weapon, shot_attack_args.occupied_pos, shot_attack_args.step_pos, shot_attack_args.angle, shot_attack_args.anim, shot_attack_args.can_use_covers, shot_attack_args.ignore_smoke, shot_attack_args.penetration_class, shot_attack_args.range, shot_cth, roll, shot_miss)
+							--		end
+							--	end
+						end,
+						param_bindings = false,
+					}),
+					PlaceObj('UnitReaction', {
+						Event = "OnFirearmAttackStart",
+						Handler = function (self, target, attacker, attack_target, action, attack_args)
+							if target == attacker and (action.id == "BurstFire") then
+								attack_args.num_shots = attack_args.num_shots + 1
+								attack_args.damage_bonus = attack_args.damage_bonus + self:ResolveValue("dmg_bonus")
+								attack_args.cth_loss_per_shot = attack_args.cth_loss_per_shot - self:ResolveValue("cth_loss")
+								return attack_args
+							end
+						end,
+						param_bindings = false,
+					}),
+					PlaceObj('UnitReaction', {
+						Event = "OnFirearmAttackStart",
+						Handler = function (self, target, attacker, attack_target, action, attack_args)
+							if target == attacker and (action.id == "BurstFire") then
+								attack_args.num_shots = attack_args.num_shots + 1
+								attack_args.damage_bonus = attack_args.damage_bonus + self:ResolveValue("dmg_bonus")
+								attack_args.cth_loss_per_shot = self:ResolveValue("cth_loss")
+								return attack_args
+							end
+						end,
+						param_bindings = false,
+					}),
+				},
+				'DisplayName', T(473007244961, --[[ModItemCharacterEffectCompositeDef BurstControl DisplayName]] "Burst Control"),
+				'Description', T(620919217507, --[[ModItemCharacterEffectCompositeDef BurstControl Description]] "Increased <color EmStyle>number of shots and damage</color> for <color EmStyle>Burst attacks</color> at the cost of a small penalty for <color EmStyle>accuracy after the recoil.</color>."),
+				'Icon', "Mod/PerksExpanded/Images/machine-gun (68).png",
+				'Tier', "Gold",
+				'Stat', "Marksmanship",
+				'StatValue', 90,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Perk-Specialization",
+				'Id', "AutoWeapons",
+				'SortKey', 8,
+				'Parameters', {
+					PlaceObj('PresetParamPercent', {
+						'Name', "automatics_penalty_reduction",
+						'Value', 25,
+						'Tag', "<automatics_penalty_reduction>%",
+					}),
+					PlaceObj('PresetParamNumber', {
+						'Name', "rangeBonusSMG",
+						'Value', 3,
+						'Tag', "<rangeBonusSMG>",
+					}),
+				},
+				'object_class', "Perk",
+				'msg_reactions', {},
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnModifyCTHModifier",
+						Handler = function (self, target, id, attacker, attack_target, action, weapon1, weapon2, data)
+							if id == "Autofire" and target == attacker and (IsKindOfClasses(weapon1, "AssaultRifle", "SubmachineGun") or IsKindOfClasses(weapon2, "AssaultRifle", "SubmachineGun")) then
+								data.mod_mul = AutoWeapons:ResolveValue("automatics_penalty_reduction")
+								data.meta_text[#data.meta_text+1] = T{776394275735, "Perk: <name>", name = self.DisplayName}
+							end
+							
+							-- double tap technique
+							
+							local doubleTap = target:GetLastAttack() == attack_target 
+								and target == attacker
+								and (IsKindOfClasses(weapon1, "AssaultRifle", "SubmachineGun") or IsKindOfClasses(weapon2, "SubmachineGun"))
+							
+							if doubleTap then
+								target:AddStatusEffect("DoubleTap")
+								else
+								target:RemoveStatusEffect("DoubleTap")
+							end
+						end,
+						param_bindings = false,
+					}),
+					PlaceObj('UnitReaction', {
+						Event = "OnUnitGetWeaponRange",
+						Handler = function (self, target, value, weapon, action)
+							if IsKindOfClasses(weapon, "AssaultRifle") then
+								local maxRange = weapon.WeaponRange
+								local level = target:GetLevel()
+							
+									maxRange = MulDivRound(maxRange, 100 + level, 100)
+								return maxRange
+							end
+							
+							if IsKindOfClasses(weapon, "SubmachineGun") then
+								local maxRange = weapon.WeaponRange
+								maxRange = maxRange + self:ResolveValue("rangeBonusSMG")
+								return maxRange
+							end
+						end,
+						param_bindings = false,
+					}),
+					PlaceObj('UnitReaction', {
+						Event = "OnUnitAttackResolved",
+						Handler = function (self, target, attacker, attack_target, action, attack_args, results, can_retaliate, combat_starting)
+							-- run and gun technique
+							if target == attacker and IsKindOfClasses(results.weapon, "SubmachineGun") and action.id == "BurstFire" and attack_args.aim == 0 then
+								if g_Combat then
+									attacker:AddStatusEffect("FreeMove")
+								elseif g_StartingCombat or combat_starting then
+									attacker:AddStatusEffect("FreeMoveOnCombatStart")
+								end
+							end
+						end,
+						param_bindings = false,
+					}),
+				},
+				'Modifiers', {},
+				'DisplayName', T(433549306527, --[[ModItemCharacterEffectCompositeDef AutoWeapons DisplayName]] "Auto Weapons"),
+				'Description', T(860512099026, --[[ModItemCharacterEffectCompositeDef AutoWeapons Description]] 'Reduced <color EmStyle>Accuracy</color> penalty when using <color EmStyle>Burst Fire</color> or <color EmStyle>Full Auto</color>.\nIncreased <color EmStyle>Range</color> for <color EmStyle>Assault Rifles</color> and <color EmStyle>SMGs</color>. Unlocks "Barrage" for SMGs.'),
+				'Icon', "UI/Icons/Perks/AutoWeapons",
+				'Tier', "Silver",
+				'Stat', "Marksmanship",
+				'StatValue', 80,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Marksmanship",
+				'Id', "Gunslinger",
+				'SortKey', 7,
+				'Parameters', {
+					PlaceObj('PresetParamNumber', {
+						'Name', "ap_cost_reduction",
+						'Value', 1,
+						'Tag', "<ap_cost_reduction>",
+					}),
+					PlaceObj('PresetParamNumber', {
+						'Name', "min_ap_cost",
+						'Value', 1,
+						'Tag', "<min_ap_cost>",
+					}),
+					PlaceObj('PresetParamNumber', {
+						'Name', "RangeIncrease",
+						'Value', 5,
+						'Tag', "<RangeIncrease>",
+					}),
+					PlaceObj('PresetParamNumber', {
+						'Name', "PenaltyReduction",
+						'Value', 15,
+						'Tag', "<PenaltyReduction>",
+					}),
+					PlaceObj('PresetParamPercent', {
+						'Name', "gunslingerCthBonus",
+						'Tag', "<gunslingerCthBonus>%",
+					}),
+					PlaceObj('PresetParamPercent', {
+						'Name', "damage_bonus",
+						'Value', 10,
+						'Tag', "<damage_bonus>%",
+					}),
+				},
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnUnitGetWeaponRange",
+						Handler = function (self, target, value, weapon, action)
+							if IsKindOfClasses(weapon, "Pistol", "Revolver") then
+								local maxRange = weapon.WeaponRange
+									maxRange = maxRange + self:ResolveValue("RangeIncrease")
+								return maxRange
+							end
+						end,
+						param_bindings = false,
+					}),
+					PlaceObj('UnitReaction', {
+						Event = "OnCalcChanceToHit",
+						Handler = function (self, target, attacker, action, attack_target, weapon1, weapon2, data)
+							if target == attacker  and (IsKindOfClasses(weapon1, "Pistol", "Revolver") or IsKindOfClasses(weapon2, "Pistol", "Revolver")) then
+								local level = target:GetLevel()
+								local value =  self:ResolveValue("gunslingerCthBonus") + level
 								ApplyCthModifier_Add(self, data, value)
 							end
-						end
-					end,
-					param_bindings = false,
-				}),
-			},
-			'DisplayName', T(977014262900, --[[ModItemCharacterEffectCompositeDef CQCTraining DisplayName]] "CQC Training"),
-			'Description', T(739437656502, --[[ModItemCharacterEffectCompositeDef CQCTraining Description]] "Major <color EmStyle>Accuracy</color> bonus when attacking enemies at short range (degrades with distance)."),
-			'Icon', "UI/Icons/Perks/CQCTraining",
-			'Tier', "Bronze",
-			'Stat', "Marksmanship",
-			'StatValue', 70,
-		}),
-		PlaceObj('ModItemCharacterEffectCompositeDef', {
-			'Group', "Leadership",
-			'Id', "Negotiator",
-			'SortKey', 10,
-			'Parameters', {
-				PlaceObj('PresetParamPercent', {
-					'Name', "discountPercent",
-					'Value', 20,
-					'Tag', "<discountPercent>%",
-				}),
-			},
-			'param_bindings', {},
-			'object_class', "Perk",
-			'DisplayName', T(523277431375, --[[ModItemCharacterEffectCompositeDef Negotiator DisplayName]] "Negotiator"),
-			'Description', T(135855553893, --[[ModItemCharacterEffectCompositeDef Negotiator Description]] "Reduces prices for <color EmStyle>Sector Operations</color> and <color EmStyle>Boat Travel</color>.\n\nAdditional <color EmStyle>conversation options</color>."),
-			'Icon', "UI/Icons/Perks/Negotiator",
-			'Tier', "Bronze",
-			'Stat', "Leadership",
-			'StatValue', 70,
-		}),
-		PlaceObj('ModItemCharacterEffectCompositeDef', {
-			'Group', "Marksmanship",
-			'Id', "Ambidextrous",
-			'SortKey', 5,
-			'Parameters', {
-				PlaceObj('PresetParamNumber', {
-					'Name', "PenaltyReduction",
-					'Value', 15,
-					'Tag', "<PenaltyReduction>",
-				}),
-			},
-			'object_class', "Perk",
-			'unit_reactions', {
-				PlaceObj('UnitReaction', {
-					Event = "OnModifyCTHModifier",
-					Handler = function (self, target, id, attacker, attack_target, action, weapon1, weapon2, data)
-						if target == attacker and id == "TwoWeaponFire" then
-							data.mod_add = data.mod_add + self:ResolveValue("PenaltyReduction")
-							data.meta_text[#data.meta_text + 1] = T{756119910645, "Perk: <perkName>", perkName = self.DisplayName}
-						end
-					end,
-					param_bindings = false,
-				}),
-			},
-			'Modifiers', {},
-			'DisplayName', T(920488455934, --[[ModItemCharacterEffectCompositeDef Ambidextrous DisplayName]] "Ambidextrous"),
-			'Description', T(169645850395, --[[ModItemCharacterEffectCompositeDef Ambidextrous Description]] "Reduced <color EmStyle>Accuracy</color> penalty when <color EmStyle>Dual-Wielding</color> Firearms."),
-			'Icon', "UI/Icons/Perks/Ambidextrous",
-			'Tier', "Bronze",
-			'Stat', "Marksmanship",
-			'StatValue', 70,
-		}),
-		PlaceObj('ModItemCharacterEffectCompositeDef', {
-			'Group', "Health",
-			'Id', "HitTheDeck",
-			'SortKey', 2,
-			'Parameters', {
-				PlaceObj('PresetParamPercent', {
-					'Name', "explosiveLessDamage",
-					'Value', 20,
-					'Tag', "<explosiveLessDamage>%",
-				}),
-			},
-			'object_class', "Perk",
-			'msg_reactions', {},
-			'unit_reactions', {
-				PlaceObj('UnitReaction', {
-					Event = "OnCalcMoveModifier",
-					Handler = function (self, target, value, action)
-						if action.id == "Move" then
-							target:AddStatusEffect("HitTheDeckMoveMod")
-						end
-					end,
-					param_bindings = false,
-				}),
-			},
-			'DisplayName', T(528467689923, --[[ModItemCharacterEffectCompositeDef HitTheDeck DisplayName]] "Hit The Deck"),
-			'Description', T(345357935343, --[[ModItemCharacterEffectCompositeDef HitTheDeck Description]] "Switching to <color EmStyle>Prone</color> is <color EmStyle>Free</color>.\n\nMoving in crouch or prone positions is less costly.\n\nAdditional <color EmStyle><explosiveLessDamage>% Damage</color> reduction from <color EmStyle>Explosives</color> when <color EmStyle>Prone</color>."),
-			'Icon', "UI/Icons/Perks/HitTheDeck",
-			'Tier', "Bronze",
-			'Stat', "Health",
-			'StatValue', 70,
-		}),
-		PlaceObj('ModItemCharacterEffectCompositeDef', {
-			'Group', "Perk-NPC",
-			'Id', "LightningReactionNPC",
-			'SortKey', 6,
-			'Parameters', {
-				PlaceObj('PresetParamPercent', {
-					'Name', "chance",
-					'Value', 50,
-					'Tag', "<chance>%",
-				}),
-			},
-			'object_class', "Perk",
-			'unit_reactions', {
-				PlaceObj('UnitReaction', {
-					Event = "OnFirearmAttackStart",
-					Handler = function (self, target, attacker, attack_target, action, attack_args)
-						local conditions = target:HasStatusEffect("Blinded") or
-														target:HasStatusEffect("Exhausted") or
-														target:HasStatusEffect("Slowed") or								
-														target:HasStatusEffect("Distracted") or								
-														target:HasStatusEffect("Surprised") or								
-														target:HasStatusEffect("Unaware") or
-														attacker:HasStatusEffect("Hidden") or
-														attacker:HasStatusEffect("HiddenNPC") or
-														target:HasStatusEffect("Tired")
-						
-						
-						if target == attack_target and not (self:ResolveValue("used") or conditions) then
-							if target:LightningReactionCheck(self) then
-								self:SetParameter("used", true)
-								attack_args.chance_to_hit = 0
+						end,
+						param_bindings = false,
+					}),
+					PlaceObj('UnitReaction', {
+						Event = "OnCalcAPCost",
+						Handler = function (self, target, current_ap, action, weapon, aim)
+							if IsKindOfClasses(weapon, "Pistol", "Revolver") then
+								local reduction = self:ResolveValue("ap_cost_reduction") * const.Scale.AP
+								local minCost = self:ResolveValue("min_ap_cost") * const.Scale.AP
+							
+								return Max(minCost, current_ap - reduction)
 							end
-						end
-					end,
-					param_bindings = false,
-				}),
-				PlaceObj('UnitReaction', {
-					Event = "OnCombatEnd",
-					Handler = function (self, target)
-						self:SetParameter("used", false)
-					end,
-					param_bindings = false,
-				}),
-			},
-			'DisplayName', T(784184001480, --[[ModItemCharacterEffectCompositeDef LightningReactionNPC DisplayName]] "Lightning Reactions"),
-			'Description', T(342324544663, --[[ModItemCharacterEffectCompositeDef LightningReactionNPC Description]] "<color EmStyle>Dodge</color> the first successful enemy attack by falling <color EmStyle>Prone</color>.\n\nOnce per combat"),
-			'Icon', "UI/Icons/Perks/LightningReaction",
-		}),
-		PlaceObj('ModItemCharacterEffectCompositeDef', {
-			'Group', "Agility",
-			'Id', "LightningReaction",
-			'SortKey', 6,
-			'Parameters', {
-				PlaceObj('PresetParamPercent', {
-					'Name', "maxChanceToProc",
-					'Value', 25,
-					'Tag', "<maxChanceToProc>%",
-				}),
-			},
-			'object_class', "Perk",
-			'msg_reactions', {
-				PlaceObj('MsgActorReactionEffects', {
-					Effects = {
-						PlaceObj('ConditionalEffect', {
-							'Effects', {
-								PlaceObj('ExecuteCode', {
-									FuncCode = 'CreateFloatingText(obj, { "Dodge"}, 428634992000, nil, 500)',
-									param_bindings = false,
-								}),
-							},
-						}),
-					},
-					Handler = function () printf("bad function %s(%s): %s", name, params, err) end,
-					param_bindings = false,
-				}),
-			},
-			'unit_reactions', {
-				PlaceObj('UnitReaction', {
-					Event = "OnFirearmAttackStart",
-					Handler = function (self, target, attacker, attack_target, action, attack_args)
-						local conditions = target:HasStatusEffect("Blinded") or
-														target:HasStatusEffect("Exhausted") or
-														target:HasStatusEffect("Slowed") or								
-														target:HasStatusEffect("Distracted") or								
-														target:HasStatusEffect("Surprised") or								
-														target:HasStatusEffect("Unaware") or
-														attacker:HasStatusEffect("Hidden") or
-														attacker:HasStatusEffect("HiddenNPC") or
-														target:HasStatusEffect("Tired")
-						
-						
-						if target == attack_target and not (self:ResolveValue("used") or conditions) then
-							if target:DodgeCheck(self) then
-								self:SetParameter("used", true)
-								
-								--local level = DivRound(target:GetLevel(), 2)
+						end,
+						param_bindings = false,
+					}),
+					PlaceObj('UnitReaction', {
+						Event = "OnCalcDamageAndEffects",
+						Handler = function (self, target, attacker, attack_target, action, weapon, attack_args, hit, data)
+							if target == attacker and IsKindOfClasses(weapon, "Pistol", "Revolver") then
 								local level = target:GetLevel()
-								local agi = target.Agility
-								--agi = DivRound(agi, 40)
-								
-								--local dodgeChance = agi * level
-								local dodgeChance = Min(MulDivRound(agi * level , self:ResolveValue("maxChanceToProc"), 1000 ), self:ResolveValue("maxChanceToProc"))
-						
-								print(level, agi, dodgeChance)
-								--print(level, agi, dodgechanceb)
-								self:SetParameter("chance", dodgeChance)
-								local oi = self:ResolveValue("chance")
-								print(oi)
-						
-								attack_args.chance_to_hit = 0
+								local bonus = self:ResolveValue("damage_bonus") + level
+								data.base_damage = MulDivRound(data.base_damage, 100 + bonus, 100)
+								data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = bonus }
 							end
-						end
-					end,
-					param_bindings = false,
-				}),
-				PlaceObj('UnitReaction', {
-					Event = "OnBeginTurn",
-					Handler = function (self, target)
-						self:SetParameter("used", false)
-					end,
-					param_bindings = false,
-				}),
-				PlaceObj('UnitReaction', {
-					Handler = function ()
-						if target == attack_target and not self:ResolveValue("used") and action.ActionType == "Ranged Attack" then
+						end,
+						param_bindings = false,
+					}),
+					PlaceObj('UnitReaction', {
+						Event = "OnModifyCTHModifier",
+						Handler = function (self, target, id, attacker, attack_target, action, weapon1, weapon2, data)
+							local doubleTap = target:GetLastAttack() == attack_target
+								and target == attacker
+								and (IsKindOfClasses(weapon1, "Pistol") or IsKindOfClasses(weapon2, "Pistol"))
 							
-						
-							
-							data.mod_mul = 0
-						end
-					end,
-					param_bindings = false,
-				}),
-			},
-			'Conditions', {},
-			'DisplayName', T(871305911291, --[[ModItemCharacterEffectCompositeDef LightningReaction DisplayName]] "Lightning Reactions"),
-			'Description', T(871010473514, --[[ModItemCharacterEffectCompositeDef LightningReaction Description]] "Chance (max <maxChanceToProc>%) to <color EmStyle>Dodge</color> the first successful enemy attack by <color EmStyle>Crouching</color>.\n\nOnce per round."),
-			'Icon', "UI/Icons/Perks/LightningReaction",
-			'Tier', "Silver",
-			'Stat', "Agility",
-			'StatValue', 80,
-		}),
-		PlaceObj('ModItemCharacterEffectCompositeDef', {
-			'Group', "Agility",
-			'Id', "SteadyBreathing",
-			'SortKey', 3,
-			'Parameters', {
-				PlaceObj('PresetParamNumber', {
-					'Name', "freeMoveBonusAp",
-					'Value', 3,
-					'Tag', "<freeMoveBonusAp>",
-				}),
-				PlaceObj('PresetParamNumber', {
-					'Name', "freeMoveBonusApMedium",
-					'Value', 2,
-					'Tag', "<freeMoveBonusApMedium>",
-				}),
-				PlaceObj('PresetParamNumber', {
-					'Name', "freeMoveBonusApHeavy",
-					'Value', 1,
-					'Tag', "<freeMoveBonusApHeavy>",
-				}),
-			},
-			'object_class', "Perk",
-			'unit_reactions', {
-				PlaceObj('UnitReaction', {
-					Event = "OnCalcFreeMove",
-					Handler = function (self, target, data)
-						local armourItems = target:GetEquipedArmour()
-						local medium = false
-						local heavy = false
-						
-						for _, item in ipairs(armourItems) do
-								if item.PenetrationClass == 3 then
-								medium = true
+							if doubleTap then
+								target:AddStatusEffect("DoubleTapPistol")
+								else
+								target:RemoveStatusEffect("DoubleTapPistol")
 							end
-							if item.PenetrationClass > 4 then
-								heavy = true
+						end,
+						param_bindings = false,
+					}),
+				},
+				'Modifiers', {},
+				'DisplayName', T(983375857101, --[[ModItemCharacterEffectCompositeDef Gunslinger DisplayName]] "Gunslinger"),
+				'Description', T(280088538306, --[[ModItemCharacterEffectCompositeDef Gunslinger Description]] "Attacks with <color EmStyle>Pistols</color> and <color EmStyle>Revolvers</color> have reduced <color EmStyle>AP</color> cost, increased <em>chance to hit</em>, <em>damage</em> and extended <em>Range</em>."),
+				'Icon', "Mod/PerksExpanded/Images/Fanning5",
+				'Tier', "Silver",
+				'Stat', "Marksmanship",
+				'StatValue', 80,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "_Trash",
+				'Id', "OverwatchExpert",
+				'SortKey', 3,
+				'Parameters', {
+					PlaceObj('PresetParamNumber', {
+						'Name', "bonusAttacks",
+						'Value', 1,
+						'Tag', "<bonusAttacks>",
+					}),
+				},
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnCalcOverwatchAttacks",
+						Handler = function (self, target, value, action, args)
+							return value + self:ResolveValue("bonusAttacks")
+						end,
+						param_bindings = false,
+					}),
+				},
+				'DisplayName', T(532324679530, --[[ModItemCharacterEffectCompositeDef OverwatchExpert DisplayName]] "Sentinel"),
+				'Description', T(953678683787, --[[ModItemCharacterEffectCompositeDef OverwatchExpert Description]] "Gain an <color EmStyle>extra attack</color> when using <color EmStyle>Overwatch</color>."),
+				'Icon', "Mod/PerksExpanded/Images/vigilance2",
+				'Tier', "Bronze",
+				'Stat', "Marksmanship",
+				'StatValue', 70,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Perk-Specialization",
+				'Id', "CQCTraining",
+				'SortKey', 4,
+				'Parameters', {
+					PlaceObj('PresetParamPercent', {
+						'Name', "cqc_bonus_max",
+						'Value', 20,
+						'Tag', "<cqc_bonus_max>%",
+					}),
+					PlaceObj('PresetParamPercent', {
+						'Name', "cqc_bonus_loss_per_tile",
+						'Value', 2,
+						'Tag', "<cqc_bonus_loss_per_tile>%",
+					}),
+				},
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnCalcChanceToHit",
+						Handler = function (self, target, attacker, action, attack_target, weapon1, weapon2, data)
+							if target == attacker then
+								local value = self:ResolveValue("cqc_bonus_max")
+								local tileSpace = DivRound(attacker:GetDist2D(attack_target), const.SlabSizeX) - 1
+								if tileSpace > 0 then
+									local lossPerTile = self:ResolveValue("cqc_bonus_loss_per_tile")
+									value = value - lossPerTile * tileSpace
+								end
+								if value > 0 then
+									ApplyCthModifier_Add(self, data, value)
+								end
 							end
-						end
-						if medium then
-							data.add = data.add + self:ResolveValue("freeMoveBonusApMedium")
-						elseif heavy then
-							data.add = data.add + self:ResolveValue("freeMoveBonusApHeavy")
-						else
-							data.add = data.add + self:ResolveValue("freeMoveBonusAp")
-						end
-					end,
-					param_bindings = false,
-				}),
-			},
-			'Conditions', {},
-			'DisplayName', T(641253187551, --[[ModItemCharacterEffectCompositeDef SteadyBreathing DisplayName]] "Fast Runner"),
-			'Description', T(824962629346, --[[ModItemCharacterEffectCompositeDef SteadyBreathing Description]] "Increased <color EmStyle>Free Move</color> <color EmStyle>Range</color> when not wearing <color EmStyle>Heavy Armor</color>."),
-			'Icon', "UI/Icons/Perks/SteadyBreathing",
-			'Tier', "Bronze",
-			'Stat', "Agility",
-			'StatValue', 70,
-		}),
-		PlaceObj('ModItemCharacterEffectCompositeDef', {
-			'Group', "Health",
-			'Id', "Berserker",
-			'SortKey', 4,
-			'Parameters', {
-				PlaceObj('PresetParamPercent', {
-					'Name', "damageReductionBonus",
-					'Value', 10,
-					'Tag', "<damageReductionBonus>%",
-				}),
-				PlaceObj('PresetParamNumber', {
-					'Name', "stackCap",
-					'Value', 5,
-					'Tag', "<stackCap>",
-				}),
-			},
-			'object_class', "Perk",
-			'unit_reactions', {
-				PlaceObj('UnitReaction', {
-					Event = "OnCalcDamageAndEffects",
-					Handler = function (self, target, attacker, attack_target, action, weapon, attack_args, hit, data)
-						if target == attack_target then
-							local wounded = target:GetStatusEffect("Wounded")
-							if wounded and wounded.stacks > 0 then
-								local stackCap = self:ResolveValue("stackCap")
-								local reductionPerStack = self:ResolveValue("damageReductionBonus")
-								local stacks = Min(wounded.stacks, stackCap)
-								local enduranceMod = reductionPerStack*stacks
-								
-								data.base_damage = MulDivRound(data.base_damage, 100 - enduranceMod, 100)
-								data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = enduranceMod }
+						end,
+						param_bindings = false,
+					}),
+				},
+				'DisplayName', T(977014262900, --[[ModItemCharacterEffectCompositeDef CQCTraining DisplayName]] "CQC Training"),
+				'Description', T(739437656502, --[[ModItemCharacterEffectCompositeDef CQCTraining Description]] "Major <color EmStyle>Accuracy</color> bonus when attacking enemies at short range (degrades with distance)."),
+				'Icon', "UI/Icons/Perks/CQCTraining",
+				'Tier', "Bronze",
+				'Stat', "Marksmanship",
+				'StatValue', 70,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Quirk",
+				'Id', "Ambidextrous",
+				'SortKey', 5,
+				'Parameters', {
+					PlaceObj('PresetParamNumber', {
+						'Name', "PenaltyReduction",
+						'Value', 15,
+						'Tag', "<PenaltyReduction>",
+					}),
+				},
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnModifyCTHModifier",
+						Handler = function (self, target, id, attacker, attack_target, action, weapon1, weapon2, data)
+							if target == attacker and id == "TwoWeaponFire" then
+								data.mod_add = data.mod_add + self:ResolveValue("PenaltyReduction")
+								data.meta_text[#data.meta_text + 1] = T{756119910645, "Perk: <perkName>", perkName = self.DisplayName}
 							end
-						
-							if target.team.player_enemy and g_Combat and not table.find(g_Combat.berserkVRsPerRole, target.role) then
-								PlayVoiceResponse(target, "AIBerserkerPerk")
-								table.insert(g_Combat.berserkVRsPerRole, target.role)
+						end,
+						param_bindings = false,
+					}),
+				},
+				'Modifiers', {},
+				'DisplayName', T(920488455934, --[[ModItemCharacterEffectCompositeDef Ambidextrous DisplayName]] "Ambidextrous"),
+				'Description', T(169645850395, --[[ModItemCharacterEffectCompositeDef Ambidextrous Description]] "Reduced <color EmStyle>Accuracy</color> penalty when <color EmStyle>Dual-Wielding</color> Firearms."),
+				'Icon', "UI/Icons/Perks/Ambidextrous",
+				'Tier', "Bronze",
+				'Stat', "Dexterity",
+				'StatValue', 70,
+			}),
+			}),
+		PlaceObj('ModItemFolder', {
+			'name', "Mechanical",
+		}, {
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Perk-Specialization",
+				'Id', "MrFixit",
+				'SortKey', 2,
+				'Parameters', {
+					PlaceObj('PresetParamNumber', {
+						'Name', "mrfixit_bonus",
+						'Value', 15,
+						'Tag', "<mrfixit_bonus>",
+					}),
+					PlaceObj('PresetParamNumber', {
+						'Name', "mrfixit_ap",
+						'Value', 1,
+						'Tag', "<mrfixit_ap>",
+					}),
+				},
+				'object_class', "Perk",
+				'DisplayName', T(953805503643, --[[ModItemCharacterEffectCompositeDef MrFixit DisplayName]] "Mr. Fixit"),
+				'Description', T(388336137725, --[[ModItemCharacterEffectCompositeDef MrFixit Description]] "Major bonus to <color EmStyle>Disarm</color> traps, <color EmStyle>Hack</color> devices, and <color EmStyle>Pick</color> locks checks.\n\nUnjamming weapons costs <color EmStyle><mrfixit_ap> AP</color>."),
+				'Icon', "UI/Icons/Perks/MrFixit",
+				'Tier', "Bronze",
+				'Stat', "Mechanical",
+				'StatValue', 70,
+			}),
+			}),
+		PlaceObj('ModItemFolder', {
+			'name', "Medical",
+		}, {
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Wisdom",
+				'Id', "TrickShot",
+				'SortKey', 9,
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnUnitAttack",
+						Handler = function (self, target, attacker, action, attack_target, results, attack_args)
+							if target == attacker and not results.miss and IsKindOf(attack_target, "Unit") then
+								if attack_args.target_spot_group == "Legs" then
+									attack_target:AddStatusEffect("KnockDown")
+								elseif attack_args.target_spot_group == "Arms" then
+									attack_target:AddStatusEffect("Numbness")
+								elseif attack_args.target_spot_group == "Groin" then
+									attack_target:AddStatusEffect("Exposed")
+								end	
 							end
-						end
-					end,
-					param_bindings = false,
-				}),
-			},
-			'DisplayName', T(205199205251, --[[ModItemCharacterEffectCompositeDef Berserker DisplayName]] "Endurance"),
-			'Description', T(472688632606, --[[ModItemCharacterEffectCompositeDef Berserker Description]] "Reduce <color EmStyle><damageReductionBonus>% Damage</color> per <color EmStyle>Wound</color>.\n\nCapped at <stackCap> stacks.<color EmStyle>"),
-			'Icon', "UI/Icons/Perks/PainManagement",
-			'Tier', "Silver",
-			'Stat', "Health",
-			'StatValue', 80,
-		}),
+						end,
+					}),
+				},
+				'DisplayName', T(681013280774, --[[ModItemCharacterEffectCompositeDef TrickShot DisplayName]] "Trick Shot"),
+				'Description', T(374957849272, --[[ModItemCharacterEffectCompositeDef TrickShot Description]] "<color EmStyle>Legs</color> shots apply <color EmStyle>Knocked Down</color>.\n\n<color EmStyle>Arms</color> shots apply <color EmStyle>Numbness</color>.\n\n<color EmStyle>Groin</color> shots apply <color EmStyle>Exposed</color>."),
+				'Icon', "UI/Icons/Perks/TrickShot",
+				'Tier', "Gold",
+				'Stat', "Medical",
+				'StatValue', 90,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Wisdom",
+				'Id', "Caretaker",
+				'SortKey', 7,
+				'Parameters', {
+					PlaceObj('PresetParamPercent', {
+						'Name', "medicalPercent",
+						'Value', 33,
+						'Tag', "<medicalPercent>%",
+					}),
+				},
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnUnitBandaged",
+						Handler = function (self, target, healer, patient, hp_restored)
+							if target == healer then
+								local tempHp = MulDivRound(healer.Medical, self:ResolveValue("medicalPercent"), 100)
+								if patient.command == "DownedRally" then
+									patient:AddStatusEffect("GritAfterRally", tempHp)
+								else
+									patient:ApplyTempHitPoints(tempHp)
+								end	
+							end
+						end,
+					}),
+				},
+				'DisplayName', T(767416055321, --[[ModItemCharacterEffectCompositeDef Caretaker DisplayName]] "Painkiller"),
+				'Description', T(991823627830, --[[ModItemCharacterEffectCompositeDef Caretaker Description]] "When you end you turn bandaging an ally, you grant <color EmStyle><StatPercent('Medical', medicalPercent)></color> <color EmStyle>Grit</color> to this ally (based on Medical)."),
+				'Icon', "UI/Icons/Perks/Caretaker",
+				'Tier', "Silver",
+				'Stat', "Medical",
+				'StatValue', 80,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Wisdom",
+				'Id', "Hobbler",
+				'SortKey', 3,
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnCalcDamageAndEffects",
+						Handler = function (self, target, attacker, attack_target, action, weapon, attack_args, hit, data)
+							data.ignore_body_part_damage.Arms = true
+							data.ignore_body_part_damage.Legs = true
+						end,
+					}),
+				},
+				'DisplayName', T(204672425596, --[[ModItemCharacterEffectCompositeDef Hobbler DisplayName]] "Arterial Shot"),
+				'Description', T(394688085779, --[[ModItemCharacterEffectCompositeDef Hobbler Description]] "No <color EmStyle>Damage Penalty</color> for <color EmStyle>Arms</color> and <color EmStyle>Legs</color> shots."),
+				'Icon', "UI/Icons/Perks/Hobbler",
+				'Tier', "Bronze",
+				'Stat', "Medical",
+				'StatValue', 70,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Wisdom",
+				'Id', "Savior",
+				'SortKey', 1,
+				'Parameters', {
+					PlaceObj('PresetParamPercent', {
+						'Name', "bandageBonus",
+						'Value', 30,
+						'Tag', "<bandageBonus>%",
+					}),
+				},
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnCalcHealAmount",
+						Handler = function (self, target, patient, medic, medkit, data)
+							if target == medic then
+								data.heal_percent = data.heal_percent + self:ResolveValue("bandageBonus")
+							end
+						end,
+					}),
+				},
+				'DisplayName', T(348476001921, --[[ModItemCharacterEffectCompositeDef Savior DisplayName]] "Savior"),
+				'Description', T(145826221315, --[[ModItemCharacterEffectCompositeDef Savior Description]] "Restore <color EmStyle><number>%</color> more <color EmStyle>HP</color> when using <color EmStyle>Bandage</color>."),
+				'Icon', "UI/Icons/Perks/Savior",
+				'Tier', "Bronze",
+				'Stat', "Medical",
+				'StatValue', 70,
+			}),
+			}),
 		PlaceObj('ModItemFolder', {
 			'name', "Personal",
 		}, {
@@ -950,49 +1754,65 @@ return {
 			'name', "Specialization",
 		}, {
 			PlaceObj('ModItemCharacterEffectCompositeDef', {
-				'Group', "Marksmanship",
-				'Id', "Gunslinger",
-				'SortKey', 7,
+				'Group', "Quirk",
+				'Id', "AllRounder",
+				'SortKey', 100,
 				'Parameters', {
-					PlaceObj('PresetParamNumber', {
-						'Name', "ap_cost_reduction",
+					PlaceObj('PresetParamPercent', {
+						'Name', "dmgResistancePerLvl",
 						'Value', 1,
-						'Tag', "<ap_cost_reduction>",
-					}),
-					PlaceObj('PresetParamNumber', {
-						'Name', "min_ap_cost",
-						'Value', 1,
-						'Tag', "<min_ap_cost>",
-					}),
-					PlaceObj('PresetParamNumber', {
-						'Name', "RangeIncrease",
-						'Value', 5,
-						'Tag', "<RangeIncrease>",
-					}),
-					PlaceObj('PresetParamNumber', {
-						'Name', "PenaltyReduction",
-						'Value', 15,
-						'Tag', "<PenaltyReduction>",
+						'Tag', "<dmgResistancePerLvl>%",
 					}),
 					PlaceObj('PresetParamPercent', {
-						'Name', "gunslingerCthBonus",
-						'Tag', "<gunslingerCthBonus>%",
+						'Name', "overwatchIncrease",
+						'Value', 20,
+						'Tag', "<overwatchIncrease>%",
 					}),
 					PlaceObj('PresetParamPercent', {
-						'Name', "damage_bonus",
-						'Value', 10,
-						'Tag', "<damage_bonus>%",
+						'Name', "bonus_health",
+						'Value', 20,
+						'Tag', "<bonus_health>%",
+					}),
+					PlaceObj('PresetParamNumber', {
+						'Name', "bonusAttacks",
+						'Value', 1,
+						'Tag', "<bonusAttacks>",
+					}),
+					PlaceObj('PresetParamNumber', {
+						'Name', "meleeBonusPerLevel",
+						'Value', 1,
+						'Tag', "<meleeBonusPerLevel>",
 					}),
 				},
 				'object_class', "Perk",
+				'msg_reactions', {},
 				'unit_reactions', {
 					PlaceObj('UnitReaction', {
-						Event = "OnUnitGetWeaponRange",
-						Handler = function (self, target, value, weapon, action)
-							if IsKindOfClasses(weapon, "Pistol", "Revolver") then
-								local maxRange = weapon.WeaponRange
-									maxRange = maxRange + self:ResolveValue("RangeIncrease")
-								return maxRange
+						Handler = function ()
+							-- +10 CTH Melee Weapons
+							-- +10 CTH Ranged Weapons (Overwatch only)
+							-- +20 Max Hit Points
+						end,
+						param_bindings = false,
+					}),
+					PlaceObj('UnitReaction', {
+						Handler = function ()
+							target.MaxHitPoints = target.MaxHitPoints + 1
+							RecalcMaxHitPoints(target)
+						end,
+						param_bindings = false,
+					}),
+					PlaceObj('UnitReaction', {
+						Event = "OnCalcDamageAndEffects",
+						Handler = function (self, target, attacker, attack_target, action, weapon, attack_args, hit, data)
+							
+							if target == attack_target then
+								local value = target:GetLevel() * self:ResolveValue("dmgResistancePerLvl")
+								if value > 0 then
+									local dmgRes = MulDivRound(data.base_damage, value, 100)
+							    	data.base_damage = data.base_damage - dmgRes
+									data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = dmgRes }
+								end
 							end
 						end,
 						param_bindings = false,
@@ -1000,207 +1820,397 @@ return {
 					PlaceObj('UnitReaction', {
 						Event = "OnCalcChanceToHit",
 						Handler = function (self, target, attacker, action, attack_target, weapon1, weapon2, data)
-							if target == attacker  and (IsKindOfClasses(weapon1, "Pistol", "Revolver") or IsKindOfClasses(weapon2, "Pistol", "Revolver")) then
+							if target == attacker  and action.ActionType == "Melee Attack"  then
 								local level = target:GetLevel()
-								local value =  self:ResolveValue("gunslingerCthBonus") + level
+								local value =  self:ResolveValue("meleeBonusPerLevel") * level
 								ApplyCthModifier_Add(self, data, value)
 							end
 						end,
 						param_bindings = false,
 					}),
-					PlaceObj('UnitReaction', {
-						Event = "OnCalcAPCost",
-						Handler = function (self, target, current_ap, action, weapon, aim)
-							if IsKindOfClasses(weapon, "Pistol", "Revolver") then
-								local reduction = self:ResolveValue("ap_cost_reduction") * const.Scale.AP
-								local minCost = self:ResolveValue("min_ap_cost") * const.Scale.AP
-							
-								return Max(minCost, current_ap - reduction)
-							end
-						end,
-						param_bindings = false,
-					}),
-					PlaceObj('UnitReaction', {
-						Event = "OnCalcDamageAndEffects",
-						Handler = function (self, target, attacker, attack_target, action, weapon, attack_args, hit, data)
-							if target == attacker and IsKindOfClasses(weapon, "Pistol", "Revolver") then
-								local level = target:GetLevel()
-								local bonus = self:ResolveValue("damage_bonus") + level
-								data.base_damage = MulDivRound(data.base_damage, 100 + bonus, 100)
-								data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = bonus }
-							end
-						end,
-						param_bindings = false,
-					}),
-					PlaceObj('UnitReaction', {
-						Event = "OnModifyCTHModifier",
-						Handler = function (self, target, id, attacker, attack_target, action, weapon1, weapon2, data)
-							local doubleTap = target:GetLastAttack() == attack_target
-								and target == attacker
-								and (IsKindOfClasses(weapon1, "Pistol") or IsKindOfClasses(weapon2, "Pistol"))
-							
-							if doubleTap then
-								target:AddStatusEffect("DoubleTapPistol")
-								else
-								target:RemoveStatusEffect("DoubleTapPistol")
-							end
-						end,
+				},
+				'Conditions', {
+					PlaceObj('CheckGameRule', {
+						Rule = "AdditionalPerks",
 						param_bindings = false,
 					}),
 				},
-				'Modifiers', {},
-				'DisplayName', T(983375857101, --[[ModItemCharacterEffectCompositeDef Gunslinger DisplayName]] "Gunslinger"),
-				'Description', T(280088538306, --[[ModItemCharacterEffectCompositeDef Gunslinger Description]] "Attacks with <color EmStyle>Pistols</color> and <color EmStyle>Revolvers</color> have reduced <color EmStyle>AP</color> cost, increased <em>chance to hit</em>, <em>damage</em> and extended <em>Range</em>."),
-				'Icon', "Mod/PerksExpanded/Images/Fanning5",
-				'Tier', "Silver",
-				'Stat', "Marksmanship",
-				'StatValue', 80,
+				'DisplayName', T(895146284132, --[[ModItemCharacterEffectCompositeDef AllRounder DisplayName]] "All Rounder"),
+				'Description', T(132268296032, --[[ModItemCharacterEffectCompositeDef AllRounder Description]] "This merc is an excellent all-rounder"),
+				'AddEffectText', "",
+				'RemoveEffectText', "",
+				'OnAdded', function (self, obj)  end,
+				'Icon', "Mod/PerksExpanded/Images/bulletproof-vest",
+				'Shown', true,
 			}),
 			PlaceObj('ModItemCharacterEffectCompositeDef', {
-				'Group', "Marksmanship",
-				'Id', "AutoWeapons",
-				'SortKey', 8,
+				'Group', "Quirk",
+				'Id', "Doctor",
+				'SortKey', 100,
 				'Parameters', {
 					PlaceObj('PresetParamPercent', {
-						'Name', "automatics_penalty_reduction",
-						'Value', 25,
-						'Tag', "<automatics_penalty_reduction>%",
+						'Name', "damageModifier",
+						'Value', 50,
+						'Tag', "<damageModifier>%",
 					}),
-					PlaceObj('PresetParamNumber', {
-						'Name', "rangeBonusSMG",
-						'Value', 3,
-						'Tag', "<rangeBonusSMG>",
+					PlaceObj('PresetParamPercent', {
+						'Name', "bonus_health",
+						'Tag', "<bonus_health>%",
 					}),
 				},
 				'object_class', "Perk",
 				'msg_reactions', {},
 				'unit_reactions', {
 					PlaceObj('UnitReaction', {
-						Event = "OnModifyCTHModifier",
-						Handler = function (self, target, id, attacker, attack_target, action, weapon1, weapon2, data)
-							if id == "Autofire" and target == attacker and (IsKindOfClasses(weapon1, "AssaultRifle", "SubmachineGun") or IsKindOfClasses(weapon2, "AssaultRifle", "SubmachineGun")) then
-								data.mod_mul = AutoWeapons:ResolveValue("automatics_penalty_reduction")
-								data.meta_text[#data.meta_text+1] = T{776394275735, "Perk: <name>", name = self.DisplayName}
-							end
+						Event = "OnCalcDamageAndEffects",
+						Handler = function (self, target, attacker, attack_target, action, weapon, attack_args, hit, data)
+							local lightArmor = false
+							local armourItems = attack_target:GetEquipedArmour()
 							
-							-- double tap technique
-							
-							local doubleTap = target:GetLastAttack() == attack_target 
-								and target == attacker
-								and (IsKindOfClasses(weapon1, "AssaultRifle", "SubmachineGun") or IsKindOfClasses(weapon2, "SubmachineGun"))
-							
-							if doubleTap then
-								target:AddStatusEffect("DoubleTap")
-								else
-								target:RemoveStatusEffect("DoubleTap")
-							end
-						end,
-						param_bindings = false,
-					}),
-					PlaceObj('UnitReaction', {
-						Event = "OnUnitGetWeaponRange",
-						Handler = function (self, target, value, weapon, action)
-							if IsKindOfClasses(weapon, "AssaultRifle") then
-								local maxRange = weapon.WeaponRange
-								local level = target:GetLevel()
-							
-									maxRange = MulDivRound(maxRange, 100 + level, 100)
-								return maxRange
-							end
-							
-							if IsKindOfClasses(weapon, "SubmachineGun") then
-								local maxRange = weapon.WeaponRange
-								maxRange = maxRange + self:ResolveValue("rangeBonusSMG")
-								return maxRange
-							end
-						end,
-						param_bindings = false,
-					}),
-					PlaceObj('UnitReaction', {
-						Event = "OnUnitAttackResolved",
-						Handler = function (self, target, attacker, attack_target, action, attack_args, results, can_retaliate, combat_starting)
-							-- run and gun technique
-							if target == attacker and IsKindOfClasses(results.weapon, "SubmachineGun") and action.id == "BurstFire" and attack_args.aim == 0 then
-								if g_Combat then
-									attacker:AddStatusEffect("FreeMove")
-								elseif g_StartingCombat or combat_starting then
-									attacker:AddStatusEffect("FreeMoveOnCombatStart")
+							for _, item in ipairs(armourItems) do
+									if item.PenetrationClass < 3 then
+									lightArmor = true
 								end
 							end
+							
+							if target == attacker and  lightArmor and (target.team ~= attack_target.team) then
+								local bonus = Min(target:GetLevel()/2, 5)
+								data.base_damage = data.base_damage + bonus
+								data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = bonus }
+							end
+						end,
+						param_bindings = false,
+					}),
+					PlaceObj('UnitReaction', {
+						Handler = function ()
+							if IsKindOf(attack_target, "Unit") and attack_target.species == "Human" and (attack_args.target_spot_group == "Groin" or attack_args.target_spot_group == "Head" ) then
+							local bonus = MultiDivRound(target.Medical, self:ResolveValue("damageModifier"), 100)
+							local damageBonus = MultiDivRound(data.base_damage, bonus, 100)
+							print(damageBonus)
+							print(attack_args)
+							
+							end
+							
+							--	local level = target:GetLevel()
+							--	local bonus = self:ResolveValue("damage_bonus") + level
+							--	data.base_damage = MulDivRound(data.base_damage, 100 + bonus, 100)
+							--	data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = bonus }
 						end,
 						param_bindings = false,
 					}),
 				},
-				'Modifiers', {},
-				'DisplayName', T(433549306527, --[[ModItemCharacterEffectCompositeDef AutoWeapons DisplayName]] "Auto Weapons"),
-				'Description', T(860512099026, --[[ModItemCharacterEffectCompositeDef AutoWeapons Description]] 'Reduced <color EmStyle>Accuracy</color> penalty when using <color EmStyle>Burst Fire</color> or <color EmStyle>Full Auto</color>.\nIncreased <color EmStyle>Range</color> for <color EmStyle>Assault Rifles</color> and <color EmStyle>SMGs</color>. Unlocks "Barrage" for SMGs.'),
-				'Icon', "UI/Icons/Perks/AutoWeapons",
-				'Tier', "Silver",
-				'Stat', "Marksmanship",
-				'StatValue', 80,
+				'Conditions', {
+					PlaceObj('CheckGameRule', {
+						Rule = "AdditionalPerks",
+						param_bindings = false,
+					}),
+				},
+				'DisplayName', T(987094052058, --[[ModItemCharacterEffectCompositeDef Doctor DisplayName]] "Doctor"),
+				'Description', T(705527329903, --[[ModItemCharacterEffectCompositeDef Doctor Description]] "This merc has Medical training."),
+				'AddEffectText', "",
+				'RemoveEffectText', "",
+				'OnAdded', function (self, obj)  end,
+				'Icon', "Mod/PerksExpanded/Images/first-aid-kit (1)",
+				'Shown', true,
 			}),
 			PlaceObj('ModItemCharacterEffectCompositeDef', {
-				'Group', "Explosives",
-				'Id', "HeavyWeaponsTraining",
-				'SortKey', 7,
+				'Group', "Quirk",
+				'Id', "Leader",
+				'SortKey', 100,
 				'Parameters', {
 					PlaceObj('PresetParamNumber', {
-						'Name', "ap_cost_reduction",
+						'Name', "moraleBuff",
 						'Value', 1,
-						'Tag', "<ap_cost_reduction>",
+						'Tag', "<moraleBuff>",
 					}),
 					PlaceObj('PresetParamNumber', {
-						'Name', "min_ap_cost",
-						'Value', 1,
-						'Tag', "<min_ap_cost>",
+						'Name', "moraleDebuff",
+						'Value', -1,
+						'Tag', "<moraleDebuff>",
 					}),
 					PlaceObj('PresetParamPercent', {
-						'Name', "heavyWeapons_penalty_reduction",
-						'Value', 50,
-						'Tag', "<heavyWeapons_penalty_reduction>%",
+						'Name', "bonus_health",
+						'Tag', "<bonus_health>%",
 					}),
 				},
 				'object_class', "Perk",
+				'msg_reactions', {},
 				'unit_reactions', {
 					PlaceObj('UnitReaction', {
-						Event = "OnCalcAPCost",
-						Handler = function (self, target, current_ap, action, weapon, aim)
-							if IsKindOfClasses(weapon, "HeavyWeapon", "MachineGun") then
-								local reduction = self:ResolveValue("ap_cost_reduction") * const.Scale.AP
-								local minCost = self:ResolveValue("min_ap_cost") * const.Scale.AP
-								return Max(minCost, current_ap - reduction)
-							end
+						Event = "OnCombatStarting",
+						Handler = function (self, target, load_game)
+							self:SetParameter("allyGrit", target:GetLevel())
 						end,
 						param_bindings = false,
 					}),
 					PlaceObj('UnitReaction', {
 						Event = "OnBeginTurn",
 						Handler = function (self, target)
-							target:AddStatusEffect("FreeMove")
-							if not HasPerk(target, "Ironclad") then
-								target:ConsumeAP(DivRound(target.free_move_ap, 2), "Move")
-							end
-						end,
-						param_bindings = false,
-					}),
-					PlaceObj('UnitReaction', {
-						Event = "OnModifyCTHModifier",
-						Handler = function (self, target, id, attacker, attack_target, action, weapon1, weapon2, data)
-							if id == "Autofire" and target == attacker and (IsKindOfClasses(weapon1, "MachineGun") or IsKindOfClasses(weapon2, "MachineGun")) then
-								data.mod_mul = HeavyWeaponsTraining:ResolveValue("heavyWeapons_penalty_reduction")
-								data.meta_text[#data.meta_text+1] = T{776394275735, "Perk: <name>", name = self.DisplayName}
+							-- from MMOcenaries Standalone_ Custom Perks
+							
+							local target_side = target and target.team and target.team.side or ''
+							local target_pos = target:GetPos() or false
+							local allycount = 0
+							local squad = gv_Squads[target.Squad]
+							local level = target:GetLevel()
+							
+							for _, id in ipairs(squad.units) do
+								local unit = g_Units[id]
+								if unit ~= target then
+									local side = unit and unit.team and unit.team.side or ''
+									if target_side ~= '' and side == target_side then
+										local unit_pos = unit:GetPos() or false
+										if target_pos and unit_pos then
+											local dist = target_pos:Dist(unit_pos)
+											if dist <= level * const.SlabSizeX then
+												--allycount = allycount +1
+												--print(unit)
+												unit:AddStatusEffect("LeaderAuraBuff")
+											end
+										end
+									end
+								end
 							end
 						end,
 						param_bindings = false,
 					}),
 				},
-				'Conditions', {},
-				'DisplayName', T(385640383798, --[[ModItemCharacterEffectCompositeDef HeavyWeaponsTraining DisplayName]] "Heavy Weapons"),
-				'Description', T(134513669893, --[[ModItemCharacterEffectCompositeDef HeavyWeaponsTraining Description]] "Attacks and <color EmStyle>Setup</color> with <color EmStyle>Heavy Weapons</color> and <color EmStyle>Machine Guns</color> have reduced <color EmStyle>AP</color> cost.\n\nImproves the effect of the <em>Ironclad</em> perk to full <GameTerm('FreeMove')> with cumbersome gear."),
-				'Icon', "UI/Icons/Perks/HeavyWeaponsTraining",
-				'Tier', "Bronze",
-				'Stat', "Explosives",
-				'StatValue', 70,
+				'Conditions', {
+					PlaceObj('CheckGameRule', {
+						Rule = "AdditionalPerks",
+						param_bindings = false,
+					}),
+				},
+				'DisplayName', T(788341325420, --[[ModItemCharacterEffectCompositeDef Leader DisplayName]] "Leader"),
+				'Description', T(819229546378, --[[ModItemCharacterEffectCompositeDef Leader Description]] "This merc has high Leadership."),
+				'AddEffectText', "",
+				'RemoveEffectText', "",
+				'OnAdded', function (self, obj)
+					obj:AddStatusEffectImmunity("Panicked", self.class)
+					obj:AddStatusEffectImmunity("Berserk", self.class)
+				end,
+				'OnRemoved', function (self, obj)
+					obj:RemoveStatusEffectImmunity("Panicked", self.class)
+					obj:AddStatusEffectImmunity("Berserk", self.class)
+				end,
+				'Icon', "Mod/PerksExpanded/Images/napoleon",
+				'Shown', true,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Quirk",
+				'Id', "Marksman",
+				'SortKey', 100,
+				'Parameters', {
+					PlaceObj('PresetParamNumber', {
+						'Name', "bonusCthPerLvl",
+						'Value', 1,
+						'Tag', "<bonusCthPerLvl>",
+					}),
+					PlaceObj('PresetParamPercent', {
+						'Name', "bonusDmgPerLvl",
+						'Value', 1,
+						'Tag', "<bonusDmgPerLvl>%",
+					}),
+					PlaceObj('PresetParamPercent', {
+						'Name', "bonus_health",
+						'Value', 1,
+						'Tag', "<bonus_health>%",
+					}),
+				},
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Handler = function ()
+							-- a little bit of CTH with long range weapons
+							-- maybe a little bit of damage
+						end,
+						param_bindings = false,
+					}),
+					PlaceObj('UnitReaction', {
+						Event = "OnCalcDamageAndEffects",
+						Handler = function (self, target, attacker, attack_target, action, weapon, attack_args, hit, data)
+							if target == attacker then
+								local level = target:GetLevel()
+								local bonus = level * self:ResolveValue("bonusDmgPerLvl")
+								data.base_damage = data.base_damage + MulDivRound(data.base_damage, bonus, 100)
+								data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = bonus }
+							end
+						end,
+						param_bindings = false,
+					}),
+					PlaceObj('UnitReaction', {
+						Event = "OnCalcChanceToHit",
+						Handler = function (self, target, attacker, action, attack_target, weapon1, weapon2, data)
+							if target == attacker  then
+								local level = target:GetLevel()
+								local value =  self:ResolveValue("bonusCthPerLvl") * level
+								ApplyCthModifier_Add(self, data, value)
+							end
+						end,
+						param_bindings = false,
+					}),
+				},
+				'Conditions', {
+					PlaceObj('CheckGameRule', {
+						Rule = "AdditionalPerks",
+						param_bindings = false,
+					}),
+				},
+				'DisplayName', T(561149855915, --[[ModItemCharacterEffectCompositeDef Marksman DisplayName]] "Marksman"),
+				'Description', T(480072152315, --[[ModItemCharacterEffectCompositeDef Marksman Description]] "This merc has Marksmanship training."),
+				'AddEffectText', "",
+				'RemoveEffectText', "",
+				'OnAdded', function (self, obj)  end,
+				'Icon', "Mod/PerksExpanded/Images/rifle 2",
+				'Shown', true,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Quirk",
+				'Id', "Mechanic",
+				'SortKey', 100,
+				'Parameters', {
+					PlaceObj('PresetParamPercent', {
+						'Name', "bonus_health",
+						'Tag', "<bonus_health>%",
+					}),
+				},
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Handler = function ()
+							-- extra damage to armored targets with shotguns
+							-- extra damage to armor whit shotguns
+						end,
+						param_bindings = false,
+					}),
+					PlaceObj('UnitReaction', {
+						Event = "OnCalcDamageAndEffects",
+						Handler = function (self, target, attacker, attack_target, action, weapon, attack_args, hit, data)
+							local heavyArmor = false
+							local armourItems = attack_target:GetEquipedArmour()
+							
+							for _, item in ipairs(armourItems) do
+									if item.PenetrationClass > 2 then
+									heavyArmor = true
+								end
+							end
+							
+							if target == attacker and  heavyArmor and (target.team ~= attack_target.team) then
+								local bonus = Min(target:GetLevel(), 10)
+								data.base_damage = data.base_damage + bonus
+								data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = bonus }
+							end
+						end,
+						param_bindings = false,
+					}),
+				},
+				'Conditions', {
+					PlaceObj('CheckGameRule', {
+						Rule = "AdditionalPerks",
+						param_bindings = false,
+					}),
+				},
+				'DisplayName', T(491292644190, --[[ModItemCharacterEffectCompositeDef Mechanic DisplayName]] "Mechanic"),
+				'Description', T(872843632761, --[[ModItemCharacterEffectCompositeDef Mechanic Description]] "This merc has Mechanical training."),
+				'AddEffectText', "",
+				'RemoveEffectText', "",
+				'OnAdded', function (self, obj)  end,
+				'Icon', "Mod/PerksExpanded/Images/wrench",
+				'Shown', true,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Quirk",
+				'Id', "ExplosiveExpert",
+				'SortKey', 100,
+				'Parameters', {
+					PlaceObj('PresetParamPercent', {
+						'Name', "bonus_health",
+						'Tag', "<bonus_health>%",
+					}),
+				},
+				'object_class', "Perk",
+				'msg_reactions', {},
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Handler = function ()
+							-- bonus damage with explosives?
+						end,
+						param_bindings = false,
+					}),
+					PlaceObj('UnitReaction', {
+						Handler = function ()
+							if target == attacker and IsKindOfClasses(weapon, "Grenade") and action.ActionType == "Ranged Attack" then
+								attack_target:AddStatusEffect("")
+							end
+						end,
+						param_bindings = false,
+					}),
+				},
+				'Conditions', {
+					PlaceObj('CheckGameRule', {
+						Rule = "AdditionalPerks",
+						param_bindings = false,
+					}),
+				},
+				'DisplayName', T(522258068160, --[[ModItemCharacterEffectCompositeDef ExplosiveExpert DisplayName]] "Explosive Expert"),
+				'Description', T(565028712664, --[[ModItemCharacterEffectCompositeDef ExplosiveExpert Description]] "This merc has Explosives training."),
+				'AddEffectText', "",
+				'RemoveEffectText', "",
+				'OnAdded', function (self, obj)  end,
+				'Icon', "Mod/PerksExpanded/Images/fragmentation",
+				'Shown', true,
+			}),
+			}),
+		PlaceObj('ModItemFolder', {
+			'name', "NPC",
+		}, {
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Perk-NPC",
+				'Id', "LightningReactionNPC",
+				'SortKey', 6,
+				'Parameters', {
+					PlaceObj('PresetParamPercent', {
+						'Name', "chance",
+						'Value', 50,
+						'Tag', "<chance>%",
+					}),
+				},
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnFirearmAttackStart",
+						Handler = function (self, target, attacker, attack_target, action, attack_args)
+							local conditions = target:HasStatusEffect("Blinded") or
+															target:HasStatusEffect("Exhausted") or
+															target:HasStatusEffect("Slowed") or								
+															target:HasStatusEffect("Distracted") or								
+															target:HasStatusEffect("Surprised") or								
+															target:HasStatusEffect("Unaware") or
+															attacker:HasStatusEffect("Hidden") or
+															attacker:HasStatusEffect("HiddenNPC") or
+															target:HasStatusEffect("Tired")
+							
+							
+							if target == attack_target and not (self:ResolveValue("used") or conditions) then
+								if target:LightningReactionCheck(self) then
+									self:SetParameter("used", true)
+									attack_args.chance_to_hit = 0
+								end
+							end
+						end,
+						param_bindings = false,
+					}),
+					PlaceObj('UnitReaction', {
+						Event = "OnCombatEnd",
+						Handler = function (self, target)
+							self:SetParameter("used", false)
+						end,
+						param_bindings = false,
+					}),
+				},
+				'DisplayName', T(784184001480, --[[ModItemCharacterEffectCompositeDef LightningReactionNPC DisplayName]] "Lightning Reactions"),
+				'Description', T(342324544663, --[[ModItemCharacterEffectCompositeDef LightningReactionNPC Description]] "<color EmStyle>Dodge</color> the first successful enemy attack by falling <color EmStyle>Prone</color>.\n\nOnce per combat"),
+				'Icon', "UI/Icons/Perks/LightningReaction",
 			}),
 			}),
 		}),
@@ -1559,208 +2569,6 @@ return {
 			}),
 			}),
 		PlaceObj('ModItemCharacterEffectCompositeDef', {
-			'Group', "Marksmanship",
-			'Id', "BurstControl",
-			'SortKey', 12,
-			'Parameters', {
-				PlaceObj('PresetParamPercent', {
-					'Name', "dmg_bonus",
-					'Value', 25,
-					'Tag', "<dmg_bonus>%",
-				}),
-				PlaceObj('PresetParamPercent', {
-					'Name', "cth_loss",
-					'Value', 15,
-					'Tag', "<cth_loss>%",
-				}),
-			},
-			'object_class', "Perk",
-			'unit_reactions', {
-				PlaceObj('UnitReaction', {
-					Handler = function ()
-						--	for i = 1, num_shots do
-						--		local shot_miss, shot_crit, shot_cth
-						--		shot_cth = self:GetShotChanceToHit(attack_results.chance_to_hit - shot_attack_args.cth_loss_per_shot * (i - 1))
-						--		shot_cth = attacker:CallReactions_Modify("OnCalcShotChanceToHit", shot_cth, attacker, target, i, num_shots)
-						--		if target_unit then
-						--			shot_cth = target_unit:CallReactions_Modify("OnCalcShotChanceToHit", shot_cth, attacker, target, i, num_shots)
-						--		end
-						--		if shot_attack_args.multishot then
-						--			roll = attack_results.attack_roll[i]
-						--			shot_miss = roll > shot_cth
-						--			shot_crit = (not shot_miss) and (attack_results.crit_roll[i] <= attack_results.crit_chance)
-						--			-- update global miss/crit for the attack
-						--			miss = miss and shot_miss
-						--			crit = crit or shot_crit
-						--		else
-						--			shot_miss = (not stealth_kill or i > 1) and roll > shot_cth
-						--			shot_crit = crit and (i == 1)
-						--		end
-						--		local data = band(shot_cth, sfCthMask)
-						--		data = bor(data, band(shift(roll, sfRollOffset), sfRollMask))
-						--		data = bor(data, shot_miss and 0 or sfHit)
-						--		data = bor(data, shot_crit and sfCrit or 0)
-						--		data = bor(data, (shot_attack_args.multishot or (i == 1)) and sfLeading or 0)
-						--		if shot_miss and shot_cth > 0 then
-						--			local shot_graze_threshold = self:GetShotGrazeTheshold(graze_threshold)
-						--			shot_graze_threshold = attacker:CallReactions_Modify("OnCalcShotGrazeThreshold", shot_graze_threshold, attacker, target, i, num_shots)
-						--			if target_unit then
-						--				shot_graze_threshold = target_unit:CallReactions_Modify("OnCalcShotGrazeThreshold", shot_graze_threshold, attacker, target, i, num_shots)
-						--			end
-						--			if roll < shot_cth + shot_graze_threshold then
-						--				data = bor(data, sfAllowGrazing)
-						--				num_grazing = num_grazing + 1
-						--			end
-						--		end
-						--		shots_data[i] = data
-						--		num_hits = num_hits + (shot_miss and 0 or 1)
-						--		num_misses = num_misses + (shot_miss and 1 or 0)
-						--		if not prediction then
-						--			NetUpdateHash("FirearmShot", attacker, target, shot_attack_args.action_id, shot_attack_args.stance, self.class, self.id, self == shot_attack_args.weapon, shot_attack_args.occupied_pos, shot_attack_args.step_pos, shot_attack_args.angle, shot_attack_args.anim, shot_attack_args.can_use_covers, shot_attack_args.ignore_smoke, shot_attack_args.penetration_class, shot_attack_args.range, shot_cth, roll, shot_miss)
-						--		end
-						--	end
-					end,
-					param_bindings = false,
-				}),
-				PlaceObj('UnitReaction', {
-					Event = "OnFirearmAttackStart",
-					Handler = function (self, target, attacker, attack_target, action, attack_args)
-						if target == attacker and (action.id == "BurstFire") then
-							attack_args.num_shots = attack_args.num_shots + 1
-							attack_args.damage_bonus = attack_args.damage_bonus + self:ResolveValue("dmg_bonus")
-							attack_args.cth_loss_per_shot = self:ResolveValue("cth_loss")
-							return attack_args
-						end
-					end,
-					param_bindings = false,
-				}),
-			},
-			'DisplayName', T(473007244961, --[[ModItemCharacterEffectCompositeDef BurstControl DisplayName]] "Burst Control"),
-			'Description', T(620919217507, --[[ModItemCharacterEffectCompositeDef BurstControl Description]] "Increased <color EmStyle>number of shots and damage</color> for <color EmStyle>Burst attacks</color> at the cost of a small penalty for <color EmStyle>accuracy after the recoil.</color>."),
-			'Icon', "Mod/PerksExpanded/Images/machine-gun (68).png",
-			'Tier', "Gold",
-			'Stat', "Marksmanship",
-			'StatValue', 90,
-		}),
-		PlaceObj('ModItemCharacterEffectCompositeDef', {
-			'Group', "Marksmanship",
-			'Id', "Sharpshooter",
-			'SortKey', 10,
-			'Parameters', {
-				PlaceObj('PresetParamPercent', {
-					'Name', "bonusAimScoped",
-					'Value', 2,
-					'Tag', "<bonusAimScoped>%",
-				}),
-				PlaceObj('PresetParamPercent', {
-					'Name', "heavyRifleIncrease",
-					'Value', 20,
-					'Tag', "<heavyRifleIncrease>%",
-				}),
-				PlaceObj('PresetParamPercent', {
-					'Name', "lightRifleIncrease",
-					'Value', 10,
-					'Tag', "<lightRifleIncrease>%",
-				}),
-				PlaceObj('PresetParamNumber', {
-					'Name', "crouchApreduction",
-					'Value', 1,
-					'Tag', "<crouchApreduction>",
-				}),
-				PlaceObj('PresetParamNumber', {
-					'Name', "proneApReduction",
-					'Value', 2,
-					'Tag', "<proneApReduction>",
-				}),
-				PlaceObj('PresetParamNumber', {
-					'Name', "minApCost",
-					'Value', 4,
-					'Tag', "<minApCost>",
-				}),
-				PlaceObj('PresetParamNumber', {
-					'Name', "additionalAimScoped",
-					'Value', 1,
-					'Tag', "<additionalAimScoped>",
-				}),
-			},
-			'object_class', "Perk",
-			'msg_reactions', {},
-			'unit_reactions', {
-				PlaceObj('UnitReaction', {
-					Event = "OnModifyCTHModifier",
-					Handler = function (self, target, id, attacker, attack_target, action, weapon1, weapon2, data)
-						if id == "Aim" 
-							and target == attacker
-							and (IsKindOfClasses(weapon1, "SniperRifle")
-							or IsKindOfClasses(weapon2, "SniperRifle")) then
-						
-							local bonus = self:ResolveValue("bonusAimScoped")
-							data.mod_mul = data.mod_mul + bonus
-							data.meta_text[#data.meta_text+1] = T{776394275735, "Perk: <name>", name = self.DisplayName}
-							
-						end
-					end,
-					param_bindings = false,
-				}),
-				PlaceObj('UnitReaction', {
-					Event = "OnCalcAPCost",
-					Handler = function (self, target, current_ap, action, weapon, aim)
-						if target.stance == "Standing" or not IsKindOfClasses(weapon, "SniperRifle") then
-							return
-							elseif target.stance == "Prone" and weapon:IsCumbersome()  then
-								local reduction = self:ResolveValue("proneApReduction") * const.Scale.AP
-								local minCost = self:ResolveValue("minApCost") * const.Scale.AP
-								return Max(minCost, current_ap - reduction)
-							else
-								local reduction = self:ResolveValue("crouchApreduction") * const.Scale.AP
-								local minCost = self:ResolveValue("minApCost") * const.Scale.AP
-								return Max(minCost, current_ap - reduction)
-						end
-					end,
-					param_bindings = false,
-				}),
-				PlaceObj('UnitReaction', {
-					Event = "OnUnitGetWeaponRange",
-					Handler = function (self, target, value, weapon, action)
-						if IsKindOfClasses(weapon, "SniperRifle") then
-							local maxRange = weapon.WeaponRange
-							local bonus = self:ResolveValue("lightRifleIncrease")
-							if IsKindOfClasses(weapon, "SniperRifle") and weapon:IsCumbersome() then
-								bonus = self:ResolveValue("heavyRifleIncrease")
-							end
-							maxRange = MulDivRound(maxRange, 100 + bonus, 100)
-						--	print(maxRange)
-							return maxRange
-						end
-					end,
-					param_bindings = false,
-				}),
-				PlaceObj('UnitReaction', {
-					Event = "OnCalcMaxAimActions",
-					Handler = function (self, target, value, attacker, attack_target, action, weapon)
-						if target == attacker then
-							return weapon.MaxAimActions + self:ResolveValue("additionalAimScoped")
-						end
-					end,
-					param_bindings = false,
-				}),
-			},
-			'Conditions', {
-				PlaceObj('CheckGameRule', {
-					Rule = "AdditionalPerks",
-					param_bindings = false,
-				}),
-			},
-			'Modifiers', {},
-			'DisplayName', T(723903517349, --[[ModItemCharacterEffectCompositeDef Sharpshooter DisplayName]] "Sharpshooter"),
-			'Description', T(272582799925, --[[ModItemCharacterEffectCompositeDef Sharpshooter Description]] "Increased <color EmStyle>Range and Accuracy</color> for <color EmStyle>Sniper Rifles</color> and <color EmStyle>Rifles</color>."),
-			'OnAdded', function (self, obj)  end,
-			'Icon', "Mod/PerksExpanded/Images/Mini3",
-			'Tier', "Gold",
-			'Stat', "Marksmanship",
-			'StatValue', 90,
-		}),
-		PlaceObj('ModItemCharacterEffectCompositeDef', {
 			'Group', "Quirk",
 			'Id', "SurvivalInstinct",
 			'SortKey', 1000,
@@ -1972,413 +2780,6 @@ return {
 			end,
 			'Icon', "Mod/PerksExpanded/Images/shield",
 			'max_stacks', 3,
-			'Shown', true,
-		}),
-		PlaceObj('ModItemCharacterEffectCompositeDef', {
-			'Group', "Quirk",
-			'Id', "ExplosiveExpert",
-			'SortKey', 100,
-			'Parameters', {
-				PlaceObj('PresetParamPercent', {
-					'Name', "bonus_health",
-					'Tag', "<bonus_health>%",
-				}),
-			},
-			'object_class', "Perk",
-			'msg_reactions', {},
-			'unit_reactions', {
-				PlaceObj('UnitReaction', {
-					Handler = function ()
-						-- bonus damage with explosives?
-					end,
-					param_bindings = false,
-				}),
-				PlaceObj('UnitReaction', {
-					Handler = function ()
-						if target == attacker and IsKindOfClasses(weapon, "Grenade") and action.ActionType == "Ranged Attack" then
-							attack_target:AddStatusEffect("")
-						end
-					end,
-					param_bindings = false,
-				}),
-			},
-			'Conditions', {
-				PlaceObj('CheckGameRule', {
-					Rule = "AdditionalPerks",
-					param_bindings = false,
-				}),
-			},
-			'DisplayName', T(522258068160, --[[ModItemCharacterEffectCompositeDef ExplosiveExpert DisplayName]] "Explosive Expert"),
-			'Description', T(565028712664, --[[ModItemCharacterEffectCompositeDef ExplosiveExpert Description]] "This merc has Explosives training."),
-			'AddEffectText', "",
-			'RemoveEffectText', "",
-			'OnAdded', function (self, obj)  end,
-			'Icon', "Mod/PerksExpanded/Images/fragmentation",
-			'Shown', true,
-		}),
-		PlaceObj('ModItemCharacterEffectCompositeDef', {
-			'Group', "Quirk",
-			'Id', "AllRounder",
-			'SortKey', 100,
-			'Parameters', {
-				PlaceObj('PresetParamPercent', {
-					'Name', "dmgResistancePerLvl",
-					'Value', 1,
-					'Tag', "<dmgResistancePerLvl>%",
-				}),
-				PlaceObj('PresetParamPercent', {
-					'Name', "overwatchIncrease",
-					'Value', 20,
-					'Tag', "<overwatchIncrease>%",
-				}),
-				PlaceObj('PresetParamPercent', {
-					'Name', "bonus_health",
-					'Value', 20,
-					'Tag', "<bonus_health>%",
-				}),
-				PlaceObj('PresetParamNumber', {
-					'Name', "bonusAttacks",
-					'Value', 1,
-					'Tag', "<bonusAttacks>",
-				}),
-				PlaceObj('PresetParamNumber', {
-					'Name', "meleeBonusPerLevel",
-					'Value', 1,
-					'Tag', "<meleeBonusPerLevel>",
-				}),
-			},
-			'object_class', "Perk",
-			'msg_reactions', {},
-			'unit_reactions', {
-				PlaceObj('UnitReaction', {
-					Handler = function ()
-						-- +10 CTH Melee Weapons
-						-- +10 CTH Ranged Weapons (Overwatch only)
-						-- +20 Max Hit Points
-					end,
-					param_bindings = false,
-				}),
-				PlaceObj('UnitReaction', {
-					Handler = function ()
-						target.MaxHitPoints = target.MaxHitPoints + 1
-						RecalcMaxHitPoints(target)
-					end,
-					param_bindings = false,
-				}),
-				PlaceObj('UnitReaction', {
-					Event = "OnCalcDamageAndEffects",
-					Handler = function (self, target, attacker, attack_target, action, weapon, attack_args, hit, data)
-						
-						if target == attack_target then
-							local value = target:GetLevel() * self:ResolveValue("dmgResistancePerLvl")
-							if value > 0 then
-								local dmgRes = MulDivRound(data.base_damage, value, 100)
-						    	data.base_damage = data.base_damage - dmgRes
-								data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = dmgRes }
-							end
-						end
-					end,
-					param_bindings = false,
-				}),
-				PlaceObj('UnitReaction', {
-					Event = "OnCalcChanceToHit",
-					Handler = function (self, target, attacker, action, attack_target, weapon1, weapon2, data)
-						if target == attacker  and action.ActionType == "Melee Attack"  then
-							local level = target:GetLevel()
-							local value =  self:ResolveValue("meleeBonusPerLevel") * level
-							ApplyCthModifier_Add(self, data, value)
-						end
-					end,
-					param_bindings = false,
-				}),
-			},
-			'Conditions', {
-				PlaceObj('CheckGameRule', {
-					Rule = "AdditionalPerks",
-					param_bindings = false,
-				}),
-			},
-			'DisplayName', T(895146284132, --[[ModItemCharacterEffectCompositeDef AllRounder DisplayName]] "All Rounder"),
-			'Description', T(132268296032, --[[ModItemCharacterEffectCompositeDef AllRounder Description]] "This merc is an excellent all-rounder"),
-			'AddEffectText', "",
-			'RemoveEffectText', "",
-			'OnAdded', function (self, obj)  end,
-			'Icon', "Mod/PerksExpanded/Images/bulletproof-vest",
-			'Shown', true,
-		}),
-		PlaceObj('ModItemCharacterEffectCompositeDef', {
-			'Group', "Quirk",
-			'Id', "Doctor",
-			'SortKey', 100,
-			'Parameters', {
-				PlaceObj('PresetParamPercent', {
-					'Name', "damageModifier",
-					'Value', 50,
-					'Tag', "<damageModifier>%",
-				}),
-				PlaceObj('PresetParamPercent', {
-					'Name', "bonus_health",
-					'Tag', "<bonus_health>%",
-				}),
-			},
-			'object_class', "Perk",
-			'msg_reactions', {},
-			'unit_reactions', {
-				PlaceObj('UnitReaction', {
-					Event = "OnCalcDamageAndEffects",
-					Handler = function (self, target, attacker, attack_target, action, weapon, attack_args, hit, data)
-						local lightArmor = false
-						local armourItems = attack_target:GetEquipedArmour()
-						
-						for _, item in ipairs(armourItems) do
-								if item.PenetrationClass < 3 then
-								lightArmor = true
-							end
-						end
-						
-						if target == attacker and  lightArmor and (target.team ~= attack_target.team) then
-							local bonus = Min(target:GetLevel()/2, 5)
-							data.base_damage = data.base_damage + bonus
-							data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = bonus }
-						end
-					end,
-					param_bindings = false,
-				}),
-				PlaceObj('UnitReaction', {
-					Handler = function ()
-						if IsKindOf(attack_target, "Unit") and attack_target.species == "Human" and (attack_args.target_spot_group == "Groin" or attack_args.target_spot_group == "Head" ) then
-						local bonus = MultiDivRound(target.Medical, self:ResolveValue("damageModifier"), 100)
-						local damageBonus = MultiDivRound(data.base_damage, bonus, 100)
-						print(damageBonus)
-						print(attack_args)
-						
-						end
-						
-						--	local level = target:GetLevel()
-						--	local bonus = self:ResolveValue("damage_bonus") + level
-						--	data.base_damage = MulDivRound(data.base_damage, 100 + bonus, 100)
-						--	data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = bonus }
-					end,
-					param_bindings = false,
-				}),
-			},
-			'Conditions', {
-				PlaceObj('CheckGameRule', {
-					Rule = "AdditionalPerks",
-					param_bindings = false,
-				}),
-			},
-			'DisplayName', T(987094052058, --[[ModItemCharacterEffectCompositeDef Doctor DisplayName]] "Doctor"),
-			'Description', T(705527329903, --[[ModItemCharacterEffectCompositeDef Doctor Description]] "This merc has Medical training."),
-			'AddEffectText', "",
-			'RemoveEffectText', "",
-			'OnAdded', function (self, obj)  end,
-			'Icon', "Mod/PerksExpanded/Images/first-aid-kit (1)",
-			'Shown', true,
-		}),
-		PlaceObj('ModItemCharacterEffectCompositeDef', {
-			'Group', "Quirk",
-			'Id', "Leader",
-			'SortKey', 100,
-			'Parameters', {
-				PlaceObj('PresetParamNumber', {
-					'Name', "moraleBuff",
-					'Value', 1,
-					'Tag', "<moraleBuff>",
-				}),
-				PlaceObj('PresetParamNumber', {
-					'Name', "moraleDebuff",
-					'Value', -1,
-					'Tag', "<moraleDebuff>",
-				}),
-				PlaceObj('PresetParamPercent', {
-					'Name', "bonus_health",
-					'Tag', "<bonus_health>%",
-				}),
-			},
-			'object_class', "Perk",
-			'msg_reactions', {},
-			'unit_reactions', {
-				PlaceObj('UnitReaction', {
-					Event = "OnCombatStarting",
-					Handler = function (self, target, load_game)
-						self:SetParameter("allyGrit", target:GetLevel())
-					end,
-					param_bindings = false,
-				}),
-				PlaceObj('UnitReaction', {
-					Event = "OnBeginTurn",
-					Handler = function (self, target)
-						-- from MMOcenaries Standalone_ Custom Perks
-						
-						local target_side = target and target.team and target.team.side or ''
-						local target_pos = target:GetPos() or false
-						local allycount = 0
-						local squad = gv_Squads[target.Squad]
-						local level = target:GetLevel()
-						
-						for _, id in ipairs(squad.units) do
-							local unit = g_Units[id]
-							if unit ~= target then
-								local side = unit and unit.team and unit.team.side or ''
-								if target_side ~= '' and side == target_side then
-									local unit_pos = unit:GetPos() or false
-									if target_pos and unit_pos then
-										local dist = target_pos:Dist(unit_pos)
-										if dist <= level * const.SlabSizeX then
-											--allycount = allycount +1
-											--print(unit)
-											unit:AddStatusEffect("LeaderAuraBuff")
-										end
-									end
-								end
-							end
-						end
-					end,
-					param_bindings = false,
-				}),
-			},
-			'Conditions', {
-				PlaceObj('CheckGameRule', {
-					Rule = "AdditionalPerks",
-					param_bindings = false,
-				}),
-			},
-			'DisplayName', T(788341325420, --[[ModItemCharacterEffectCompositeDef Leader DisplayName]] "Leader"),
-			'Description', T(819229546378, --[[ModItemCharacterEffectCompositeDef Leader Description]] "This merc has high Leadership."),
-			'AddEffectText', "",
-			'RemoveEffectText', "",
-			'OnAdded', function (self, obj)
-				obj:AddStatusEffectImmunity("Panicked", self.class)
-				obj:AddStatusEffectImmunity("Berserk", self.class)
-			end,
-			'OnRemoved', function (self, obj)
-				obj:RemoveStatusEffectImmunity("Panicked", self.class)
-				obj:AddStatusEffectImmunity("Berserk", self.class)
-			end,
-			'Icon', "Mod/PerksExpanded/Images/napoleon",
-			'Shown', true,
-		}),
-		PlaceObj('ModItemCharacterEffectCompositeDef', {
-			'Group', "Quirk",
-			'Id', "Marksman",
-			'SortKey', 100,
-			'Parameters', {
-				PlaceObj('PresetParamNumber', {
-					'Name', "bonusCthPerLvl",
-					'Value', 1,
-					'Tag', "<bonusCthPerLvl>",
-				}),
-				PlaceObj('PresetParamPercent', {
-					'Name', "bonusDmgPerLvl",
-					'Value', 1,
-					'Tag', "<bonusDmgPerLvl>%",
-				}),
-				PlaceObj('PresetParamPercent', {
-					'Name', "bonus_health",
-					'Value', 1,
-					'Tag', "<bonus_health>%",
-				}),
-			},
-			'object_class', "Perk",
-			'unit_reactions', {
-				PlaceObj('UnitReaction', {
-					Handler = function ()
-						-- a little bit of CTH with long range weapons
-						-- maybe a little bit of damage
-					end,
-					param_bindings = false,
-				}),
-				PlaceObj('UnitReaction', {
-					Event = "OnCalcDamageAndEffects",
-					Handler = function (self, target, attacker, attack_target, action, weapon, attack_args, hit, data)
-						if target == attacker then
-							local level = target:GetLevel()
-							local bonus = level * self:ResolveValue("bonusDmgPerLvl")
-							data.base_damage = data.base_damage + MulDivRound(data.base_damage, bonus, 100)
-							data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = bonus }
-						end
-					end,
-					param_bindings = false,
-				}),
-				PlaceObj('UnitReaction', {
-					Event = "OnCalcChanceToHit",
-					Handler = function (self, target, attacker, action, attack_target, weapon1, weapon2, data)
-						if target == attacker  then
-							local level = target:GetLevel()
-							local value =  self:ResolveValue("bonusCthPerLvl") * level
-							ApplyCthModifier_Add(self, data, value)
-						end
-					end,
-					param_bindings = false,
-				}),
-			},
-			'Conditions', {
-				PlaceObj('CheckGameRule', {
-					Rule = "AdditionalPerks",
-					param_bindings = false,
-				}),
-			},
-			'DisplayName', T(561149855915, --[[ModItemCharacterEffectCompositeDef Marksman DisplayName]] "Marksman"),
-			'Description', T(480072152315, --[[ModItemCharacterEffectCompositeDef Marksman Description]] "This merc has Marksmanship training."),
-			'AddEffectText', "",
-			'RemoveEffectText', "",
-			'OnAdded', function (self, obj)  end,
-			'Icon', "Mod/PerksExpanded/Images/rifle 2",
-			'Shown', true,
-		}),
-		PlaceObj('ModItemCharacterEffectCompositeDef', {
-			'Group', "Quirk",
-			'Id', "Mechanic",
-			'SortKey', 100,
-			'Parameters', {
-				PlaceObj('PresetParamPercent', {
-					'Name', "bonus_health",
-					'Tag', "<bonus_health>%",
-				}),
-			},
-			'object_class', "Perk",
-			'unit_reactions', {
-				PlaceObj('UnitReaction', {
-					Handler = function ()
-						-- extra damage to armored targets with shotguns
-						-- extra damage to armor whit shotguns
-					end,
-					param_bindings = false,
-				}),
-				PlaceObj('UnitReaction', {
-					Event = "OnCalcDamageAndEffects",
-					Handler = function (self, target, attacker, attack_target, action, weapon, attack_args, hit, data)
-						local heavyArmor = false
-						local armourItems = attack_target:GetEquipedArmour()
-						
-						for _, item in ipairs(armourItems) do
-								if item.PenetrationClass > 2 then
-								heavyArmor = true
-							end
-						end
-						
-						if target == attacker and  heavyArmor and (target.team ~= attack_target.team) then
-							local bonus = Min(target:GetLevel(), 10)
-							data.base_damage = data.base_damage + bonus
-							data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = bonus }
-						end
-					end,
-					param_bindings = false,
-				}),
-			},
-			'Conditions', {
-				PlaceObj('CheckGameRule', {
-					Rule = "AdditionalPerks",
-					param_bindings = false,
-				}),
-			},
-			'DisplayName', T(491292644190, --[[ModItemCharacterEffectCompositeDef Mechanic DisplayName]] "Mechanic"),
-			'Description', T(872843632761, --[[ModItemCharacterEffectCompositeDef Mechanic Description]] "This merc has Mechanical training."),
-			'AddEffectText', "",
-			'RemoveEffectText', "",
-			'OnAdded', function (self, obj)  end,
-			'Icon', "Mod/PerksExpanded/Images/wrench",
 			'Shown', true,
 		}),
 		}),
@@ -4700,4 +5101,57 @@ return {
 			target_contribution = 4800,
 		}),
 		}),
+	PlaceObj('ModItemCharacterEffectCompositeDef', {
+		'Group', "Perk-Specialization",
+		'Id', "Stealthy_1",
+		'SortKey', 100,
+		'Parameters', {
+			PlaceObj('PresetParamPercent', {
+				'Name', "stealthy_detection",
+				'Value', 20,
+				'Tag', "<stealthy_detection>%",
+			}),
+			PlaceObj('PresetParamPercent', {
+				'Name', "stealthkill",
+				'Value', 10,
+				'Tag', "<stealthkill>%",
+			}),
+			PlaceObj('PresetParamPercent', {
+				'Name', "stealthkill_minchance",
+				'Value', 30,
+				'Tag', "<stealthkill_minchance>%",
+			}),
+		},
+		'object_class', "Perk",
+		'unit_reactions', {
+			PlaceObj('UnitReaction', {
+				Event = "OnCalcStealthKillChance",
+				Handler = function (self, target, value, attacker, attack_target, weapon, target_spot_group, aim)
+					if target == attacker then
+						return value + self:ResolveValue("stealthkill")
+					end
+				end,
+			}),
+			PlaceObj('UnitReaction', {
+				Event = "OnCalcStealthKillMinChance",
+				Handler = function (self, target, value, attacker, attack_target, weapon, target_spot_group, aim)
+					if target == attacker then
+						return Max(value, self:ResolveValue("stealthkill_minchance"))
+					end
+				end,
+			}),
+			PlaceObj('UnitReaction', {
+				Event = "OnCalcSightModifier",
+				Handler = function (self, target, value, observer, other, step_pos, darkness)
+					if target == other and target:HasStatusEffect("Hidden") then
+						return value - self:ResolveValue("stealthy_detection")
+					end
+				end,
+			}),
+		},
+		'DisplayName', T(497322606689, --[[ModItemCharacterEffectCompositeDef Stealthy_1 DisplayName]] "Stealthy"),
+		'Description', T(374712713287, --[[ModItemCharacterEffectCompositeDef Stealthy_1 Description]] "Harder to spot by enemies while <color EmStyle>Sneaking</color>.\n\nSlightly increased chance for <color EmStyle>Stealth Kills</color>."),
+		'Icon', "UI/Icons/Perks/Stealthy",
+		'Tier', "Specialization",
+	}),
 }

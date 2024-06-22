@@ -10,7 +10,7 @@ DefineClass.SharpInstincts = {
 	Description = T(161220283053, --[[ModItemCharacterEffectCompositeDef SharpInstincts Description]] "When you enter combat, drop to Crouched if you're Standing and gain +<tempHP> Grit."),
 	Icon = "Mod/PerksExpanded/Images/idea3",
 	Tier = "Bronze",
-	Stat = "Medical",
+	Stat = "Wisdom",
 	StatValue = 70,
 }
 

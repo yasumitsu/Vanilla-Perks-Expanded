@@ -20,7 +20,7 @@ DefineClass.HitTheDeck = {
 	Description = T(345357935343, --[[ModItemCharacterEffectCompositeDef HitTheDeck Description]] "Switching to <color EmStyle>Prone</color> is <color EmStyle>Free</color>.\n\nMoving in crouch or prone positions is less costly.\n\nAdditional <color EmStyle><explosiveLessDamage>% Damage</color> reduction from <color EmStyle>Explosives</color> when <color EmStyle>Prone</color>."),
 	Icon = "UI/Icons/Perks/HitTheDeck",
 	Tier = "Bronze",
-	Stat = "Health",
+	Stat = "Explosives",
 	StatValue = 70,
 }
 

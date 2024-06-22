@@ -21,7 +21,7 @@ DefineClass.Ambidextrous = {
 	Description = T(169645850395, --[[ModItemCharacterEffectCompositeDef Ambidextrous Description]] "Reduced <color EmStyle>Accuracy</color> penalty when <color EmStyle>Dual-Wielding</color> Firearms."),
 	Icon = "UI/Icons/Perks/Ambidextrous",
 	Tier = "Bronze",
-	Stat = "Marksmanship",
+	Stat = "Dexterity",
 	StatValue = 70,
 }
 

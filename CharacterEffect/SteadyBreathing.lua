@@ -36,7 +36,7 @@ DefineClass.SteadyBreathing = {
 	Description = T(824962629346, --[[ModItemCharacterEffectCompositeDef SteadyBreathing Description]] "Increased <color EmStyle>Free Move</color> <color EmStyle>Range</color> when not wearing <color EmStyle>Heavy Armor</color>."),
 	Icon = "UI/Icons/Perks/SteadyBreathing",
 	Tier = "Bronze",
-	Stat = "Agility",
+	Stat = "Strength",
 	StatValue = 70,
 }
 

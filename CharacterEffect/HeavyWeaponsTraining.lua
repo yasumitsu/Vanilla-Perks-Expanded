@@ -20,9 +20,9 @@ DefineClass.HeavyWeaponsTraining = {
 			Event = "OnBeginTurn",
 			Handler = function (self, target)
 				target:AddStatusEffect("FreeMove")
-				if not HasPerk(target, "Ironclad") then
-					target:ConsumeAP(DivRound(target.free_move_ap, 2), "Move")
-				end
+				--if not HasPerk(target, "Ironclad") then
+				--	target:ConsumeAP(DivRound(target.free_move_ap, 2), "Move")
+				--end
 			end,
 		}),
 		PlaceObj('UnitReaction', {
@@ -39,8 +39,8 @@ DefineClass.HeavyWeaponsTraining = {
 	DisplayName = T(385640383798, --[[ModItemCharacterEffectCompositeDef HeavyWeaponsTraining DisplayName]] "Heavy Weapons"),
 	Description = T(134513669893, --[[ModItemCharacterEffectCompositeDef HeavyWeaponsTraining Description]] "Attacks and <color EmStyle>Setup</color> with <color EmStyle>Heavy Weapons</color> and <color EmStyle>Machine Guns</color> have reduced <color EmStyle>AP</color> cost.\n\nImproves the effect of the <em>Ironclad</em> perk to full <GameTerm('FreeMove')> with cumbersome gear."),
 	Icon = "UI/Icons/Perks/HeavyWeaponsTraining",
-	Tier = "Bronze",
+	Tier = "Silver",
 	Stat = "Explosives",
-	StatValue = 70,
+	StatValue = 80,
 }
 

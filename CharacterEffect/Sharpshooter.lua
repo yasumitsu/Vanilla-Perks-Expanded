@@ -72,8 +72,8 @@ DefineClass.Sharpshooter = {
 	Description = T(272582799925, --[[ModItemCharacterEffectCompositeDef Sharpshooter Description]] "Increased <color EmStyle>Range and Accuracy</color> for <color EmStyle>Sniper Rifles</color> and <color EmStyle>Rifles</color>."),
 	OnAdded = function (self, obj)  end,
 	Icon = "Mod/PerksExpanded/Images/Mini3",
-	Tier = "Gold",
+	Tier = "Silver",
 	Stat = "Marksmanship",
-	StatValue = 90,
+	StatValue = 80,
 }
 
