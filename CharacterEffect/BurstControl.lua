@@ -55,7 +55,7 @@ DefineClass.BurstControl = {
 			Event = "OnFirearmAttackStart",
 			Handler = function (self, target, attacker, attack_target, action, attack_args)
 				if target == attacker and (action.id == "BurstFire") then
-					attack_args.num_shots = attack_args.num_shots + 2
+					attack_args.num_shots = attack_args.num_shots + 1
 					attack_args.damage_bonus = attack_args.damage_bonus + self:ResolveValue("dmg_bonus")
 					attack_args.cth_loss_per_shot = self:ResolveValue("cth_loss")
 					return attack_args

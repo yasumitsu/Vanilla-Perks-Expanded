@@ -21,7 +21,7 @@ DefineClass.SixthSense = {
 	},
 	DisplayName = T(293683380382, --[[ModItemCharacterEffectCompositeDef SixthSense DisplayName]] "Open Ground Tactics"),
 	Description = T(409442475139, --[[ModItemCharacterEffectCompositeDef SixthSense Description]] "+<tempHitPoints> Grit each time you end turn out of cover."),
-	Icon = "Mod/PerksExpanded/Images/magic-ball2.dds",
+	Icon = "Mod/PerksExpanded/Images/magic-ball3",
 	Tier = "Bronze",
 	Stat = "Medical",
 	StatValue = 70,

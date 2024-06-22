@@ -72,7 +72,7 @@ DefineClass.Regen = {
 	Description = T(416178841401, --[[ModItemCharacterEffectCompositeDef Regen Description]] "Heals 5% HP each turn in combat."),
 	OnAdded = function (self, obj)  end,
 	OnRemoved = function (self, obj)  end,
-	Icon = "Mod/PerksExpanded/Images/restitution.dds",
+	Icon = "Mod/PerksExpanded/Images/restitution",
 	Shown = true,
 	HasFloatingText = true,
 }

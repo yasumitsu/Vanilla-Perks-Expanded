@@ -35,7 +35,7 @@ DefineClass.ShamanArmor = {
 		obj:RemoveStatusEffectImmunity("Choking", self.class)
 		obj:RemoveStatusEffectImmunity("Panicked", self.class)
 	end,
-	Icon = "Mod/PerksExpanded/Images/shield.dds",
+	Icon = "Mod/PerksExpanded/Images/shield",
 	max_stacks = 3,
 	Shown = true,
 }

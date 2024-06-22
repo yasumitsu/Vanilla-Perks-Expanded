@@ -15,7 +15,7 @@ DefineClass.OverwatchExpert = {
 	},
 	DisplayName = T(532324679530, --[[ModItemCharacterEffectCompositeDef OverwatchExpert DisplayName]] "Sentinel"),
 	Description = T(953678683787, --[[ModItemCharacterEffectCompositeDef OverwatchExpert Description]] "Gain an <color EmStyle>extra attack</color> when using <color EmStyle>Overwatch</color>."),
-	Icon = "Mod/PerksExpanded/Images/vigilance1.dds",
+	Icon = "Mod/PerksExpanded/Images/vigilance2",
 	Tier = "Bronze",
 	Stat = "Marksmanship",
 	StatValue = 70,

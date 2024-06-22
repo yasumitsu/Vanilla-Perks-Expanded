@@ -27,7 +27,7 @@ DefineClass.Endurance = {
 	Description = T(395886257805, --[[ModItemCharacterEffectCompositeDef Endurance Description]] "Takes less damage if wounded."),
 	OnAdded = function (self, obj)  end,
 	OnRemoved = function (self, obj)  end,
-	Icon = "Mod/PerksExpanded/Images/helmet 2.dds",
+	Icon = "Mod/PerksExpanded/Images/helmet 2",
 	Shown = true,
 	HasFloatingText = true,
 }

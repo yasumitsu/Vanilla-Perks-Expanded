@@ -17,7 +17,7 @@ DefineClass.NaturalCamouflage = {
 	},
 	DisplayName = T(255554280355, --[[ModItemCharacterEffectCompositeDef NaturalCamouflage DisplayName]] "Natural Camouflage"),
 	Description = T(160860597113, --[[ModItemCharacterEffectCompositeDef NaturalCamouflage Description]] "This character is <number>% harder to see."),
-	Icon = "Mod/PerksExpanded/Images/Chameleon.dds",
+	Icon = "Mod/PerksExpanded/Images/Chameleon1",
 	Tier = "Silver",
 	Stat = "Medical",
 	StatValue = 80,

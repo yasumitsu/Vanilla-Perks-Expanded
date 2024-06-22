@@ -55,7 +55,7 @@ DefineClass.AllRounder = {
 	AddEffectText = "",
 	RemoveEffectText = "",
 	OnAdded = function (self, obj)  end,
-	Icon = "Mod/PerksExpanded/Images/bulletproof-vest.dds",
+	Icon = "Mod/PerksExpanded/Images/bulletproof-vest",
 	Shown = true,
 }
 

@@ -26,7 +26,7 @@ DefineClass.SurvivalInstinct = {
 	},
 	DisplayName = T(646555090368, --[[ModItemCharacterEffectCompositeDef SurvivalInstinct DisplayName]] "Survival Instinct"),
 	Description = T(453388948844, --[[ModItemCharacterEffectCompositeDef SurvivalInstinct Description]] "Gains <color EmStyle>Heroic</color> when <color EmStyle>HP</color> drops too low."),
-	Icon = "Mod/PerksExpanded/Images/strength.dds",
+	Icon = "Mod/PerksExpanded/Images/strength",
 	Tier = "Quirk",
 }
 

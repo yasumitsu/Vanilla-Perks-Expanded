@@ -24,7 +24,7 @@ DefineClass.Mechanic = {
 					end
 				end
 				
-				if target == attacker and  heavyArmor (target.team ~= attack_target.team) then
+				if target == attacker and  heavyArmor and (target.team ~= attack_target.team) then
 					local bonus = Min(target:GetLevel(), 10)
 					data.base_damage = data.base_damage + bonus
 					data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = bonus }
@@ -42,7 +42,7 @@ DefineClass.Mechanic = {
 	AddEffectText = "",
 	RemoveEffectText = "",
 	OnAdded = function (self, obj)  end,
-	Icon = "Mod/PerksExpanded/Images/wrench.dds",
+	Icon = "Mod/PerksExpanded/Images/wrench",
 	Shown = true,
 }
 

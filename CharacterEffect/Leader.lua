@@ -61,7 +61,7 @@ DefineClass.Leader = {
 		obj:RemoveStatusEffectImmunity("Panicked", self.class)
 		obj:AddStatusEffectImmunity("Berserk", self.class)
 	end,
-	Icon = "Mod/PerksExpanded/Images/napoleon.dds",
+	Icon = "Mod/PerksExpanded/Images/napoleon",
 	Shown = true,
 }
 

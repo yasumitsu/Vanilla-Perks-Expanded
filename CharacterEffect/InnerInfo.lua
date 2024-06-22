@@ -30,7 +30,7 @@ DefineClass.InnerInfo = {
 		PlaceObj('UnitReaction', {
 			Event = "OnCalcChanceToHit",
 			Handler = function (self, target, attacker, action, attack_target, weapon1, weapon2, data)
-				--if target == attacker  and ((IsKindOfClasses(weapon1, "Firearm") and weapon1:IsFullyModified()) or (IsKindOfClasses(weapon2, "Firearm") and weapon2:IsFullyModified())) then
+				 --and ((IsKindOfClasses(weapon1, "Firearm") and weapon1:IsFullyModified()) or (IsKindOfClasses(weapon2, "Firearm") and weapon2:IsFullyModified())) then
 				--	local bonus = target.Mechanical/10
 				local ItemId = "CustomPDA"
 				local bonus
@@ -40,10 +40,10 @@ DefineClass.InnerInfo = {
 						pdaStacks = item.Amount
 					end
 				end)
-							
-				bonus = Min(self:ResolveValue("maxBonus"), pdaStacks)
-				ApplyCthModifier_Add(self, data, bonus)
-				--end
+				if target == attacker   then
+					bonus = Min(self:ResolveValue("maxBonus"), pdaStacks)
+					ApplyCthModifier_Add(self, data, bonus)
+				end
 			end,
 		}),
 	},

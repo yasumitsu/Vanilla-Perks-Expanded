@@ -30,7 +30,7 @@ DefineClass.ExplosiveExpert = {
 	AddEffectText = "",
 	RemoveEffectText = "",
 	OnAdded = function (self, obj)  end,
-	Icon = "Mod/PerksExpanded/Images/fragmentation.dds",
+	Icon = "Mod/PerksExpanded/Images/fragmentation",
 	Shown = true,
 }
 

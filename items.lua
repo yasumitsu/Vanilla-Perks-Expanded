@@ -103,7 +103,7 @@ return {
 			},
 			'DisplayName', T(255554280355, --[[ModItemCharacterEffectCompositeDef NaturalCamouflage DisplayName]] "Natural Camouflage"),
 			'Description', T(160860597113, --[[ModItemCharacterEffectCompositeDef NaturalCamouflage Description]] "This character is <number>% harder to see."),
-			'Icon', "Mod/PerksExpanded/Images/Chameleon.dds",
+			'Icon', "Mod/PerksExpanded/Images/Chameleon1",
 			'Tier', "Silver",
 			'Stat', "Medical",
 			'StatValue', 80,
@@ -131,7 +131,7 @@ return {
 			},
 			'DisplayName', T(532324679530, --[[ModItemCharacterEffectCompositeDef OverwatchExpert DisplayName]] "Sentinel"),
 			'Description', T(953678683787, --[[ModItemCharacterEffectCompositeDef OverwatchExpert Description]] "Gain an <color EmStyle>extra attack</color> when using <color EmStyle>Overwatch</color>."),
-			'Icon', "Mod/PerksExpanded/Images/vigilance1.dds",
+			'Icon', "Mod/PerksExpanded/Images/vigilance2",
 			'Tier', "Bronze",
 			'Stat', "Marksmanship",
 			'StatValue', 70,
@@ -151,7 +151,7 @@ return {
 			'msg_reactions', {},
 			'DisplayName', T(795130214410, --[[ModItemCharacterEffectCompositeDef SharpInstincts DisplayName]] "Trained Reaction"),
 			'Description', T(161220283053, --[[ModItemCharacterEffectCompositeDef SharpInstincts Description]] "When you enter combat, drop to Crouched if you're Standing and gain +<tempHP> Grit."),
-			'Icon', "Mod/PerksExpanded/Images/idea2.dds",
+			'Icon', "Mod/PerksExpanded/Images/idea3",
 			'Tier', "Bronze",
 			'Stat', "Medical",
 			'StatValue', 70,
@@ -185,7 +185,7 @@ return {
 			},
 			'DisplayName', T(293683380382, --[[ModItemCharacterEffectCompositeDef SixthSense DisplayName]] "Open Ground Tactics"),
 			'Description', T(409442475139, --[[ModItemCharacterEffectCompositeDef SixthSense Description]] "+<tempHitPoints> Grit each time you end turn out of cover."),
-			'Icon', "Mod/PerksExpanded/Images/magic-ball2.dds",
+			'Icon', "Mod/PerksExpanded/Images/magic-ball3",
 			'Tier', "Bronze",
 			'Stat', "Medical",
 			'StatValue', 70,
@@ -922,7 +922,7 @@ return {
 					PlaceObj('UnitReaction', {
 						Event = "OnCalcChanceToHit",
 						Handler = function (self, target, attacker, action, attack_target, weapon1, weapon2, data)
-							--if target == attacker  and ((IsKindOfClasses(weapon1, "Firearm") and weapon1:IsFullyModified()) or (IsKindOfClasses(weapon2, "Firearm") and weapon2:IsFullyModified())) then
+							 --and ((IsKindOfClasses(weapon1, "Firearm") and weapon1:IsFullyModified()) or (IsKindOfClasses(weapon2, "Firearm") and weapon2:IsFullyModified())) then
 							--	local bonus = target.Mechanical/10
 							local ItemId = "CustomPDA"
 							local bonus
@@ -932,10 +932,10 @@ return {
 									pdaStacks = item.Amount
 								end
 							end)
-										
-							bonus = Min(self:ResolveValue("maxBonus"), pdaStacks)
-							ApplyCthModifier_Add(self, data, bonus)
-							--end
+							if target == attacker   then
+								bonus = Min(self:ResolveValue("maxBonus"), pdaStacks)
+								ApplyCthModifier_Add(self, data, bonus)
+							end
 						end,
 						param_bindings = false,
 					}),
@@ -1051,7 +1051,7 @@ return {
 				'Modifiers', {},
 				'DisplayName', T(983375857101, --[[ModItemCharacterEffectCompositeDef Gunslinger DisplayName]] "Gunslinger"),
 				'Description', T(280088538306, --[[ModItemCharacterEffectCompositeDef Gunslinger Description]] "Attacks with <color EmStyle>Pistols</color> and <color EmStyle>Revolvers</color> have reduced <color EmStyle>AP</color> cost, increased <em>chance to hit</em>, <em>damage</em> and extended <em>Range</em>."),
-				'Icon', "Mod/PerksExpanded/Images/Fanning4.dds",
+				'Icon', "Mod/PerksExpanded/Images/Fanning5",
 				'Tier', "Silver",
 				'Stat', "Marksmanship",
 				'StatValue', 80,
@@ -1570,7 +1570,7 @@ return {
 				}),
 				PlaceObj('PresetParamPercent', {
 					'Name', "cth_loss",
-					'Value', 10,
+					'Value', 15,
 					'Tag', "<cth_loss>%",
 				}),
 			},
@@ -1626,7 +1626,7 @@ return {
 					Event = "OnFirearmAttackStart",
 					Handler = function (self, target, attacker, attack_target, action, attack_args)
 						if target == attacker and (action.id == "BurstFire") then
-							attack_args.num_shots = attack_args.num_shots + 2
+							attack_args.num_shots = attack_args.num_shots + 1
 							attack_args.damage_bonus = attack_args.damage_bonus + self:ResolveValue("dmg_bonus")
 							attack_args.cth_loss_per_shot = self:ResolveValue("cth_loss")
 							return attack_args
@@ -1755,7 +1755,7 @@ return {
 			'DisplayName', T(723903517349, --[[ModItemCharacterEffectCompositeDef Sharpshooter DisplayName]] "Sharpshooter"),
 			'Description', T(272582799925, --[[ModItemCharacterEffectCompositeDef Sharpshooter Description]] "Increased <color EmStyle>Range and Accuracy</color> for <color EmStyle>Sniper Rifles</color> and <color EmStyle>Rifles</color>."),
 			'OnAdded', function (self, obj)  end,
-			'Icon', "Mod/PerksExpanded/Images/Mini2.dds",
+			'Icon', "Mod/PerksExpanded/Images/Mini3",
 			'Tier', "Gold",
 			'Stat', "Marksmanship",
 			'StatValue', 90,
@@ -1795,7 +1795,7 @@ return {
 			},
 			'DisplayName', T(646555090368, --[[ModItemCharacterEffectCompositeDef SurvivalInstinct DisplayName]] "Survival Instinct"),
 			'Description', T(453388948844, --[[ModItemCharacterEffectCompositeDef SurvivalInstinct Description]] "Gains <color EmStyle>Heroic</color> when <color EmStyle>HP</color> drops too low."),
-			'Icon', "Mod/PerksExpanded/Images/strength.dds",
+			'Icon', "Mod/PerksExpanded/Images/strength",
 			'Tier', "Quirk",
 		}),
 		PlaceObj('ModItemCharacterEffectCompositeDef', {
@@ -1886,7 +1886,7 @@ return {
 			'Description', T(416178841401, --[[ModItemCharacterEffectCompositeDef Regen Description]] "Heals 5% HP each turn in combat."),
 			'OnAdded', function (self, obj)  end,
 			'OnRemoved', function (self, obj)  end,
-			'Icon', "Mod/PerksExpanded/Images/restitution.dds",
+			'Icon', "Mod/PerksExpanded/Images/restitution",
 			'Shown', true,
 			'HasFloatingText', true,
 		}),
@@ -1924,7 +1924,7 @@ return {
 			'Description', T(395886257805, --[[ModItemCharacterEffectCompositeDef Endurance Description]] "Takes less damage if wounded."),
 			'OnAdded', function (self, obj)  end,
 			'OnRemoved', function (self, obj)  end,
-			'Icon', "Mod/PerksExpanded/Images/helmet 2.dds",
+			'Icon', "Mod/PerksExpanded/Images/helmet 2",
 			'Shown', true,
 			'HasFloatingText', true,
 		}),
@@ -1970,7 +1970,7 @@ return {
 				obj:RemoveStatusEffectImmunity("Choking", self.class)
 				obj:RemoveStatusEffectImmunity("Panicked", self.class)
 			end,
-			'Icon', "Mod/PerksExpanded/Images/shield.dds",
+			'Icon', "Mod/PerksExpanded/Images/shield",
 			'max_stacks', 3,
 			'Shown', true,
 		}),
@@ -2013,7 +2013,7 @@ return {
 			'AddEffectText', "",
 			'RemoveEffectText', "",
 			'OnAdded', function (self, obj)  end,
-			'Icon', "Mod/PerksExpanded/Images/fragmentation.dds",
+			'Icon', "Mod/PerksExpanded/Images/fragmentation",
 			'Shown', true,
 		}),
 		PlaceObj('ModItemCharacterEffectCompositeDef', {
@@ -2103,7 +2103,7 @@ return {
 			'AddEffectText', "",
 			'RemoveEffectText', "",
 			'OnAdded', function (self, obj)  end,
-			'Icon', "Mod/PerksExpanded/Images/bulletproof-vest.dds",
+			'Icon', "Mod/PerksExpanded/Images/bulletproof-vest",
 			'Shown', true,
 		}),
 		PlaceObj('ModItemCharacterEffectCompositeDef', {
@@ -2173,7 +2173,7 @@ return {
 			'AddEffectText', "",
 			'RemoveEffectText', "",
 			'OnAdded', function (self, obj)  end,
-			'Icon', "Mod/PerksExpanded/Images/first-aid-kit (1).dds",
+			'Icon', "Mod/PerksExpanded/Images/first-aid-kit (1)",
 			'Shown', true,
 		}),
 		PlaceObj('ModItemCharacterEffectCompositeDef', {
@@ -2256,7 +2256,7 @@ return {
 				obj:RemoveStatusEffectImmunity("Panicked", self.class)
 				obj:AddStatusEffectImmunity("Berserk", self.class)
 			end,
-			'Icon', "Mod/PerksExpanded/Images/napoleon.dds",
+			'Icon', "Mod/PerksExpanded/Images/napoleon",
 			'Shown', true,
 		}),
 		PlaceObj('ModItemCharacterEffectCompositeDef', {
@@ -2324,7 +2324,7 @@ return {
 			'AddEffectText', "",
 			'RemoveEffectText', "",
 			'OnAdded', function (self, obj)  end,
-			'Icon', "Mod/PerksExpanded/Images/rifle 2.dds",
+			'Icon', "Mod/PerksExpanded/Images/rifle 2",
 			'Shown', true,
 		}),
 		PlaceObj('ModItemCharacterEffectCompositeDef', {
@@ -2358,7 +2358,7 @@ return {
 							end
 						end
 						
-						if target == attacker and  heavyArmor (target.team ~= attack_target.team) then
+						if target == attacker and  heavyArmor and (target.team ~= attack_target.team) then
 							local bonus = Min(target:GetLevel(), 10)
 							data.base_damage = data.base_damage + bonus
 							data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = bonus }
@@ -2378,7 +2378,7 @@ return {
 			'AddEffectText', "",
 			'RemoveEffectText', "",
 			'OnAdded', function (self, obj)  end,
-			'Icon', "Mod/PerksExpanded/Images/wrench.dds",
+			'Icon', "Mod/PerksExpanded/Images/wrench",
 			'Shown', true,
 		}),
 		}),
@@ -4690,7 +4690,7 @@ return {
 			group = "Default",
 			icon = "UI/SectorOperations/T_Icon_Activity_Healing_Doctor_2",
 			id = "CyberEnhancement",
-			image = "Mod/PerksExpanded/Images/B12U.dds",
+			image = "Mod/PerksExpanded/Images/B12U",
 			min_requirement_stat = "Health",
 			min_requirement_stat_value = 80,
 			operation_type = set( "Healing" ),

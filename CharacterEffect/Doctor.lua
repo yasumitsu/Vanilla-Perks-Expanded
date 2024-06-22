@@ -53,7 +53,7 @@ DefineClass.Doctor = {
 	AddEffectText = "",
 	RemoveEffectText = "",
 	OnAdded = function (self, obj)  end,
-	Icon = "Mod/PerksExpanded/Images/first-aid-kit (1).dds",
+	Icon = "Mod/PerksExpanded/Images/first-aid-kit (1)",
 	Shown = true,
 }
 

@@ -44,7 +44,7 @@ DefineClass.Marksman = {
 	AddEffectText = "",
 	RemoveEffectText = "",
 	OnAdded = function (self, obj)  end,
-	Icon = "Mod/PerksExpanded/Images/rifle 2.dds",
+	Icon = "Mod/PerksExpanded/Images/rifle 2",
 	Shown = true,
 }
 
