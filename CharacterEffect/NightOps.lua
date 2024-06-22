@@ -4,7 +4,6 @@ DefineClass.NightOps = {
 	__generated_by_class = "ModItemCharacterEffectCompositeDef",
 
 
-	__copy_group = "Perk-Specialization",
 	object_class = "Perk",
 	DisplayName = T(830763611479, --[[ModItemCharacterEffectCompositeDef NightOps DisplayName]] "Night Ops"),
 	Description = T(734037035268, --[[ModItemCharacterEffectCompositeDef NightOps Description]] "Reduced penalties to <color EmStyle>Accuracy</color> when at <color EmStyle>Night</color> and in <color EmStyle>underground</color> Sectors."),

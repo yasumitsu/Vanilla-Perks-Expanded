@@ -4,7 +4,6 @@ DefineClass.LeadFromTheFront = {
 	__generated_by_class = "ModItemCharacterEffectCompositeDef",
 
 
-	__copy_group = "Wisdom",
 	object_class = "Perk",
 	unit_reactions = {
 		PlaceObj('UnitReaction', {

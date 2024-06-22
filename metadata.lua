@@ -5,13 +5,13 @@ return PlaceObj('ModDef', {
 	'external_links', {
 		"https://github.com/yasumitsu/Vanilla-Perks-Expanded",
 	},
-	'last_changes', "- fixed innerinfo",
+	'last_changes', "- changed prerequisites of several perks",
 	'dependencies', {},
 	'id', "PerksExpanded",
 	'author', "Sir Ni",
 	'version_major', 2,
 	'version_minor', 2,
-	'version', 1886,
+	'version', 1894,
 	'lua_revision', 233360,
 	'saved_with_revision', 350233,
 	'code', {
@@ -29,6 +29,7 @@ return PlaceObj('ModDef', {
 		"Code/GetAllAttributes.lua",
 		"CharacterEffect/LightningReaction.lua",
 		"CharacterEffect/Untraceable.lua",
+		"CharacterEffect/MartialArts.lua",
 		"CharacterEffect/Berserker.lua",
 		"CharacterEffect/SteadyBreathing.lua",
 		"CharacterEffect/NightOps.lua",
@@ -39,6 +40,7 @@ return PlaceObj('ModDef', {
 		"CharacterEffect/BreachAndClear.lua",
 		"CharacterEffect/HeavyWeaponsTraining.lua",
 		"CharacterEffect/Throwing.lua",
+		"CharacterEffect/Teacher.lua",
 		"CharacterEffect/ShockAndAwe.lua",
 		"CharacterEffect/LeadFromTheFront.lua",
 		"CharacterEffect/LastWarning.lua",
@@ -90,8 +92,8 @@ return PlaceObj('ModDef', {
 		LevelIcons = true,
 	},
 	'has_data', true,
-	'saved', 1719053272,
-	'code_hash', -3909866387695697064,
+	'saved', 1719057617,
+	'code_hash', -5991492514840524197,
 	'affected_resources', {
 		PlaceObj('ModResourcePreset', {
 			'Class', "GameRuleDef",
@@ -106,6 +108,11 @@ return PlaceObj('ModDef', {
 		PlaceObj('ModResourcePreset', {
 			'Class', "CharacterEffectCompositeDef",
 			'Id', "Untraceable",
+			'ClassDisplayName', "Character effect",
+		}),
+		PlaceObj('ModResourcePreset', {
+			'Class', "CharacterEffectCompositeDef",
+			'Id', "MartialArts",
 			'ClassDisplayName', "Character effect",
 		}),
 		PlaceObj('ModResourcePreset', {
@@ -156,6 +163,11 @@ return PlaceObj('ModDef', {
 		PlaceObj('ModResourcePreset', {
 			'Class', "CharacterEffectCompositeDef",
 			'Id', "Throwing",
+			'ClassDisplayName', "Character effect",
+		}),
+		PlaceObj('ModResourcePreset', {
+			'Class', "CharacterEffectCompositeDef",
+			'Id', "Teacher",
 			'ClassDisplayName', "Character effect",
 		}),
 		PlaceObj('ModResourcePreset', {

@@ -5,11 +5,11 @@ DefineClass.Teacher = {
 
 
 	object_class = "Perk",
-	DisplayName = T(748042767167, --[[ModItemCharacterEffectCompositeDef Teacher DisplayName]] "Teaching"),
-	Description = T(910888738080, --[[ModItemCharacterEffectCompositeDef Teacher Description]] "Faster completion of the <color EmStyle>Train Militia</color> and <color EmStyle>Training</color> Operations.\n\nGrant <color EmStyle><number>%</color> extra<color EmStyle> XP</color> to the squad (does not stack)."),
+	DisplayName = T(633688474662, --[[ModItemCharacterEffectCompositeDef Teacher DisplayName]] "Teaching"),
+	Description = T(935220168848, --[[ModItemCharacterEffectCompositeDef Teacher Description]] "Faster completion of the <color EmStyle>Train Militia</color> and <color EmStyle>Training</color> Operations.\n\nGrant <color EmStyle><number>%</color> extra<color EmStyle> XP</color> to the squad (does not stack)."),
 	Icon = "UI/Icons/Perks/Teacher",
-	Tier = "Silver",
+	Tier = "Bronze",
 	Stat = "Leadership",
-	StatValue = 80,
+	StatValue = 70,
 }
 

@@ -4,7 +4,6 @@ DefineClass.BreachAndClear = {
 	__generated_by_class = "ModItemCharacterEffectCompositeDef",
 
 
-	__copy_group = "Strength",
 	object_class = "Perk",
 	unit_reactions = {
 		PlaceObj('UnitReaction', {

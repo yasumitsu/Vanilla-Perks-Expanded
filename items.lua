@@ -202,6 +202,7 @@ return {
 								data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = bonus }
 							end
 						end,
+						param_bindings = false,
 					}),
 				},
 				'DisplayName', T(644754158224, --[[ModItemCharacterEffectCompositeDef Untraceable DisplayName]] "Untraceable"),
@@ -215,6 +216,51 @@ return {
 		PlaceObj('ModItemFolder', {
 			'name', "Health",
 		}, {
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Perk-Specialization",
+				'Id', "MartialArts",
+				'SortKey', 100,
+				'Parameters', {
+					PlaceObj('PresetParamPercent', {
+						'Name', "hit",
+						'Value', 15,
+						'Tag', "<hit>%",
+					}),
+					PlaceObj('PresetParamPercent', {
+						'Name', "defense",
+						'Value', 15,
+						'Tag', "<defense>%",
+					}),
+				},
+				'object_class', "Perk",
+				'unit_reactions', {
+					PlaceObj('UnitReaction', {
+						Event = "OnCalcChanceToHit",
+						Handler = function (self, target, attacker, action, attack_target, weapon1, weapon2, data)
+							if not (action and action.ActionType == "Melee Attack") then return end
+							
+							local text = T{776394275735, "Perk: <name>", name = self.DisplayName}
+							if target == attack_target and IsKindOf(target, "Unit") and target.species ~= "Human" then
+								text = T(767817302327, "Perk: Animal Reflexes")
+							end
+							
+							if target == attacker then
+								ApplyCthModifier_Add(self, data, self:ResolveValue("hit"), text)
+							end
+							if target == attack_target then
+								ApplyCthModifier_Add(self, data, -self:ResolveValue("defense"), text)
+							end
+						end,
+						param_bindings = false,
+					}),
+				},
+				'DisplayName', T(845278897655, --[[ModItemCharacterEffectCompositeDef MartialArts DisplayName]] "Martial Arts"),
+				'Description', T(157723204734, --[[ModItemCharacterEffectCompositeDef MartialArts Description]] "Improved <color EmStyle>Accuracy</color> with <color EmStyle>Melee Attacks</color>.\n\nImproved <color EmStyle>Defense</color> against <color EmStyle>Melee Attacks</color>."),
+				'Icon', "UI/Icons/Perks/MartialArts",
+				'Tier', "Bronze",
+				'Stat', "Health",
+				'StatValue', 70,
+			}),
 			PlaceObj('ModItemCharacterEffectCompositeDef', {
 				'Group', "Health",
 				'Id', "Berserker",
@@ -490,6 +536,7 @@ return {
 								end
 							end
 						end,
+						param_bindings = false,
 					}),
 				},
 				'DisplayName', T(291330097752, --[[ModItemCharacterEffectCompositeDef BreachAndClear DisplayName]] "Breach and Clear"),
@@ -604,6 +651,35 @@ return {
 			'name', "Leadership",
 		}, {
 			PlaceObj('ModItemCharacterEffectCompositeDef', {
+				'Group', "Perk-Specialization",
+				'Id', "Teacher",
+				'SortKey', 100,
+				'Parameters', {
+					PlaceObj('PresetParamPercent', {
+						'Name', "MilitiaTrainingBonusPercent",
+						'Value', 100,
+						'Tag', "<MilitiaTrainingBonusPercent>%",
+					}),
+					PlaceObj('PresetParamPercent', {
+						'Name', "MercTrainingBonus",
+						'Value', 100,
+						'Tag', "<MercTrainingBonus>%",
+					}),
+					PlaceObj('PresetParamPercent', {
+						'Name', "squad_exp_bonus",
+						'Value', 10,
+						'Tag', "<squad_exp_bonus>%",
+					}),
+				},
+				'object_class', "Perk",
+				'DisplayName', T(633688474662, --[[ModItemCharacterEffectCompositeDef Teacher DisplayName]] "Teaching"),
+				'Description', T(935220168848, --[[ModItemCharacterEffectCompositeDef Teacher Description]] "Faster completion of the <color EmStyle>Train Militia</color> and <color EmStyle>Training</color> Operations.\n\nGrant <color EmStyle><number>%</color> extra<color EmStyle> XP</color> to the squad (does not stack)."),
+				'Icon', "UI/Icons/Perks/Teacher",
+				'Tier', "Bronze",
+				'Stat', "Leadership",
+				'StatValue', 70,
+			}),
+			PlaceObj('ModItemCharacterEffectCompositeDef', {
 				'Group', "Wisdom",
 				'Id', "ShockAndAwe",
 				'SortKey', 8,
@@ -623,6 +699,7 @@ return {
 								target.team.morale = Max(1, target.team.morale)
 							end
 						end,
+						param_bindings = false,
 					}),
 					PlaceObj('UnitReaction', {
 						Event = "OnCalcDamageAndEffects",
@@ -633,6 +710,7 @@ return {
 								data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = damageBonus }
 							end
 						end,
+						param_bindings = false,
 					}),
 				},
 				'DisplayName', T(917406413669, --[[ModItemCharacterEffectCompositeDef ShockAndAwe DisplayName]] "Shock and Awe"),
@@ -670,12 +748,14 @@ return {
 								end
 							end
 						end,
+						param_bindings = false,
 					}),
 					PlaceObj('UnitReaction', {
 						Event = "OnBeginTurn",
 						Handler = function (self, target)
 							self:SetParameter("applied", false)
 						end,
+						param_bindings = false,
 					}),
 				},
 				'DisplayName', T(197770144315, --[[ModItemCharacterEffectCompositeDef LeadFromTheFront DisplayName]] "Inspiring Strike"),
@@ -713,6 +793,7 @@ return {
 								end
 							end
 						end,
+						param_bindings = false,
 					}),
 				},
 				'DisplayName', T(971319502741, --[[ModItemCharacterEffectCompositeDef LastWarning DisplayName]] "Dire Warning"),
@@ -736,12 +817,14 @@ return {
 								self:SetParameter("activated", true)
 							end
 						end,
+						param_bindings = false,
 					}),
 					PlaceObj('UnitReaction', {
 						Event = "OnCombatEnd",
 						Handler = function (self, target)
 							self:SetParameter("activated", false)
 						end,
+						param_bindings = false,
 					}),
 				},
 				'DisplayName', T(395949760272, --[[ModItemCharacterEffectCompositeDef StressManagement DisplayName]] "Stress Management"),
@@ -797,6 +880,7 @@ return {
 								data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = bonus }
 							end
 						end,
+						param_bindings = false,
 					}),
 				},
 				'DisplayName', T(327523599007, --[[ModItemCharacterEffectCompositeDef Enfilade DisplayName]] "Enfilade Fire"),
@@ -1364,14 +1448,15 @@ return {
 								end	
 							end
 						end,
+						param_bindings = false,
 					}),
 				},
 				'DisplayName', T(681013280774, --[[ModItemCharacterEffectCompositeDef TrickShot DisplayName]] "Trick Shot"),
 				'Description', T(374957849272, --[[ModItemCharacterEffectCompositeDef TrickShot Description]] "<color EmStyle>Legs</color> shots apply <color EmStyle>Knocked Down</color>.\n\n<color EmStyle>Arms</color> shots apply <color EmStyle>Numbness</color>.\n\n<color EmStyle>Groin</color> shots apply <color EmStyle>Exposed</color>."),
 				'Icon', "UI/Icons/Perks/TrickShot",
-				'Tier', "Gold",
+				'Tier', "Silver",
 				'Stat', "Medical",
-				'StatValue', 90,
+				'StatValue', 80,
 			}),
 			PlaceObj('ModItemCharacterEffectCompositeDef', {
 				'Group', "Wisdom",
@@ -1398,14 +1483,15 @@ return {
 								end	
 							end
 						end,
+						param_bindings = false,
 					}),
 				},
 				'DisplayName', T(767416055321, --[[ModItemCharacterEffectCompositeDef Caretaker DisplayName]] "Painkiller"),
 				'Description', T(991823627830, --[[ModItemCharacterEffectCompositeDef Caretaker Description]] "When you end you turn bandaging an ally, you grant <color EmStyle><StatPercent('Medical', medicalPercent)></color> <color EmStyle>Grit</color> to this ally (based on Medical)."),
 				'Icon', "UI/Icons/Perks/Caretaker",
-				'Tier', "Silver",
+				'Tier', "Gold",
 				'Stat', "Medical",
-				'StatValue', 80,
+				'StatValue', 90,
 			}),
 			PlaceObj('ModItemCharacterEffectCompositeDef', {
 				'Group', "Wisdom",
@@ -1419,6 +1505,7 @@ return {
 							data.ignore_body_part_damage.Arms = true
 							data.ignore_body_part_damage.Legs = true
 						end,
+						param_bindings = false,
 					}),
 				},
 				'DisplayName', T(204672425596, --[[ModItemCharacterEffectCompositeDef Hobbler DisplayName]] "Arterial Shot"),
@@ -1448,6 +1535,7 @@ return {
 								data.heal_percent = data.heal_percent + self:ResolveValue("bandageBonus")
 							end
 						end,
+						param_bindings = false,
 					}),
 				},
 				'DisplayName', T(348476001921, --[[ModItemCharacterEffectCompositeDef Savior DisplayName]] "Savior"),
@@ -5131,6 +5219,7 @@ return {
 						return value + self:ResolveValue("stealthkill")
 					end
 				end,
+				param_bindings = false,
 			}),
 			PlaceObj('UnitReaction', {
 				Event = "OnCalcStealthKillMinChance",
@@ -5139,6 +5228,7 @@ return {
 						return Max(value, self:ResolveValue("stealthkill_minchance"))
 					end
 				end,
+				param_bindings = false,
 			}),
 			PlaceObj('UnitReaction', {
 				Event = "OnCalcSightModifier",
@@ -5147,6 +5237,7 @@ return {
 						return value - self:ResolveValue("stealthy_detection")
 					end
 				end,
+				param_bindings = false,
 			}),
 		},
 		'DisplayName', T(497322606689, --[[ModItemCharacterEffectCompositeDef Stealthy_1 DisplayName]] "Stealthy"),

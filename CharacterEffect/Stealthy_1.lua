@@ -4,7 +4,6 @@ DefineClass.Stealthy_1 = {
 	__generated_by_class = "ModItemCharacterEffectCompositeDef",
 
 
-	__copy_group = "Perk-Specialization",
 	object_class = "Perk",
 	unit_reactions = {
 		PlaceObj('UnitReaction', {

@@ -4,7 +4,6 @@ DefineClass.Enfilade = {
 	__generated_by_class = "ModItemCharacterEffectCompositeDef",
 
 
-	__copy_group = "_Reserve",
 	object_class = "Perk",
 	unit_reactions = {
 		PlaceObj('UnitReaction', {

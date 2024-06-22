@@ -4,7 +4,6 @@ DefineClass.TrickShot = {
 	__generated_by_class = "ModItemCharacterEffectCompositeDef",
 
 
-	__copy_group = "Wisdom",
 	object_class = "Perk",
 	unit_reactions = {
 		PlaceObj('UnitReaction', {
@@ -25,8 +24,8 @@ DefineClass.TrickShot = {
 	DisplayName = T(681013280774, --[[ModItemCharacterEffectCompositeDef TrickShot DisplayName]] "Trick Shot"),
 	Description = T(374957849272, --[[ModItemCharacterEffectCompositeDef TrickShot Description]] "<color EmStyle>Legs</color> shots apply <color EmStyle>Knocked Down</color>.\n\n<color EmStyle>Arms</color> shots apply <color EmStyle>Numbness</color>.\n\n<color EmStyle>Groin</color> shots apply <color EmStyle>Exposed</color>."),
 	Icon = "UI/Icons/Perks/TrickShot",
-	Tier = "Gold",
+	Tier = "Silver",
 	Stat = "Medical",
-	StatValue = 90,
+	StatValue = 80,
 }
 

@@ -4,7 +4,6 @@ DefineClass.Untraceable = {
 	__generated_by_class = "ModItemCharacterEffectCompositeDef",
 
 
-	__copy_group = "Dexterity",
 	object_class = "Perk",
 	unit_reactions = {
 		PlaceObj('UnitReaction', {

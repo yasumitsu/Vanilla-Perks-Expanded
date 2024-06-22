@@ -4,7 +4,6 @@ DefineClass.Caretaker = {
 	__generated_by_class = "ModItemCharacterEffectCompositeDef",
 
 
-	__copy_group = "Wisdom",
 	object_class = "Perk",
 	unit_reactions = {
 		PlaceObj('UnitReaction', {
@@ -24,8 +23,8 @@ DefineClass.Caretaker = {
 	DisplayName = T(767416055321, --[[ModItemCharacterEffectCompositeDef Caretaker DisplayName]] "Painkiller"),
 	Description = T(991823627830, --[[ModItemCharacterEffectCompositeDef Caretaker Description]] "When you end you turn bandaging an ally, you grant <color EmStyle><StatPercent('Medical', medicalPercent)></color> <color EmStyle>Grit</color> to this ally (based on Medical)."),
 	Icon = "UI/Icons/Perks/Caretaker",
-	Tier = "Silver",
+	Tier = "Gold",
 	Stat = "Medical",
-	StatValue = 80,
+	StatValue = 90,
 }
 
