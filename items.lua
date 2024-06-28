@@ -859,38 +859,6 @@ return {
 			'name', "Marksmanship",
 		}, {
 			PlaceObj('ModItemCharacterEffectCompositeDef', {
-				'Group', "_Reserve",
-				'Id', "Enfilade",
-				'SortKey', 2,
-				'Parameters', {
-					PlaceObj('PresetParamPercent', {
-						'Name', "damage_bonus",
-						'Value', 30,
-						'Tag', "<damage_bonus>%",
-					}),
-				},
-				'object_class', "Perk",
-				'unit_reactions', {
-					PlaceObj('UnitReaction', {
-						Event = "OnCalcDamageAndEffects",
-						Handler = function (self, target, attacker, attack_target, action, weapon, attack_args, hit, data)
-							if target == attacker and not hit_descr.aoe and attack_args.opportunity_attack_type and IsKindOf(attack_target, "Unit") and attack_target:HasStatusEffect("Flanked") then
-								local bonus = self:ResolveValue("damage_bonus")
-								data.base_damage = MulDivRound(data.base_damage, 100 + bonus, 100)
-								data.breakdown[#data.breakdown + 1] = { name = self.DisplayName, value = bonus }
-							end
-						end,
-						param_bindings = false,
-					}),
-				},
-				'DisplayName', T(327523599007, --[[ModItemCharacterEffectCompositeDef Enfilade DisplayName]] "Enfilade Fire"),
-				'Description', T(290887360265, --[[ModItemCharacterEffectCompositeDef Enfilade Description]] "Deal +<number>% bonus damage to Flanked enemies with Interrupt attacks."),
-				'Icon', "UI/Icons/Perks/Inescapable",
-				'Tier', "Bronze",
-				'Stat', "Marksmanship",
-				'StatValue', 70,
-			}),
-			PlaceObj('ModItemCharacterEffectCompositeDef', {
 				'Group', "Marksmanship",
 				'Id', "Sharpshooter",
 				'SortKey', 10,
@@ -5189,60 +5157,4 @@ return {
 			target_contribution = 4800,
 		}),
 		}),
-	PlaceObj('ModItemCharacterEffectCompositeDef', {
-		'Group', "Perk-Specialization",
-		'Id', "Stealthy_1",
-		'SortKey', 100,
-		'Parameters', {
-			PlaceObj('PresetParamPercent', {
-				'Name', "stealthy_detection",
-				'Value', 20,
-				'Tag', "<stealthy_detection>%",
-			}),
-			PlaceObj('PresetParamPercent', {
-				'Name', "stealthkill",
-				'Value', 10,
-				'Tag', "<stealthkill>%",
-			}),
-			PlaceObj('PresetParamPercent', {
-				'Name', "stealthkill_minchance",
-				'Value', 30,
-				'Tag', "<stealthkill_minchance>%",
-			}),
-		},
-		'object_class', "Perk",
-		'unit_reactions', {
-			PlaceObj('UnitReaction', {
-				Event = "OnCalcStealthKillChance",
-				Handler = function (self, target, value, attacker, attack_target, weapon, target_spot_group, aim)
-					if target == attacker then
-						return value + self:ResolveValue("stealthkill")
-					end
-				end,
-				param_bindings = false,
-			}),
-			PlaceObj('UnitReaction', {
-				Event = "OnCalcStealthKillMinChance",
-				Handler = function (self, target, value, attacker, attack_target, weapon, target_spot_group, aim)
-					if target == attacker then
-						return Max(value, self:ResolveValue("stealthkill_minchance"))
-					end
-				end,
-				param_bindings = false,
-			}),
-			PlaceObj('UnitReaction', {
-				Event = "OnCalcSightModifier",
-				Handler = function (self, target, value, observer, other, step_pos, darkness)
-					if target == other and target:HasStatusEffect("Hidden") then
-						return value - self:ResolveValue("stealthy_detection")
-					end
-				end,
-				param_bindings = false,
-			}),
-		},
-		'DisplayName', T(497322606689, --[[ModItemCharacterEffectCompositeDef Stealthy_1 DisplayName]] "Stealthy"),
-		'Description', T(374712713287, --[[ModItemCharacterEffectCompositeDef Stealthy_1 Description]] "Harder to spot by enemies while <color EmStyle>Sneaking</color>.\n\nSlightly increased chance for <color EmStyle>Stealth Kills</color>."),
-		'Icon', "UI/Icons/Perks/Stealthy",
-		'Tier', "Specialization",
-	}),
 }

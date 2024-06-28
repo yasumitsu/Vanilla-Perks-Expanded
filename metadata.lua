@@ -5,13 +5,13 @@ return PlaceObj('ModDef', {
 	'external_links', {
 		"https://github.com/yasumitsu/Vanilla-Perks-Expanded",
 	},
-	'last_changes', "- changed prerequisites of several perks",
+	'last_changes', "- disabled Enfilade",
 	'dependencies', {},
 	'id', "PerksExpanded",
 	'author', "Sir Ni",
 	'version_major', 2,
 	'version_minor', 2,
-	'version', 1894,
+	'version', 1897,
 	'lua_revision', 233360,
 	'saved_with_revision', 350233,
 	'code', {
@@ -46,7 +46,6 @@ return PlaceObj('ModDef', {
 		"CharacterEffect/LastWarning.lua",
 		"CharacterEffect/StressManagement.lua",
 		"CharacterEffect/Negotiator.lua",
-		"CharacterEffect/Enfilade.lua",
 		"CharacterEffect/Sharpshooter.lua",
 		"CharacterEffect/BurstControl.lua",
 		"CharacterEffect/AutoWeapons.lua",
@@ -85,15 +84,14 @@ return PlaceObj('ModDef', {
 		"CharacterEffect/Regen.lua",
 		"CharacterEffect/Endurance.lua",
 		"CharacterEffect/ShamanArmor.lua",
-		"CharacterEffect/Stealthy_1.lua",
 	},
 	'default_options', {
 		EnemyRoles = true,
 		LevelIcons = true,
 	},
 	'has_data', true,
-	'saved', 1719057617,
-	'code_hash', -5991492514840524197,
+	'saved', 1719574464,
+	'code_hash', 3000092174356208107,
 	'affected_resources', {
 		PlaceObj('ModResourcePreset', {
 			'Class', "GameRuleDef",
@@ -193,11 +191,6 @@ return PlaceObj('ModDef', {
 		PlaceObj('ModResourcePreset', {
 			'Class', "CharacterEffectCompositeDef",
 			'Id', "Negotiator",
-			'ClassDisplayName', "Character effect",
-		}),
-		PlaceObj('ModResourcePreset', {
-			'Class', "CharacterEffectCompositeDef",
-			'Id', "Enfilade",
 			'ClassDisplayName', "Character effect",
 		}),
 		PlaceObj('ModResourcePreset', {
@@ -698,11 +691,6 @@ return PlaceObj('ModDef', {
 			'Class', "SectorOperation",
 			'Id', "CyberEnhancement",
 			'ClassDisplayName', "Sector operation",
-		}),
-		PlaceObj('ModResourcePreset', {
-			'Class', "CharacterEffectCompositeDef",
-			'Id', "Stealthy_1",
-			'ClassDisplayName', "Character effect",
 		}),
 	},
 	'steam_id', "3239224340",
