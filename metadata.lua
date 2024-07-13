@@ -11,7 +11,7 @@ return PlaceObj('ModDef', {
 	'author', "Sir Ni",
 	'version_major', 2,
 	'version_minor', 2,
-	'version', 1897,
+	'version', 1899,
 	'lua_revision', 233360,
 	'saved_with_revision', 350233,
 	'code', {
@@ -90,8 +90,8 @@ return PlaceObj('ModDef', {
 		LevelIcons = true,
 	},
 	'has_data', true,
-	'saved', 1719574464,
-	'code_hash', 3000092174356208107,
+	'saved', 1720775968,
+	'code_hash', -2686723392224267095,
 	'affected_resources', {
 		PlaceObj('ModResourcePreset', {
 			'Class', "GameRuleDef",

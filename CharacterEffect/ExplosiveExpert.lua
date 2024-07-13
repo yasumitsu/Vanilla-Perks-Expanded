@@ -13,9 +13,14 @@ DefineClass.ExplosiveExpert = {
 			end,
 		}),
 		PlaceObj('UnitReaction', {
-			Handler = function ()
-				if target == attacker and IsKindOfClasses(weapon, "Grenade") and action.ActionType == "Ranged Attack" then
-					attack_target:AddStatusEffect("")
+			Event = "OnCalcDamageAndEffects",
+			Handler = function (self, target, attacker, attack_target, action, weapon, attack_args, hit, data)
+				if target == attacker and target.team ~= attack_target.team then
+					if IsKindOf(weapon, "ExplosiveProperties") then
+						target:AddStatusEffect("Bleeding")
+					elseif IsKindOf(weapon, "GrenadeGas") then
+						target:AddStatusEffect("Slow")
+					end
 				end
 			end,
 		}),
